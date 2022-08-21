@@ -1,6 +1,6 @@
 [workspace]
 members = [
   "src-yew",
-  "src-tauri"
-
+  "src-tauri",
+  "link-types"
 ]
