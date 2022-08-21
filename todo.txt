@@ -1,0 +1,7 @@
+(B) When the user `focus` on  the tags input field, show all previous tags he has created (below the input tag) @Feature @BeforePublish
+(B) When the user `focus` on the browser input field, show some browser names (below the input tag) @Feature @BeforePublish
+(B) Open the link when the user clicks on the open button @Feature
+(A) Link's creaton DATE @BeforePublish @Task
+(B) Hiding links Option @Feature
+(B) Show description and thumbnails @Feature
+(B) If the webpage returns 404, then warn user @Feature
