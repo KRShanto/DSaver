@@ -1,5 +1,7 @@
 #![allow(unused, dead_code)] // WARNING
 
+// NEXT: Update feature
+
 use link_types::{Link, LinkSavingError};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::spawn_local;
@@ -60,47 +62,47 @@ fn app() -> Html {
 
     html! {
         <>
-            <New links={links.clone()}/>
+        <CreateLink links={links.clone()}/>
 
-            <div>
-                {
-                    (*links).iter().map(|link| {
-                        html! {
-                            <>
-                                <br />
-                                <p>{"URL: "}{&link.url}</p>
-                                <p>{format!("Title: {:?}", link.title)}</p>
-                                <p>{"Tags: "}</p>
-                                <u>
-                                    {
-                                        link.tags.iter().map(|tag| {
-                                            html! {
-                                                <li>{tag}</li>
-                                            }
-                                        }).collect::<Html>()
-                                    }
-                                </u>
-                                <p>{"Priority: "}{link.prirority}</p>
-                                <p>{"Browser: "}{&link.browser}</p>
-                                <p>{"Complete: "}{link.complete}</p>
-                                <p>{"Date: "}{&link.date}</p>
-                            </>
+        <div>
+            {
+            (*links).iter().map(|link| {
+                html! {
+                    <>
+                    <br />
+                    <p>{"URL: "}{&link.url}</p>
+                    <p>{format!("Title: {:?}", link.title)}</p>
+                    <p>{"Tags: "}</p>
+                    <u>
+                        {
+                            link.tags.iter().map(|tag| {
+                                html! {
+                                    <li>{tag}</li>
+                                }
+                            }).collect::<Html>()
                         }
-                    }).collect::<Html>()
+                    </u>
+                    <p>{"Priority: "}{link.prirority}</p>
+                    <p>{"Browser: "}{&link.browser}</p>
+                    <p>{"Complete: "}{link.complete}</p>
+                    <p>{"Date: "}{&link.date}</p>
+                    </>
                 }
+            }).collect::<Html>()
+            }
 
-            </div>
+        </div>
         </>
     }
 }
 
 #[derive(Properties, Clone, PartialEq)]
-struct NewProps {
+struct CreateLinkProps {
     links: UseStateHandle<Vec<Link>>,
 }
 
-#[function_component(New)]
-fn new(props: &NewProps) -> Html {
+#[function_component(CreateLink)]
+fn new(props: &CreateLinkProps) -> Html {
     let links = props.links.clone();
 
     let url_ref = NodeRef::default();
@@ -109,7 +111,6 @@ fn new(props: &NewProps) -> Html {
     let browser_ref = NodeRef::default();
 
     let onclick = {
-        let links = links.clone();
         let url_ref = url_ref.clone();
         let tags_ref = tags_ref.clone();
         let prirority_ref = prirority_ref.clone();

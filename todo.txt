@@ -5,3 +5,4 @@
 (B) Hiding links Option @Feature
 (B) Show description and thumbnails @Feature
 (B) If the webpage returns 404, then warn user @Feature
+(A) Give user an option to whether he wants to create a custom title or he wants the webpage's title @Task @BeforePublish
