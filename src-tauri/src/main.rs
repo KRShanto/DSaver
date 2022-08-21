@@ -22,7 +22,12 @@ fn validate_link(link: String) -> Result<Link, LinkSavingError> {
 
     // First check if the url is valid
     if let Ok(req_info) = Webpage::from_url(&link.url, WebpageOptions::default()) {
-        let title = req_info.html.title;
+        let title = if link.title == None {
+            req_info.html.title
+        } else {
+            link.title
+        };
+
         Ok(Link {
             url: link.url,
             title,

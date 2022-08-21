@@ -106,25 +106,30 @@ fn new(props: &CreateLinkProps) -> Html {
     let links = props.links.clone();
 
     let url_ref = NodeRef::default();
+    let title_ref = NodeRef::default();
     let tags_ref = NodeRef::default();
     let prirority_ref = NodeRef::default();
     let browser_ref = NodeRef::default();
 
+    let title_disabled = use_state(|| true);
+
     let onclick = {
         let url_ref = url_ref.clone();
+        let title_ref = title_ref.clone();
         let tags_ref = tags_ref.clone();
         let prirority_ref = prirority_ref.clone();
         let browser_ref = browser_ref.clone();
 
         move |_| {
             let url = url_ref.cast::<HtmlInputElement>().unwrap().value();
+            let title = title_ref.cast::<HtmlInputElement>().unwrap().value();
             let tags = tags_ref.cast::<HtmlInputElement>().unwrap().value();
             let prirority = prirority_ref.cast::<HtmlInputElement>().unwrap().value();
             let browser = browser_ref.cast::<HtmlInputElement>().unwrap().value();
 
             let link = Link {
                 url,
-                title: None,
+                title: title.is_empty().then(|| None).unwrap_or(Some(title)),
                 tags: tags.split_whitespace().map(|s| s.to_string()).collect(),
                 prirority: prirority.chars().next().unwrap(),
                 browser,
@@ -159,9 +164,31 @@ fn new(props: &CreateLinkProps) -> Html {
     html! {
         <div>
             <input type="text" ref={url_ref.clone()} placeholder="Url of the website" value="google.com"/>
+            <br />
+            <input type="text" ref={title_ref.clone()} placeholder="Title of the website" disabled={*title_disabled}/>
+            <br />
+            <div class="checkbox" onclick={
+                let title_disabled = title_disabled.clone();
+                move |_| {
+                    title_disabled.set(!*title_disabled);
+                }
+            }>
+                <p>{"Get the title from the webpage"}</p>
+                <div class="checkmark">{
+                    if *title_disabled {
+                        "✓"
+                    } else {
+                        "X"
+                    }
+                }</div>
+            </div>
+            <br />
             <input type="text" ref={tags_ref.clone()} placeholder="Tags" value="Google"/>
+            <br />
             <input type="text" ref={prirority_ref.clone()} placeholder="Prirority" value="A"/>
+            <br />
             <input type="text" ref={browser_ref.clone()} placeholder="Browser" value="Firefox"/>
+            <br />
 
             <button onclick={onclick}>{"Add"}</button>
         </div>
