@@ -1,3 +1,7 @@
+// NOTE: If you want to recive data from Rust, you need to serialize it to JSON and then in js deserialize it to JS object
+// NOTE: If you want to send data to Rust, you need to serialize it to JSON and then in Rust deserialize it to Rust object
+// NOTE: If you want to send data to backend, you need to serialize it to JSON string and then in backend deserialize it to Rust object via `serde_json::from_str()`
+
 // The directory to store data from the app
 const ROOT_DIR = ".link-saver";
 
@@ -10,19 +14,34 @@ export function isWebview() {
 }
 
 // Store data in the file system or localstorage
-export async function storeData(data) {
+export async function storeData(fullDataArg, newData) {
     if (isWebview()) {
         // If the app runningin webview, store data in the file system
         const { writeTextFile, createDir, BaseDirectory } = window.__TAURI__.fs;
+        const invoke = window.__TAURI__.invoke;
 
-        // create the directory
-        await createDir(ROOT_DIR, { dir: BaseDirectory.Home, recursive: true });
-        // write the data into the file
-        await writeTextFile(`${ROOT_DIR}/links.json`, data, { dir: BaseDirectory.Home, recursive: true });
+        const fullData = JSON.parse(fullDataArg);
 
+        try {
+            const returnedData = await invoke("validate_link", { link: newData });
+            console.log("New returned data ", returnedData);
+
+            // push the new data to the full data
+            fullData.push(returnedData);
+
+            // create the directory
+            await createDir(ROOT_DIR, { dir: BaseDirectory.Home, recursive: true });
+            // write the data into the file
+            await writeTextFile(`${ROOT_DIR}/links.json`, JSON.stringify(fullData), { dir: BaseDirectory.Home, recursive: true });
+
+            return JSON.stringify(returnedData);
+        } catch (error) {
+            console.log("ERROR: ", error);
+            return JSON.stringify(error);
+        }
     } else {
         // If the app running in the browser, store data in the localstorage
-        localStorage.setItem("data", data);
+        return localStorage.setItem("data", data);
     }
 }
 
