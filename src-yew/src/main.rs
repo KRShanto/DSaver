@@ -63,7 +63,22 @@ fn app() -> Html {
     html! {
         <>
         <CreateLink links={links.clone()}/>
+        <ShowLinks {links}/>
 
+        </>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct ShowLinksProps {
+    links: UseStateHandle<Vec<Link>>,
+}
+
+#[function_component(ShowLinks)]
+fn show_links(props: &ShowLinksProps) -> Html {
+    let links = props.links.clone();
+    html! {
+        <>
         <div>
             {
             (*links).iter().map(|link| {
