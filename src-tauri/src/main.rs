@@ -17,7 +17,8 @@ fn main() {
 
 /// Validate a link and fetch its title and return it.
 #[tauri::command]
-fn validate_link(link: String) -> Result<Link, LinkSavingError> {
+async fn validate_link(link: String) -> Result<Link, LinkSavingError> {
+    // TODO: If the webstie returns 404 error, then warn the user. Create a new variant for LinkSavingError then put the new data in that variant, and if the user confirms that he wants to keep the link, then add that
     let link: Link = serde_json::from_str(&link).unwrap();
 
     // First check if the url is valid
