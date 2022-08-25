@@ -23,7 +23,7 @@ export async function storeData(fullData) {
             // create the directory
             await createDir(ROOT_DIR, { dir: BaseDirectory.Home, recursive: true });
             // write the data into the file
-            await writeTextFile(`${ROOT_DIR}/links.json`, JSON.stringify(fullData), { dir: BaseDirectory.Home, recursive: true });
+            await writeTextFile(`${ROOT_DIR}/links.json`, fullData, { dir: BaseDirectory.Home, recursive: true });
 
             return null;
         } catch (error) {
@@ -53,7 +53,7 @@ export async function addData(fullDataArg, newData) {
             // push the new data to the full data
             fullData.push(returnedData);
 
-            await storeData(fullData);
+            await storeData(JSON.stringify(fullData));
 
             return JSON.stringify(returnedData);
         } catch (error) {
