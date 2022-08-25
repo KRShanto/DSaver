@@ -30,6 +30,7 @@ async fn validate_link(link: String) -> Result<Link, LinkSavingError> {
         };
 
         Ok(Link {
+            id: link.id,
             url: link.url,
             title,
             tags: link.tags,

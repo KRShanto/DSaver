@@ -16,3 +16,4 @@ weblog = "0.3.0"
 webru = "0.4.0"
 yew = "0.19.3"
 link-types = {path = "../link-types"}
+uuid = {version ="1.1.2", features=["v4", "js", "serde"]}
