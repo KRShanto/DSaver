@@ -1,5 +1,7 @@
 #![allow(unused, dead_code)] // WARNING
 
+use std::collections::HashMap;
+
 use link_types::{Link, LinkSavingError};
 use serde_json::from_str as string_to_struct;
 use serde_json::to_string as struct_to_string;
@@ -29,6 +31,7 @@ fn main() {
 #[function_component(App)]
 fn app() -> Html {
     let links = use_state(Vec::new);
+    let links_tags = use_state(HashMap::new);
     let create_link_state = use_state(|| false);
     let edit_link_state = use_state(|| false);
     let editing_link_position = use_state(|| None);
@@ -64,6 +67,31 @@ fn app() -> Html {
                 || ()
             },
             (),
+        );
+    }
+
+    {
+        // let links_tags = links_tags.clone();
+        let links = links.clone();
+        use_effect_with_deps(
+            move |links| {
+                let mut tags_map = HashMap::new();
+
+                for link in (**links).clone() {
+                    for tag in link.tags.clone() {
+                        if let Some(tag) = tags_map.get_mut(&tag) {
+                            *tag += 1;
+                        } else {
+                            tags_map.insert(tag, 1);
+                        }
+                    }
+                }
+
+                links_tags.set(tags_map);
+
+                || ()
+            },
+            links,
         );
     }
 
