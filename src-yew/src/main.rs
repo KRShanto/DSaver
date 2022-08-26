@@ -3,8 +3,6 @@
 use link_types::{Link, LinkSavingError};
 use serde_json::from_str as string_to_struct;
 use serde_json::to_string as struct_to_string;
-use std::cell::Cell;
-use std::rc::Rc;
 use uuid::Uuid;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::spawn_local;
@@ -147,6 +145,29 @@ fn show_links(props: &ShowLinksProps) -> Html {
                             edit_link_state.set(true);
                         }
                     }>{"Edit"}</button>
+                    <button onclick={
+                        let links = links.clone();
+                        move |_| {
+                            let mut old_links = (*links).clone();
+                            old_links.remove(i - 1);
+
+                            links.set(old_links.clone());
+
+                            // store the links to the filesystem
+                            spawn_local(async move {
+                                let result = store_data(struct_to_string(&old_links).unwrap())
+                                    .await
+                                    .unwrap();
+
+                                // if the result is null, it means success
+                                if let Some(error) = result.as_string() {
+                                    console_error!(error);
+                                } else {
+                                    console_log!("Successfully deleted");
+                                }
+                            });
+                        }
+                    }>{"Delete"}</button>
                     </>
                 }
             }).collect::<Html>()
