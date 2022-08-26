@@ -5,7 +5,7 @@
 (B) Hiding links Option @Feature
 (B) Show description and thumbnails @Feature
 (B) If the webpage returns 404, then warn user @Feature
-(A) Give user an option to whether he wants to create a custom title or he wants the webpage's title @Task @BeforePublish
+x 2022-08-26 Give user an option to whether he wants to create a custom title or he wants the webpage's title pri:A @Task @BeforePublish
 (B) Validate the inputs before sending to the backend @Task @BeforePublish
 (C) Make a discord bot for creating and reading these links +DiscordBot @Feature
 (C) Make a tui application +Cli @Feature
