@@ -31,10 +31,11 @@ fn main() {
 #[function_component(App)]
 fn app() -> Html {
     let links = use_state(Vec::new);
+    let displayed_tags = use_state(Vec::new);
     let links_tags = use_state(HashMap::new);
     let create_link_state = use_state(|| false);
     let edit_link_state = use_state(|| false);
-    let editing_link_position = use_state(|| None);
+    let editing_link_id = use_state(|| None);
 
     {
         let links = links.clone();
@@ -71,8 +72,9 @@ fn app() -> Html {
     }
 
     {
-        // let links_tags = links_tags.clone();
+        let links_tags = links_tags.clone();
         let links = links.clone();
+        let displayed_tags = displayed_tags.clone();
         use_effect_with_deps(
             move |links| {
                 let mut tags_map = HashMap::new();
@@ -87,7 +89,8 @@ fn app() -> Html {
                     }
                 }
 
-                links_tags.set(tags_map);
+                links_tags.set(tags_map.clone());
+                displayed_tags.set((tags_map).into_keys().collect::<Vec<String>>());
 
                 || ()
             },
@@ -97,17 +100,13 @@ fn app() -> Html {
 
     html! {
         <>
-        <button onclick={
-            let create_link_state = create_link_state.clone();
-            move |_| {
-                    create_link_state.set(true);
-            }
-        }>{"Create a New Link"}</button>
+        <Sidebar {links_tags} create_link_state={create_link_state.clone()} displayed_tags={displayed_tags.clone()}/>
 
         <ShowLinks
             links={links.clone()}
             edit_link_state={edit_link_state.clone()}
-            editing_link_position={editing_link_position.clone()}
+            editing_link_id={editing_link_id.clone()}
+            {displayed_tags}
         />
         if *create_link_state {
             <CreateLink links={links.clone()} create_link_state={create_link_state}/>
@@ -116,7 +115,7 @@ fn app() -> Html {
             <EditLink
                 {links}
                 {edit_link_state}
-                {editing_link_position}
+                {editing_link_id}
             />
         }
 
@@ -128,23 +127,37 @@ fn app() -> Html {
 struct ShowLinksProps {
     links: UseStateHandle<Vec<Link>>,
     edit_link_state: UseStateHandle<bool>,
-    editing_link_position: UseStateHandle<Option<usize>>,
+    editing_link_id: UseStateHandle<Option<Uuid>>,
+    displayed_tags: UseStateHandle<Vec<String>>,
 }
 
 #[function_component(ShowLinks)]
 fn show_links(props: &ShowLinksProps) -> Html {
     let links = props.links.clone();
     let edit_link_state = props.edit_link_state.clone();
-    let editing_link_position = props.editing_link_position.clone();
+    let editing_link_id = props.editing_link_id.clone();
+    let displayed_tags = props.displayed_tags.clone();
 
-    let mut i = 0;
+    let mut displayed_links = Vec::new();
+
+    // looping `links`'s tags with `displayed_tags` and if any `links.tags` match with `displayed_tags`,
+    // then the `link` will be pushed into `displayed_links`.
+    for display_tag in (*displayed_tags).clone() {
+        (*links).iter().for_each(|link| {
+            for tag in &link.tags {
+                if &display_tag == tag {
+                    displayed_links.push(link.clone());
+                    break;
+                }
+            }
+        });
+    }
 
     html! {
         <>
         <div>
             {
-            (*links).iter().map(|link| {
-                i += 1;
+            displayed_links.into_iter().map(|link| {
 
                 html! {
                     <>
@@ -167,17 +180,23 @@ fn show_links(props: &ShowLinksProps) -> Html {
                     <p>{"Date: "}{&link.date}</p>
                     <button onclick={
                         let edit_link_state = edit_link_state.clone();
-                        let editing_link_position = editing_link_position.clone();
+                        let editing_link_id = editing_link_id.clone();
                         move |_| {
-                            editing_link_position.set(Some(i - 1));
+                            editing_link_id.set(Some(link.id));
                             edit_link_state.set(true);
                         }
                     }>{"Edit"}</button>
                     <button onclick={
                         let links = links.clone();
+                        let editing_link_id = editing_link_id.clone();
                         move |_| {
                             let mut old_links = (*links).clone();
-                            old_links.remove(i - 1);
+                            old_links.remove(
+                                old_links
+                                    .iter()
+                                    .position(|link| link.id == (*editing_link_id).unwrap())
+                                    .unwrap(),
+                            );
 
                             links.set(old_links.clone());
 
@@ -317,16 +336,24 @@ fn new(props: &CreateLinkProps) -> Html {
 #[derive(Properties, PartialEq)]
 struct EditLinkProps {
     links: UseStateHandle<Vec<Link>>,
-    editing_link_position: UseStateHandle<Option<usize>>,
+    editing_link_id: UseStateHandle<Option<Uuid>>,
     edit_link_state: UseStateHandle<bool>,
 }
 
 #[function_component(EditLink)]
 fn editlink(props: &EditLinkProps) -> Html {
     let links = props.links.clone();
-    let editing_link = props.links[(*props.editing_link_position).unwrap()].clone();
+    let editing_link_id = props.editing_link_id.clone();
+    let editing_link = (links)
+        .iter()
+        .find(|link| link.id == (*editing_link_id).unwrap())
+        .unwrap()
+        .clone();
+    let editing_link_position = (*links)
+        .iter()
+        .position(|link| link.id == (*editing_link_id).unwrap())
+        .unwrap();
     let edit_link_state = props.edit_link_state.clone();
-    let editing_link_position = props.editing_link_position.clone();
 
     let url_ref = NodeRef::default();
     let title_ref = NodeRef::default();
@@ -361,17 +388,17 @@ fn editlink(props: &EditLinkProps) -> Html {
             };
 
             let links = links.clone();
-            let editing_link_position = editing_link_position.clone();
+            let editing_link_id = editing_link_id.clone();
             let edit_link_state = edit_link_state.clone();
 
             spawn_local(async move {
                 let mut old_links = (*links).clone();
-                old_links[(*editing_link_position).unwrap()] = new_link;
+                old_links[editing_link_position] = new_link;
                 links.set(old_links.clone());
 
                 // hide this component
                 edit_link_state.set(false);
-                editing_link_position.set(None);
+                editing_link_id.set(None);
 
                 // store the links to the filesystem
                 spawn_local(async move {
@@ -403,6 +430,80 @@ fn editlink(props: &EditLinkProps) -> Html {
             <br />
 
             <button {onclick}>{"Update"}</button>
+        </>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct SidebarProps {
+    links_tags: UseStateHandle<HashMap<String, i32>>,
+    create_link_state: UseStateHandle<bool>,
+    displayed_tags: UseStateHandle<Vec<String>>,
+}
+
+#[function_component(Sidebar)]
+fn sidebar(props: &SidebarProps) -> Html {
+    let links_tags = props.links_tags.clone();
+    let create_link_state = props.create_link_state.clone();
+    let displayed_tags = props.displayed_tags.clone();
+
+    html! {
+        <>
+            <button onclick={
+                let create_link_state = create_link_state.clone();
+                move |_| {
+                        create_link_state.set(true);
+                }
+            }>{"Create a New Link"}</button>
+
+            <Filter {links_tags} {displayed_tags}/>
+        </>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct FilterProps {
+    links_tags: UseStateHandle<HashMap<String, i32>>,
+    displayed_tags: UseStateHandle<Vec<String>>,
+}
+
+#[function_component(Filter)]
+fn filter(props: &FilterProps) -> Html {
+    let links_tags = props.links_tags.clone();
+    let displayed_tags = props.displayed_tags.clone();
+
+    html! {
+        <>
+        <h1>{"Tags"}</h1>
+        <div>
+        {
+            (*links_tags).iter().map(|(tag, count)| {
+                let display = use_state(|| true);
+
+                html! {
+                    <p onclick={
+                        let tag = tag.clone();
+                        let displayed_tags = displayed_tags.clone();
+                        let display = display.clone();
+                        move |_| {
+                            let mut old_displayed_tags = (*displayed_tags).clone();
+
+                            if *display {
+                                // remove this tag
+                                old_displayed_tags.retain(|old_tag| old_tag != &tag);
+                            } else {
+                                // push this tag
+                                old_displayed_tags.push(tag.clone());
+                            }
+
+                            displayed_tags.set(old_displayed_tags);
+                            display.set(!*display);
+                        }
+                    }>{tag}{" - "}{count}</p>
+                }
+            }).collect::<Html>()
+        }
+        </div>
         </>
     }
 }
