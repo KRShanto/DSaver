@@ -11,34 +11,63 @@ pub fn tags(props: &TagsProps) -> Html {
     let links_tags = props.links_tags.clone();
     let displayed_tags = props.displayed_tags.clone();
 
+    let clicked_tag: UseStateHandle<Option<String>> = use_state(|| None);
+
     html! {
         <>
         <h1>{"Tags"}</h1>
         <div>
         {
             (*links_tags).iter().map(|(tag, count)| {
-                let display = use_state(|| true);
-
                 html! {
                     <p onclick={
                         let tag = tag.clone();
                         let displayed_tags = displayed_tags.clone();
-                        let display = display.clone();
+                        let clicked_tag = clicked_tag.clone();
+                        let links_tags = links_tags.clone();
                         move |_| {
-                            let mut old_displayed_tags = (*displayed_tags).clone();
+                            // all keys of `links_tags`
+                            let mut old_displayed_tags: Vec<String> = (*links_tags).clone().into_keys().collect();
 
-                            if *display {
-                                // remove this tag
-                                old_displayed_tags.retain(|old_tag| old_tag != &tag);
+                            // check if the user clicked on the same tag or not
+                            if let Some(ctag) = &*clicked_tag {
+                                if ctag == &tag {
+                                    // user has clicked the same tag. Show all tags (by default)
+                                    // change the state to be None
+                                    clicked_tag.set(None);
+                                } else {
+                                    // user has clicked different (this one) tag. Hide other tags
+                                    old_displayed_tags.retain(|old_tag| old_tag == &tag);
+                                    // change the state to be this tag
+                                    clicked_tag.set(Some(tag.clone()));
+
+                                }
                             } else {
-                                // push this tag
-                                old_displayed_tags.push(tag.clone());
+                                // user has clicked different (this one) tag. Hide other tags
+                                old_displayed_tags.retain(|old_tag| old_tag == &tag);
+                                // change the state to be this tag
+                                clicked_tag.set(Some(tag.clone()));
                             }
 
+                            // update displayed tags
                             displayed_tags.set(old_displayed_tags);
-                            display.set(!*display);
+
                         }
-                    }>{tag}{" - "}{count}</p>
+                    }>{tag}
+                      {" - "}
+                      {count}
+                      {
+                        if let Some(ctag) = &*clicked_tag {
+                            if ctag == tag {
+                                " - Clicked"
+                            } else {
+                                ""
+                            }
+                        } else {
+                            ""
+                        }
+                      }
+                    </p>
                 }
             }).collect::<Html>()
         }
