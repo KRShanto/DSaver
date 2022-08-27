@@ -10,3 +10,5 @@ x 2022-08-26 Give user an option to whether he wants to create a custom title or
 (C) Make a discord bot for creating and reading these links +DiscordBot @Feature
 (C) Make a tui application +Cli @Feature
 (B) Split this project into several parts, such as `core`, `discord-bot`, `tui`, etc. @Task @BeforePublish
+(A) Use contexts instead of passing by props over and over again @BeforePublish @Task
+(B) Try to remove `clone()`s from codes @Task @BeforePublish

@@ -1,4 +1,5 @@
 use crate::*;
+use itertools::Itertools;
 
 #[derive(Properties, PartialEq)]
 pub struct ShowLinksProps {
@@ -6,6 +7,7 @@ pub struct ShowLinksProps {
     pub edit_link_state: UseStateHandle<bool>,
     pub editing_link_id: UseStateHandle<Option<Uuid>>,
     pub displayed_tags: UseStateHandle<Vec<String>>,
+    pub displayed_browsers: UseStateHandle<Vec<String>>,
 }
 
 #[function_component(ShowLinks)]
@@ -14,8 +16,10 @@ pub fn show_links(props: &ShowLinksProps) -> Html {
     let edit_link_state = props.edit_link_state.clone();
     let editing_link_id = props.editing_link_id.clone();
     let displayed_tags = props.displayed_tags.clone();
+    let displayed_browsers = props.displayed_browsers.clone();
 
-    let mut displayed_links = Vec::new();
+    // links to display
+    let mut displayed_links_for_tags = Vec::new();
 
     // looping `links`'s tags with `displayed_tags` and if any `links.tags` match with `displayed_tags`,
     // then the `link` will be pushed into `displayed_links`.
@@ -23,19 +27,31 @@ pub fn show_links(props: &ShowLinksProps) -> Html {
         (*links).iter().for_each(|link| {
             for tag in &link.tags {
                 if &display_tag == tag {
-                    displayed_links.push(link.clone());
+                    displayed_links_for_tags.push(link.clone());
                     break;
                 }
             }
         });
     }
 
+    let mut displayed_links_for_browsers = Vec::new();
+
+    // now remove those links whose browsers != displayed_browsers
+    for browser in (*displayed_browsers).clone() {
+        displayed_links_for_tags.iter().for_each(|link| {
+            if link.browser == browser {
+                displayed_links_for_browsers.push(link.clone());
+            }
+        })
+    }
+
+    let displayed_links = displayed_links_for_browsers.into_iter().unique();
+
     html! {
         <>
         <div>
             {
             displayed_links.into_iter().map(|link| {
-
                 html! {
                     <>
                     <br />

@@ -3,11 +3,15 @@ use crate::*;
 #[function_component(App)]
 pub fn app() -> Html {
     let links = use_state(Vec::new);
-    let displayed_tags = use_state(Vec::new);
-    let links_tags = use_state(HashMap::new);
     let create_link_state = use_state(|| false);
     let edit_link_state = use_state(|| false);
     let editing_link_id = use_state(|| None);
+
+    let links_tags = use_state(HashMap::new);
+    let displayed_tags = use_state(Vec::new);
+
+    let links_browsers = use_state(HashMap::new);
+    let displayed_browsers = use_state(Vec::new);
 
     {
         let links = links.clone();
@@ -44,12 +48,15 @@ pub fn app() -> Html {
     }
 
     {
-        let links_tags = links_tags.clone();
         let links = links.clone();
+        let links_tags = links_tags.clone();
         let displayed_tags = displayed_tags.clone();
+        let links_browsers = links_browsers.clone();
+        let displayed_browsers = displayed_browsers.clone();
         use_effect_with_deps(
             move |links| {
                 let mut tags_map = HashMap::new();
+                let mut browsers_map = HashMap::new();
 
                 for link in (**links).clone() {
                     for tag in link.tags.clone() {
@@ -59,10 +66,20 @@ pub fn app() -> Html {
                             tags_map.insert(tag, 1);
                         }
                     }
+
+                    // browsers.push(link.browser.clone());
+                    if let Some(browser) = browsers_map.get_mut(&link.browser) {
+                        *browser += 1;
+                    } else {
+                        browsers_map.insert(link.browser, 1);
+                    }
                 }
 
                 links_tags.set(tags_map.clone());
-                displayed_tags.set((tags_map).into_keys().collect::<Vec<String>>());
+                displayed_tags.set(tags_map.into_keys().collect::<Vec<String>>());
+
+                links_browsers.set(browsers_map.clone());
+                displayed_browsers.set(browsers_map.into_keys().collect::<Vec<String>>());
 
                 || ()
             },
@@ -72,13 +89,14 @@ pub fn app() -> Html {
 
     html! {
         <>
-        <Sidebar {links_tags} create_link_state={create_link_state.clone()} displayed_tags={displayed_tags.clone()}/>
+        <Sidebar {links_tags} create_link_state={create_link_state.clone()} displayed_tags={displayed_tags.clone()} {links_browsers} displayed_browsers={displayed_browsers.clone()}/>
 
         <ShowLinks
             links={links.clone()}
             edit_link_state={edit_link_state.clone()}
             editing_link_id={editing_link_id.clone()}
             {displayed_tags}
+            {displayed_browsers}
         />
         if *create_link_state {
             <CreateLink links={links.clone()} create_link_state={create_link_state}/>
