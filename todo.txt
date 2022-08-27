@@ -12,3 +12,5 @@ x 2022-08-26 Give user an option to whether he wants to create a custom title or
 (B) Split this project into several parts, such as `core`, `discord-bot`, `tui`, etc. @Task @BeforePublish
 (A) Use contexts instead of passing by props over and over again @BeforePublish @Task
 (B) Try to remove `clone()`s from codes @Task @BeforePublish
+(C) Make unit tests @Task
+(A) Remove duplicate tags when creating  links @BeforePublish @Task
