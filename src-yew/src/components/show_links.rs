@@ -65,15 +65,11 @@ pub fn show_links(props: &ShowLinksProps) -> Html {
                     }>{"Edit"}</button>
                     <button onclick={
                         let links = links.clone();
-                        let editing_link_id = editing_link_id.clone();
                         move |_| {
                             let mut old_links = (*links).clone();
-                            old_links.remove(
-                                old_links
-                                    .iter()
-                                    .position(|link| link.id == (*editing_link_id).unwrap())
-                                    .unwrap(),
-                            );
+
+                            // remove this link from `old_links`
+                            old_links.retain(|old_link| old_link != &link);
 
                             links.set(old_links.clone());
 
