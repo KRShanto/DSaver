@@ -13,7 +13,7 @@ export function isWebview() {
     return false;
 }
 
-// Store data in the file system or localstorage. It will return Option<String>. If it returns None, it means success. Else it means error. You can use the error by parsing it from json to Rust structs.
+// Store data in the file system or localstorage. It will return Option<String>. If it returns None, it means success. Else it means error. 
 export async function storeData(fullData) {
     if (isWebview()) {
         // If the app runningin webview, store data in the file system

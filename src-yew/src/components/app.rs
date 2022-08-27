@@ -25,19 +25,14 @@ pub fn app() -> Html {
                         if let Ok(data) = string_to_struct::<Vec<Link>>(&data) {
                             links.set(data);
                         } else {
-                            // Reason: The file's content is not a valid Vec<Link>
                             // TODO: Handle error // Show the user a message that the file is corrupted. And him two options:
                             // 1. Delete the file and start.
                             // 2. Manually fix the file.
-
                             console_error!("Error: The file is corrupted.");
                         }
                     } else {
-                        /* Some reasons why it can be None:
-                            1. The file or folder doesn't exist.
-                            2. The file is empty.
-                        */
-                        console_error!("No data found from the filesystem!");
+                        // error only for debugging
+                        console_error!("No data found from the filesystem! Create new data");
                     }
                 });
 
