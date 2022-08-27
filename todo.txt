@@ -10,9 +10,10 @@ x 2022-08-26 Give user an option to whether he wants to create a custom title or
 (C) Make a discord bot for creating and reading these links +DiscordBot @Feature
 (C) Make a tui application +Cli @Feature
 (B) Split this project into several parts, such as `core`, `discord-bot`, `tui`, etc. @Task @BeforePublish
-(A) Use contexts instead of passing by props over and over again @BeforePublish @Task
+x 2022-08-27 Use contexts instead of passing by props over and over again pri:A @BeforePublish @Task
 (B) Try to remove `clone()`s from codes @Task @BeforePublish
 (C) Make unit tests @Task
 (A) Remove duplicate tags when creating  links @BeforePublish @Task
 (A) Validate properly from Rust backend
 (A) Check why `cargo doc` is not working
+(C) keyboard shortcuts @Feature
