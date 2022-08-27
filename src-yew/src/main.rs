@@ -474,6 +474,24 @@ fn filter(props: &FilterProps) -> Html {
 
     html! {
         <>
+        <Tags {links_tags} {displayed_tags} />
+        </>
+    }
+}
+
+#[derive(Properties, PartialEq)]
+struct TagsProps {
+    links_tags: UseStateHandle<HashMap<String, i32>>,
+    displayed_tags: UseStateHandle<Vec<String>>,
+}
+
+#[function_component(Tags)]
+fn tags(props: &TagsProps) -> Html {
+    let links_tags = props.links_tags.clone();
+    let displayed_tags = props.displayed_tags.clone();
+
+    html! {
+        <>
         <h1>{"Tags"}</h1>
         <div>
         {
