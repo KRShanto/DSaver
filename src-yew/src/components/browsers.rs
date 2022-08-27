@@ -1,15 +1,9 @@
 use crate::*;
 
-#[derive(Properties, PartialEq)]
-pub struct BrowsersProps {
-    pub links_browsers: UseStateHandle<HashMap<String, i32>>,
-    pub displayed_browsers: UseStateHandle<Vec<String>>,
-}
-
 #[function_component(Browsers)]
-pub fn browsers(props: &BrowsersProps) -> Html {
-    let links_browsers = props.links_browsers.clone();
-    let displayed_browsers = props.displayed_browsers.clone();
+pub fn browsers() -> Html {
+    let links_browsers = use_context::<LinksBrowsersState>().unwrap().0;
+    let displayed_browsers = use_context::<DisplayedBrowsersState>().unwrap().0;
 
     let clicked_browser: UseStateHandle<Option<String>> = use_state(|| None);
 

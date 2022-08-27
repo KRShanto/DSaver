@@ -1,22 +1,13 @@
 use crate::*;
 use itertools::Itertools;
 
-#[derive(Properties, PartialEq)]
-pub struct ShowLinksProps {
-    pub links: UseStateHandle<Vec<Link>>,
-    pub edit_link_state: UseStateHandle<bool>,
-    pub editing_link_id: UseStateHandle<Option<Uuid>>,
-    pub displayed_tags: UseStateHandle<Vec<String>>,
-    pub displayed_browsers: UseStateHandle<Vec<String>>,
-}
-
 #[function_component(ShowLinks)]
-pub fn show_links(props: &ShowLinksProps) -> Html {
-    let links = props.links.clone();
-    let edit_link_state = props.edit_link_state.clone();
-    let editing_link_id = props.editing_link_id.clone();
-    let displayed_tags = props.displayed_tags.clone();
-    let displayed_browsers = props.displayed_browsers.clone();
+pub fn show_links() -> Html {
+    let links = use_context::<LinksState>().unwrap().0;
+    let edit_link_state = use_context::<EditLinkState>().unwrap().0;
+    let editing_link_id = use_context::<EditingLinkIdState>().unwrap().0;
+    let displayed_tags = use_context::<DisplayedTagsState>().unwrap().0;
+    let displayed_browsers = use_context::<DisplayedBrowsersState>().unwrap().0;
 
     // links to display
     let mut displayed_links_for_tags = Vec::new();

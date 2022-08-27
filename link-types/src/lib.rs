@@ -13,7 +13,7 @@ pub struct Link {
     pub date: String,          // automatically // filterable --- latest|oldest
 }
 
-#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub enum LinkSavingError {
     WebpageNotFound,
 }

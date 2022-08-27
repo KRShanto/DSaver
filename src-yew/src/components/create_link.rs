@@ -1,15 +1,9 @@
 use crate::*;
 
-#[derive(Properties, Clone, PartialEq)]
-pub struct CreateLinkProps {
-    pub links: UseStateHandle<Vec<Link>>,
-    pub create_link_state: UseStateHandle<bool>,
-}
-
 #[function_component(CreateLink)]
-pub fn new(props: &CreateLinkProps) -> Html {
-    let links = props.links.clone();
-    let create_link_state = props.create_link_state.clone();
+pub fn new() -> Html {
+    let links = use_context::<LinksState>().unwrap().0;
+    let create_link_state = use_context::<CreateLinkState>().unwrap().0;
 
     let url_ref = NodeRef::default();
     let title_ref = NodeRef::default();

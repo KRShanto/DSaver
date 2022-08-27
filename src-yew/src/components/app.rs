@@ -1,5 +1,24 @@
 use crate::*;
 
+#[derive(Clone, PartialEq)]
+pub struct LinksState(pub UseStateHandle<Vec<Link>>);
+#[derive(Clone, PartialEq)]
+pub struct CreateLinkState(pub UseStateHandle<bool>);
+#[derive(Clone, PartialEq)]
+pub struct EditLinkState(pub UseStateHandle<bool>);
+#[derive(Clone, PartialEq)]
+pub struct EditingLinkIdState(pub UseStateHandle<Option<Uuid>>);
+
+#[derive(Clone, PartialEq)]
+pub struct LinksTagsState(pub UseStateHandle<HashMap<String, i32>>);
+#[derive(Clone, PartialEq)]
+pub struct DisplayedTagsState(pub UseStateHandle<Vec<String>>);
+
+#[derive(Clone, PartialEq)]
+pub struct LinksBrowsersState(pub UseStateHandle<HashMap<String, i32>>);
+#[derive(Clone, PartialEq)]
+pub struct DisplayedBrowsersState(pub UseStateHandle<Vec<String>>);
+
 #[function_component(App)]
 pub fn app() -> Html {
     let links = use_state(Vec::new);
@@ -84,26 +103,33 @@ pub fn app() -> Html {
 
     html! {
         <>
-        <Sidebar {links_tags} create_link_state={create_link_state.clone()} displayed_tags={displayed_tags.clone()} {links_browsers} displayed_browsers={displayed_browsers.clone()}/>
+        <ContextProvider<LinksState> context={LinksState(links)}>
+        <ContextProvider<CreateLinkState> context={CreateLinkState(create_link_state.clone())}>
+        <ContextProvider<EditLinkState> context={EditLinkState(edit_link_state.clone())}>
+        <ContextProvider<EditingLinkIdState> context={EditingLinkIdState(editing_link_id)}>
+        <ContextProvider<LinksTagsState> context={LinksTagsState(links_tags)}>
+        <ContextProvider<DisplayedTagsState> context={DisplayedTagsState(displayed_tags)}>
+        <ContextProvider<LinksBrowsersState> context={LinksBrowsersState(links_browsers)}>
+        <ContextProvider<DisplayedBrowsersState> context={DisplayedBrowsersState(displayed_browsers)}>
 
-        <ShowLinks
-            links={links.clone()}
-            edit_link_state={edit_link_state.clone()}
-            editing_link_id={editing_link_id.clone()}
-            {displayed_tags}
-            {displayed_browsers}
-        />
-        if *create_link_state {
-            <CreateLink links={links.clone()} create_link_state={create_link_state}/>
-        }
-        if *edit_link_state {
-            <EditLink
-                {links}
-                {edit_link_state}
-                {editing_link_id}
-            />
-        }
+            <Sidebar />
 
+            <ShowLinks />
+            if *create_link_state {
+                <CreateLink />
+            }
+            if *edit_link_state {
+                <EditLink />
+            }
+
+        </ContextProvider<DisplayedBrowsersState>>
+        </ContextProvider<LinksBrowsersState>>
+        </ContextProvider<DisplayedTagsState>>
+        </ContextProvider<LinksTagsState>>
+        </ContextProvider<EditingLinkIdState>>
+        </ContextProvider<EditLinkState>>
+        </ContextProvider<CreateLinkState>>
+        </ContextProvider<LinksState>>
         </>
     }
 }

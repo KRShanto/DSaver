@@ -4,8 +4,6 @@
 )]
 
 use link_types::{Link, LinkSavingError};
-use tauri::Manager;
-use url::Url;
 use webpage::{Webpage, WebpageOptions};
 
 fn main() {

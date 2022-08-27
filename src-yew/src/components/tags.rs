@@ -1,15 +1,9 @@
 use crate::*;
 
-#[derive(Properties, PartialEq)]
-pub struct TagsProps {
-    pub links_tags: UseStateHandle<HashMap<String, i32>>,
-    pub displayed_tags: UseStateHandle<Vec<String>>,
-}
-
 #[function_component(Tags)]
-pub fn tags(props: &TagsProps) -> Html {
-    let links_tags = props.links_tags.clone();
-    let displayed_tags = props.displayed_tags.clone();
+pub fn tags() -> Html {
+    let links_tags = use_context::<LinksTagsState>().unwrap().0;
+    let displayed_tags = use_context::<DisplayedTagsState>().unwrap().0;
 
     let clicked_tag: UseStateHandle<Option<String>> = use_state(|| None);
 

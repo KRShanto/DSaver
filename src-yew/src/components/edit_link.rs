@@ -1,16 +1,10 @@
 use crate::*;
 
-#[derive(Properties, PartialEq)]
-pub struct EditLinkProps {
-    pub links: UseStateHandle<Vec<Link>>,
-    pub editing_link_id: UseStateHandle<Option<Uuid>>,
-    pub edit_link_state: UseStateHandle<bool>,
-}
-
 #[function_component(EditLink)]
-pub fn editlink(props: &EditLinkProps) -> Html {
-    let links = props.links.clone();
-    let editing_link_id = props.editing_link_id.clone();
+pub fn editlink() -> Html {
+    let links = use_context::<LinksState>().unwrap().0;
+    let editing_link_id = use_context::<EditingLinkIdState>().unwrap().0;
+    let edit_link_state = use_context::<EditLinkState>().unwrap().0;
     let editing_link = (links)
         .iter()
         .find(|link| link.id == (*editing_link_id).unwrap())
@@ -20,7 +14,6 @@ pub fn editlink(props: &EditLinkProps) -> Html {
         .iter()
         .position(|link| link.id == (*editing_link_id).unwrap())
         .unwrap();
-    let edit_link_state = props.edit_link_state.clone();
 
     let url_ref = NodeRef::default();
     let title_ref = NodeRef::default();
