@@ -11,34 +11,58 @@ pub fn browsers(props: &BrowsersProps) -> Html {
     let links_browsers = props.links_browsers.clone();
     let displayed_browsers = props.displayed_browsers.clone();
 
+    let clicked_browser: UseStateHandle<Option<String>> = use_state(|| None);
+
     html! {
         <>
         <h1>{"Browsers"}</h1>
         <div>
         {
             (*links_browsers).iter().map(|(browser, count)| {
-                let display = use_state(|| true);
-
                 html! {
                     <p onclick={
                         let browser = browser.clone();
                         let displayed_browsers = displayed_browsers.clone();
-                        let display = display.clone();
+                        let clicked_browser = clicked_browser.clone();
+                        let links_browsers = links_browsers.clone();
                         move |_| {
-                            let mut old_displayed_browsers = (*displayed_browsers).clone();
+                            // all browsers
+                            let mut old_displayed_browsers: Vec<String> = (*links_browsers).clone().into_keys().collect();
 
-                            if *display {
-                                // remove this browser
-                                old_displayed_browsers.retain(|old_browser| old_browser != &browser);
+                            // check if the user clicked on the same browser or not
+                            if let Some(cbrowser) = &*clicked_browser {
+                                if cbrowser == &browser {
+                                    // user has clicked the same browser. Show all browsers (by default)
+                                    // change the state to be None
+                                    clicked_browser.set(None);
+                                } else {
+                                    // user has clicked different (this on) browser. Hide other browsers
+                                    old_displayed_browsers.retain(|old_browser| old_browser == &browser);
+                                    // change the state to be this tag
+                                    clicked_browser.set(Some(browser.clone()));
+                                }
                             } else {
-                                // push this browser
-                                old_displayed_browsers.push(browser.clone());
+                                // user has clicked different (this on) browser. Hide other browsers
+                                old_displayed_browsers.retain(|old_browser| old_browser == &browser);
+                                // change the state to be this tag
+                                clicked_browser.set(Some(browser.clone()));
                             }
 
                             displayed_browsers.set(old_displayed_browsers);
-                            display.set(!*display);
+                            // display.set(!*display);
                         }
-                    }>{browser}{" - "}{count}</p>
+                    }>
+                      {browser}
+                      {" - "}
+                      {count}
+                      {
+                        if let Some(cbrowser) = &*clicked_browser {
+                            if cbrowser == browser {
+                                " - Clicked"
+                            } else {""}
+                        } else {""}
+                      }
+                    </p>
                 }
             }).collect::<Html>()
         }
