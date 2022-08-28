@@ -41,7 +41,7 @@ pub fn show_links() -> Html {
     let mut prirorities = Vec::new();
 
     for link in &*links {
-        prirorities.push(link.prirority);
+        prirorities.push(link.priority);
     }
 
     prirorities.sort();
@@ -51,14 +51,14 @@ pub fn show_links() -> Html {
         <>
         <div>
             {
-            prirorities.iter().map(|prirority| {
+            prirorities.iter().map(|priority| {
                 html! {
                     <>
-                    <h1>{prirority}</h1>
+                    <h1>{priority}</h1>
 
                     {
                     displayed_links.clone().into_iter().map(|link| {
-                        if &link.prirority == prirority {
+                        if &link.priority == priority {
                             html! {
                                 <>
                                 <br />
@@ -74,7 +74,7 @@ pub fn show_links() -> Html {
                                         }).collect::<Html>()
                                     }
                                     </u>
-                                <p>{"Priority: "}{link.prirority}</p>
+                                <p>{"Priority: "}{link.priority}</p>
                                 <p>{"Browser: "}{&link.browser}</p>
                                 <p>{"Complete: "}{link.complete}</p>
                                 <p>{"Date: "}{&link.date}</p>

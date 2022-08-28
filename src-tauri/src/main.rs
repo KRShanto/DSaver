@@ -34,7 +34,7 @@ async fn validate_link(link: String) -> Result<Link, LinkSavingError> {
             tags: link.tags,
             browser: link.browser,
             complete: false,
-            prirority: link.prirority,
+            priority: link.priority,
             date: link.date,
         })
     } else {

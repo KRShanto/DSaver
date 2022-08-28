@@ -8,7 +8,7 @@ pub fn new() -> Html {
     let url_ref = NodeRef::default();
     let title_ref = NodeRef::default();
     let tags_ref = NodeRef::default();
-    let prirority_ref = NodeRef::default();
+    let priority_ref = NodeRef::default();
     let browser_ref = NodeRef::default();
 
     let title_disabled = use_state(|| true);
@@ -17,14 +17,14 @@ pub fn new() -> Html {
         let url_ref = url_ref.clone();
         let title_ref = title_ref.clone();
         let tags_ref = tags_ref.clone();
-        let prirority_ref = prirority_ref.clone();
+        let priority_ref = priority_ref.clone();
         let browser_ref = browser_ref.clone();
 
         move |_| {
             let url = url_ref.cast::<HtmlInputElement>().unwrap().value();
             let title = title_ref.cast::<HtmlInputElement>().unwrap().value();
             let tags = tags_ref.cast::<HtmlInputElement>().unwrap().value();
-            let prirority = prirority_ref.cast::<HtmlInputElement>().unwrap().value();
+            let priority = priority_ref.cast::<HtmlInputElement>().unwrap().value();
             let browser = browser_ref.cast::<HtmlInputElement>().unwrap().value();
 
             let link = Link {
@@ -32,7 +32,7 @@ pub fn new() -> Html {
                 url,
                 title: title.is_empty().then(|| None).unwrap_or(Some(title)),
                 tags: tags.split_whitespace().map(|s| s.to_string()).collect(),
-                prirority: prirority.chars().next().unwrap(),
+                priority: priority.chars().next().unwrap(),
                 browser,
                 complete: false,
                 date: "".to_string(), // TODO
@@ -90,7 +90,7 @@ pub fn new() -> Html {
             <br />
             <input type="text" ref={tags_ref.clone()} placeholder="Tags" value="Google"/>
             <br />
-            <input type="text" ref={prirority_ref.clone()} placeholder="Prirority" value="A"/>
+            <input type="text" ref={priority_ref.clone()} placeholder="priority" value="A"/>
             <br />
             <input type="text" ref={browser_ref.clone()} placeholder="Browser" value="Firefox"/>
             <br />

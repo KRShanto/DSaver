@@ -18,14 +18,14 @@ pub fn editlink() -> Html {
     let url_ref = NodeRef::default();
     let title_ref = NodeRef::default();
     let tags_ref = NodeRef::default();
-    let prirority_ref = NodeRef::default();
+    let priority_ref = NodeRef::default();
     let browser_ref = NodeRef::default();
 
     let onclick = {
         let url_ref = url_ref.clone();
         let title_ref = title_ref.clone();
         let tags_ref = tags_ref.clone();
-        let prirority_ref = prirority_ref.clone();
+        let priority_ref = priority_ref.clone();
         let browser_ref = browser_ref.clone();
         let editing_link = editing_link.clone();
 
@@ -33,7 +33,7 @@ pub fn editlink() -> Html {
             let url = url_ref.cast::<HtmlInputElement>().unwrap().value();
             let title = title_ref.cast::<HtmlInputElement>().unwrap().value();
             let tags = tags_ref.cast::<HtmlInputElement>().unwrap().value();
-            let prirority = prirority_ref.cast::<HtmlInputElement>().unwrap().value();
+            let priority = priority_ref.cast::<HtmlInputElement>().unwrap().value();
             let browser = browser_ref.cast::<HtmlInputElement>().unwrap().value();
 
             let new_link = Link {
@@ -41,7 +41,7 @@ pub fn editlink() -> Html {
                 url,
                 title: Some(title),
                 tags: tags.split_whitespace().map(|s| s.to_string()).collect(),
-                prirority: prirority.chars().next().unwrap(),
+                priority: priority.chars().next().unwrap(),
                 browser,
                 complete: editing_link.complete,
                 date: editing_link.date.clone(), // TODO
@@ -84,7 +84,7 @@ pub fn editlink() -> Html {
             <br />
             <input type="text" ref={tags_ref.clone()} placeholder="Tags" value={editing_link.tags.join(" ")}/>
             <br />
-            <input type="text" ref={prirority_ref.clone()} placeholder="Prirority" value={editing_link.prirority.to_string()}/>
+            <input type="text" ref={priority_ref.clone()} placeholder="priority" value={editing_link.priority.to_string()}/>
             <br />
             <input type="text" ref={browser_ref.clone()} placeholder="Browser" value={editing_link.browser.clone()}/>
             <br />
