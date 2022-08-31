@@ -5,7 +5,7 @@ pub fn browsers() -> Html {
     let links_browsers = use_context::<LinksBrowsersState>().unwrap().0;
     let displayed_browsers = use_context::<DisplayedBrowsersState>().unwrap().0;
 
-    let clicked_browser: UseStateHandle<Option<String>> = use_state(|| None);
+    let clicked_browser: UseStateHandle<Option<Browser>> = use_state(|| None);
 
     html! {
         <>
@@ -21,7 +21,7 @@ pub fn browsers() -> Html {
                         let links_browsers = links_browsers.clone();
                         move |_| {
                             // all browsers
-                            let mut old_displayed_browsers: Vec<String> = (*links_browsers).clone().into_keys().collect();
+                            let mut old_displayed_browsers: Vec<Browser> = (*links_browsers).clone().into_keys().collect();
 
                             // check if the user clicked on the same browser or not
                             if let Some(cbrowser) = &*clicked_browser {

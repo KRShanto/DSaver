@@ -1,6 +1,6 @@
 pub use std::collections::HashMap;
 
-pub use link_types::{Link, LinkSavingError};
+pub use link_types::{Browser, Link, LinkSavingError};
 pub use serde_json::from_str as string_to_struct;
 pub use serde_json::to_string as struct_to_string;
 pub use uuid::Uuid;
@@ -54,4 +54,7 @@ extern "C" {
     /// If any errror occurs it will return the error inside the `String`.
     #[wasm_bindgen(js_name = storeData, catch)]
     pub async fn store_data(full_data: String) -> Result<JsValue, JsValue>;
+
+    #[wasm_bindgen(js_name = openBrowser, catch)]
+    pub async fn open_browser(path: &str, browser: String) -> Result<JsValue, JsValue>;
 }

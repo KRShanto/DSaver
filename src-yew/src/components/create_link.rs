@@ -63,7 +63,7 @@ pub fn new() -> Html {
                     .unique()
                     .collect(),
                 priority: priority.chars().next().unwrap(),
-                browser,
+                browser: Browser::from(browser),
                 complete: false,
                 date,
             };

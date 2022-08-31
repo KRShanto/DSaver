@@ -85,3 +85,14 @@ export async function getData() {
         return localStorage.getItem("data");
     }
 }
+
+export async function openBrowser(path, browser) {
+    if (isWebview()) {
+        const invoke = window.__TAURI__.invoke;
+
+        const result = await invoke("open_browser", { path, browser });
+
+        return JSON.stringify(result);
+
+    }
+}

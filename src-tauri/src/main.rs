@@ -3,12 +3,14 @@
     windows_subsystem = "windows"
 )]
 
-use link_types::{Link, LinkSavingError};
+use std::io::ErrorKind;
+
+use link_types::{Browser, BrowserOpenError, Link, LinkSavingError};
 use webpage::{Webpage, WebpageOptions};
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![validate_link])
+        .invoke_handler(tauri::generate_handler![validate_link, open_browser])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -40,5 +42,18 @@ async fn validate_link(link: String) -> Result<Link, LinkSavingError> {
     } else {
         // maybe the website is not working | or the url is not valid
         Err(LinkSavingError::WebpageNotFound)
+    }
+}
+
+#[tauri::command]
+async fn open_browser(path: String, browser: String) -> Result<(), BrowserOpenError> {
+    let browser: Browser = serde_json::from_str(&browser).unwrap();
+
+    match browser.open(&path) {
+        Ok(_) => Ok(()),
+        Err(error) => match error.kind() {
+            ErrorKind::NotFound => Err(BrowserOpenError::NotFound),
+            _ => Err(BrowserOpenError::Other(error.to_string())),
+        },
     }
 }

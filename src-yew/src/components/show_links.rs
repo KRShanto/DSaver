@@ -1,5 +1,6 @@
 use crate::*;
 use itertools::Itertools;
+use link_types::BrowserOpenError;
 
 #[function_component(ShowLinks)]
 pub fn show_links() -> Html {
@@ -49,6 +50,7 @@ pub fn show_links() -> Html {
 
     html! {
         <>
+        <h1>{"Temporary text"}</h1>
         <div>
             {
             prirorities.iter().map(|priority| {
@@ -88,6 +90,7 @@ pub fn show_links() -> Html {
                                 }>{"Edit"}</button>
                                 <button onclick={
                                     let links = links.clone();
+                                    let link = link.clone();
                                     move |_| {
                                         let mut old_links = (*links).clone();
 
@@ -111,6 +114,30 @@ pub fn show_links() -> Html {
                                         });
                                     }
                                 }>{"Delete"}</button>
+                                <button onclick={
+                                    // let browser = link.browser.clone();
+                                    // let path = link.url.clone();
+                                    move |_| {
+                                        let browser = link.browser.clone();
+                                        let path = link.url.clone();
+                                        spawn_local( async move {
+                                            let result = open_browser(&path, struct_to_string(&browser).unwrap())
+                                                .await
+                                                .unwrap()
+                                                .as_string()
+                                                .unwrap();
+
+                                            if let Ok(error) = string_to_struct::<BrowserOpenError>(&result) {
+                                                match error {
+                                                    BrowserOpenError::NotFound => console_error!("Browser not found"),
+                                                    BrowserOpenError::Other(error) => console_error!(error),
+                                                }
+                                            } else {
+                                                console_log!("Successfully opened");
+                                            }
+                                        });
+                                    }
+                                }>{"Open"}</button>
                                 </>
                             }
                         } else {

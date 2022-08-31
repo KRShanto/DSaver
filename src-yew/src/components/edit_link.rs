@@ -42,7 +42,7 @@ pub fn editlink() -> Html {
                 title: Some(title),
                 tags: tags.split_whitespace().map(|s| s.to_string()).collect(),
                 priority: priority.chars().next().unwrap(),
-                browser,
+                browser: Browser::from(browser),
                 complete: editing_link.complete,
                 date: editing_link.date.clone(), // TODO
             };
@@ -86,7 +86,7 @@ pub fn editlink() -> Html {
             <br />
             <input type="text" ref={priority_ref.clone()} placeholder="priority" value={editing_link.priority.to_string()}/>
             <br />
-            <input type="text" ref={browser_ref.clone()} placeholder="Browser" value={editing_link.browser.clone()}/>
+            <input type="text" ref={browser_ref.clone()} placeholder="Browser" value={format!("{}", editing_link.browser)}/>
             <br />
 
             <button {onclick}>{"Update"}</button>

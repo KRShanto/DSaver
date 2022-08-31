@@ -15,9 +15,9 @@ pub struct LinksTagsState(pub UseStateHandle<HashMap<String, i32>>);
 pub struct DisplayedTagsState(pub UseStateHandle<Vec<String>>);
 
 #[derive(Clone, PartialEq)]
-pub struct LinksBrowsersState(pub UseStateHandle<HashMap<String, i32>>);
+pub struct LinksBrowsersState(pub UseStateHandle<HashMap<Browser, i32>>);
 #[derive(Clone, PartialEq)]
-pub struct DisplayedBrowsersState(pub UseStateHandle<Vec<String>>);
+pub struct DisplayedBrowsersState(pub UseStateHandle<Vec<Browser>>);
 
 #[function_component(App)]
 pub fn app() -> Html {
@@ -93,7 +93,7 @@ pub fn app() -> Html {
                 displayed_tags.set(tags_map.into_keys().collect::<Vec<String>>());
 
                 links_browsers.set(browsers_map.clone());
-                displayed_browsers.set(browsers_map.into_keys().collect::<Vec<String>>());
+                displayed_browsers.set(browsers_map.into_keys().collect::<Vec<Browser>>());
 
                 || ()
             },
