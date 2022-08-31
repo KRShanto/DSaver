@@ -1,5 +1,6 @@
 use crate::*;
 use itertools::Itertools;
+use js_sys::Date;
 
 #[function_component(CreateLink)]
 pub fn new() -> Html {
@@ -28,6 +29,30 @@ pub fn new() -> Html {
             let priority = priority_ref.cast::<HtmlInputElement>().unwrap().value();
             let browser = browser_ref.cast::<HtmlInputElement>().unwrap().value();
 
+            let months = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+            ];
+
+            let today = Date::new_0();
+
+            let date = format!(
+                "{date} {month} {year}",
+                date = today.get_date(),
+                month = months[today.get_month() as usize],
+                year = today.get_full_year()
+            );
+
             let link = Link {
                 id: Uuid::new_v4(),
                 url,
@@ -40,7 +65,7 @@ pub fn new() -> Html {
                 priority: priority.chars().next().unwrap(),
                 browser,
                 complete: false,
-                date: "".to_string(), // TODO
+                date,
             };
 
             let links = links.clone();
