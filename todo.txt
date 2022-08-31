@@ -1,12 +1,11 @@
 (B) When the user `focus` on  the tags input field, show all previous tags he has created (below the input tag) @Feature @BeforePublish
 (B) When the user `focus` on the browser input field, show some browser names (below the input tag) @Feature @BeforePublish
-(B) Open the link when the user clicks on the open button @Feature
+x 2022-08-31 Open the link when the user clicks on the open button pri:B @Feature
 x 2022-08-31 Link's creaton DATE pri:A
 (B) Hiding links Option @Feature
 (B) Show description and thumbnails @Feature
 (B) If the webpage returns 404, then warn user @Feature
 x 2022-08-26 Give user an option to whether he wants to create a custom title or he wants the webpage's title pri:A @Task @BeforePublish
-(B) Validate the inputs before sending to the backend @Task @BeforePublish
 (C) Make a discord bot for creating and reading these links +DiscordBot @Feature
 (C) Make a tui application +Cli @Feature
 (B) Split this project into several parts, such as `core`, `discord-bot`, `tui`, etc. @Task @BeforePublish
@@ -14,7 +13,7 @@ x 2022-08-27 Use contexts instead of passing by props over and over again pri:A 
 (B) Try to remove `clone()`s from codes @Task @BeforePublish
 (C) Make unit tests @Task
 x 2022-08-31 Remove duplicate tags when creating  links pri:A
-(A) Validate properly from Rust backend
 (A) Check why `cargo doc` is not working
 (C) keyboard shortcuts @Feature
 (C) Make a browser extension who can run the commands/cli to add a link from browser +Cli @Feature
+(A) check why `open` crate giving compile error that platform not supported. But it is working fine!
