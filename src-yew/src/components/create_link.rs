@@ -1,4 +1,5 @@
 use crate::*;
+use itertools::Itertools;
 
 #[function_component(CreateLink)]
 pub fn new() -> Html {
@@ -31,7 +32,11 @@ pub fn new() -> Html {
                 id: Uuid::new_v4(),
                 url,
                 title: title.is_empty().then(|| None).unwrap_or(Some(title)),
-                tags: tags.split_whitespace().map(|s| s.to_string()).collect(),
+                tags: tags
+                    .split_whitespace()
+                    .map(|s| s.to_string())
+                    .unique()
+                    .collect(),
                 priority: priority.chars().next().unwrap(),
                 browser,
                 complete: false,
