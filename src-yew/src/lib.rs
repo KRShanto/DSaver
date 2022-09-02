@@ -55,6 +55,11 @@ extern "C" {
     #[wasm_bindgen(js_name = storeData, catch)]
     pub async fn store_data(full_data: String) -> Result<JsValue, JsValue>;
 
+    /// Open browser on the specified browser
+    ///
+    /// After calling let result = `.await.unwrap().as_string().unwrap()`, if it can be parsed as a `BrowserOpenError` then it means an error occurred while opening the browser. Else it means successfully opened the browser.
+    ///
+    /// The argument `browser` must be a json of `Browser`
     #[wasm_bindgen(js_name = openBrowser, catch)]
     pub async fn open_browser(path: &str, browser: String) -> Result<JsValue, JsValue>;
 }
