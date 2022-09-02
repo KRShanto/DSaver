@@ -1,5 +1,5 @@
 [package]
-name = "link-types"
+name = "project-types"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,4 +8,3 @@ edition = "2021"
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 uuid = {version = "1.1.2", features = ["serde"]}
-open = {version = "3.0.2"}

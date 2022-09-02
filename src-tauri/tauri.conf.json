@@ -49,10 +49,16 @@
     },
     "allowlist": {
       "fs": {
-        "all": true,
+        "readFile": true,
+        "writeFile": true,
+        "readDir": true,
+        "createDir": true,
         "scope": ["$HOME/*"]
       },
       "path": {
+        "all": true
+      },
+      "os": {
         "all": true
       }
     },
