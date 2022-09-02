@@ -64,8 +64,9 @@ pub fn show_links() -> Html {
                             html! {
                                 <>
                                 <br />
+                                <p>{"Title: "}{link.title.as_ref().unwrap()}</p>
                                 <p>{"URL: "}{&link.url}</p>
-                                <p>{format!("Title: {:?}", link.title)}</p>
+                                <p>{"Domain: "}{link.domain.as_ref().unwrap()}</p>
                                 <p>{"Tags: "}</p>
                                 <u>
                                 {
@@ -115,8 +116,6 @@ pub fn show_links() -> Html {
                                     }
                                 }>{"Delete"}</button>
                                 <button onclick={
-                                    // let browser = link.browser.clone();
-                                    // let path = link.url.clone();
                                     move |_| {
                                         let browser = link.browser.clone();
                                         let path = link.url.clone();

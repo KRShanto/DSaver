@@ -57,6 +57,7 @@ pub fn new() -> Html {
                 id: Uuid::new_v4(),
                 url,
                 title: title.is_empty().then(|| None).unwrap_or(Some(title)),
+                domain: None,
                 tags: tags
                     .split_whitespace()
                     .map(|s| s.to_string())

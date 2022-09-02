@@ -9,16 +9,25 @@ pub async fn validate_link(link: String) -> Result<Link, LinkSavingError> {
 
     // First check if the url is valid
     if let Ok(req_info) = Webpage::from_url(&link.url, WebpageOptions::default()) {
+        let url = url::Url::parse(&req_info.http.url).unwrap();
+
         let title = if link.title == None {
             req_info.html.title
         } else {
             link.title
         };
 
+        let domain = if let url::Host::Domain(domain) = url.host().unwrap() {
+            domain
+        } else {
+            "" // TODO: provide a better error message
+        };
+
         Ok(Link {
             id: link.id,
             url: link.url,
             title,
+            domain: Some(domain.to_string()),
             tags: link.tags,
             browser: link.browser,
             complete: false,
