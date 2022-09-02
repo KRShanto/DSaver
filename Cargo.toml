@@ -2,5 +2,5 @@
 members = [
   "src-yew",
   "src-tauri",
-  "link-types"
+  "project-types"
 ]

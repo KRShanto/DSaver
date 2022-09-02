@@ -1,6 +1,5 @@
 use crate::*;
 use itertools::Itertools;
-use link_types::BrowserOpenError;
 
 #[function_component(ShowLinks)]
 pub fn show_links() -> Html {

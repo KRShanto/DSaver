@@ -1,6 +1,6 @@
 pub use std::collections::HashMap;
 
-pub use link_types::{Browser, Link, LinkSavingError};
+pub use project_types::*;
 pub use serde_json::from_str as string_to_struct;
 pub use serde_json::to_string as struct_to_string;
 pub use uuid::Uuid;

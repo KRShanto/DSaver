@@ -20,3 +20,4 @@ x 2022-08-31 Remove duplicate tags when creating  links pri:A
 (A) Get the domain name
 (A) use `url` crate and check if the user has input correct url or not. If not, try to add `http` protocol. If again it is incorrect then tell the user to input a valid url..... Then get the host domain name
 (A) Make a builder struct for `Link` for creating the Link
+(A) Make a struct that will represent the error. It will contain what the error is, why it occured, How to fix. It can also contain the *actual* error

@@ -89,8 +89,20 @@ export async function getData() {
 export async function openBrowser(path, browser) {
     if (isWebview()) {
         const invoke = window.__TAURI__.invoke;
+        const { platform } = window.__TAURI__.os;
 
-        const result = await invoke("open_browser", { path, browser });
+        const platformName = await platform();
+        let functionName;
+
+        if (platformName === "win32") {
+            functionName = "open_browser_windows";
+        } else if (platformName === "linux") {
+            functionName = "open_browser_linux";
+        } else {
+            functionName = "open_browser_macos";
+        }
+
+        const result = await invoke(functionName, { path, browser });
 
         return JSON.stringify(result);
 
