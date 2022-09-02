@@ -35,9 +35,20 @@ impl Display for Browser {
 impl From<String> for Browser {
     fn from(string: String) -> Self {
         match string.as_str() {
-            "Firefox" => Browser::Firefox,
-            "Chrome" => Browser::Chrome,
-            "Brave" => Browser::Brave,
+            "Firefox" | "firefox" => Browser::Firefox,
+            "Chrome" | "chrome" => Browser::Chrome,
+            "Brave" | "brave" => Browser::Brave,
+            _ => Browser::Default,
+        }
+    }
+}
+
+impl From<&str> for Browser {
+    fn from(string: &str) -> Self {
+        match string {
+            "Firefox" | "firefox" => Browser::Firefox,
+            "Chrome" | "chrome" => Browser::Chrome,
+            "Brave" | "brave" => Browser::Brave,
             _ => Browser::Default,
         }
     }
