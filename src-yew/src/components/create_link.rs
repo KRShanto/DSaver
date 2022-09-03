@@ -1,6 +1,5 @@
 use crate::*;
 use itertools::Itertools;
-use js_sys::Date;
 
 #[function_component(CreateLink)]
 pub fn new() -> Html {
@@ -29,45 +28,16 @@ pub fn new() -> Html {
             let priority = priority_ref.cast::<HtmlInputElement>().unwrap().value();
             let browser = browser_ref.cast::<HtmlInputElement>().unwrap().value();
 
-            let months = [
-                "January",
-                "February",
-                "March",
-                "April",
-                "May",
-                "June",
-                "July",
-                "August",
-                "September",
-                "October",
-                "November",
-                "December",
-            ];
-
-            let today = Date::new_0();
-
-            let date = format!(
-                "{date} {month} {year}",
-                date = today.get_date(),
-                month = months[today.get_month() as usize],
-                year = today.get_full_year()
-            );
-
-            let link = Link {
-                id: Uuid::new_v4(),
-                url,
-                title: title.is_empty().then(|| None).unwrap_or(Some(title)),
-                domain: None,
-                tags: tags
-                    .split_whitespace()
-                    .map(|s| s.to_string())
-                    .unique()
-                    .collect(),
-                priority: priority.chars().next().unwrap(),
-                browser: Browser::from(browser),
-                complete: false,
-                date,
-            };
+            let link = Link::new_with_date(url)
+                .title(title.is_empty().then(|| None).unwrap_or(Some(title)))
+                .tags(
+                    tags.split_whitespace()
+                        .map(|s| s.to_string())
+                        .unique()
+                        .collect(),
+                )
+                .priority(priority.chars().next().unwrap())
+                .browser(Browser::from(browser));
 
             let links = links.clone();
             let create_link_state = create_link_state.clone();
