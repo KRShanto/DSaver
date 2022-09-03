@@ -40,7 +40,7 @@ pub fn editlink() -> Html {
                 id: editing_link.id,
                 url,
                 title: Some(title),
-                domain: None,
+                domain: editing_link.domain.clone(),
                 tags: tags.split_whitespace().map(|s| s.to_string()).collect(),
                 priority: priority.chars().next().unwrap(),
                 browser: Browser::from(browser),
