@@ -43,3 +43,35 @@ pub enum ErrorType {
     Warning,
 }
 
+/// Builder struct for ErrorReporter
+#[derive(Debug, Clone, Eq, Hash, Serialize, Deserialize, PartialEq)]
+pub struct ErrorReporterBuilder<'a> {
+    /// The actual error (i.e. A panic message)
+    pub actual_error: &'a str,
+    /// Why the error happened
+    pub why_error: Vec<&'a str>,
+    /// How to fix the error
+    pub how_to_fix: Vec<&'a str>,
+    /// Title of the error
+    pub error_title: &'a str,
+    /// When the error happened
+    pub when_error: &'a str,
+    /// Error type
+    pub error_type: ErrorType,
+}
+
+impl<'a> ErrorReporterBuilder<'a> {
+    pub fn build(&self) -> ErrorReporter {
+        ErrorReporter {
+            actual_error: self.actual_error.to_string(),
+            why_error: self.why_error.iter().map(|s| s.to_string()).collect(),
+            how_to_fix: self.how_to_fix.iter().map(|s| s.to_string()).collect(),
+            error_title: self.error_title.to_string(),
+            when_error: format!(
+                "The error occurred when {}",
+                self.when_error.to_string().to_lowercase()
+            ),
+            error_type: self.error_type.clone(),
+        }
+    }
+}
