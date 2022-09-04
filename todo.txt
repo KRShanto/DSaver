@@ -18,5 +18,6 @@ x 2022-08-31 Remove duplicate tags when creating  links pri:A
 (C) Make a browser extension who can run the commands/cli to add a link from browser +Cli @Feature
 x 2022-09-03 Get the domain name pri:A
 x 2022-09-03 Make a builder struct for `Link` for creating the Link pri:A
-(A) Make a struct that will represent the error. It will contain what the error is, why it occured, How to fix. It can also contain the *actual* error
-(A) Make a method `details` for `Link` which will show the struct fields in console in colours
+x 2022-09-04 Make a struct that will represent the error. It will contain what the error is, why it occured, How to fix. It can also contain the *actual* error pri:A
+(C) Make a component for tracking states
+(C) Link refresh feature. Also all links (together) refresh feature @Feature
