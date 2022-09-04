@@ -6,6 +6,9 @@ pub fn new() -> Html {
     let links = use_context::<LinksState>().unwrap().0;
     let create_link_state = use_context::<CreateLinkState>().unwrap().0;
 
+    let display_error_state = use_context::<DisplayErrorState>().unwrap().0;
+    let display_error_data = use_context::<DisplayErrorData>().unwrap().0;
+
     let url_ref = NodeRef::default();
     let title_ref = NodeRef::default();
     let tags_ref = NodeRef::default();
@@ -27,6 +30,8 @@ pub fn new() -> Html {
             let tags = tags_ref.cast::<HtmlInputElement>().unwrap().value();
             let priority = priority_ref.cast::<HtmlInputElement>().unwrap().value();
             let browser = browser_ref.cast::<HtmlInputElement>().unwrap().value();
+            let display_error_state = display_error_state.clone();
+            let display_error_data = display_error_data.clone();
 
             let link = Link::new_with_date(url)
                 .title(title.is_empty().then(|| None).unwrap_or(Some(title)))
@@ -60,8 +65,61 @@ pub fn new() -> Html {
                     old_links.push(new_link);
 
                     links.set(old_links);
-                } else if let Ok(error) = string_to_struct::<LinkSavingError>(&new_link) {
-                    console_error!(format!("Error: {:?}", error));
+                } else if let Ok(error) = string_to_struct::<ErrorReporter>(&new_link) {
+                    // fill data for `DisplayError` component
+                    display_error_data.set(Some(DisplayErrorInnerData {
+                        error_reporter: error,
+                        options_message: Some(
+                            "You can still add the link to the collections. Do you want to add it?"
+                                .to_string(),
+                        ),
+                        options_buttons: Some(vec![
+                            (
+                                String::from("Add"),
+                                Callback::from({
+                                    let display_error_state = display_error_state.clone();
+                                    let display_error_data = display_error_data.clone();
+                                    move |_| {
+                                        // push the old (created by user) link to the cold collections
+                                        let mut old_links = (*links).clone();
+                                        old_links.push(link.clone());
+
+                                        {
+                                            let old_links = old_links.clone();
+                                            spawn_local(async move {
+                                                store_data(struct_to_string(&old_links).unwrap())
+                                                    .await
+                                                    .unwrap();
+                                            });
+                                        }
+
+                                        links.set(old_links);
+
+                                        // hide the component
+                                        display_error_state.set(false);
+                                        display_error_data.set(None);
+                                    }
+                                }),
+                            ),
+                            (
+                                String::from("Cancel"),
+                                Callback::from({
+                                    let display_error_data = display_error_data.clone();
+                                    let display_error_state = display_error_state.clone();
+                                    move |_| {
+                                        // hide the component
+                                        display_error_state.set(false);
+                                        display_error_data.set(None);
+                                    }
+                                }),
+                            ),
+                        ]),
+                    }));
+
+                    // display the component `DisplayError`
+                    display_error_state.set(true);
+                } else {
+                    console_error!("Neither `Link` nor `ErrorReporter` was found")
                 }
             });
         }

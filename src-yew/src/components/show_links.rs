@@ -63,9 +63,9 @@ pub fn show_links() -> Html {
                             html! {
                                 <>
                                 <br />
-                                <p>{"Title: "}{link.title.as_ref().unwrap()}</p>
+                                <p>{"Title: "}{link.title.as_ref().unwrap_or(&String::new())}</p>
                                 <p>{"URL: "}{&link.url}</p>
-                                <p>{"Domain: "}{link.domain.as_ref().unwrap()}</p>
+                                <p>{"Domain: "}{link.domain.as_ref().unwrap_or(&String::new())}</p>
                                 <p>{"Tags: "}</p>
                                 <u>
                                 {
@@ -110,6 +110,7 @@ pub fn show_links() -> Html {
                                                 console_error!(error);
                                             } else {
                                                 console_log!("Successfully deleted");
+
                                             }
                                         });
                                     }
