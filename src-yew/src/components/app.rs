@@ -19,18 +19,33 @@ pub struct LinksBrowsersState(pub UseStateHandle<HashMap<Browser, i32>>);
 #[derive(Clone, PartialEq)]
 pub struct DisplayedBrowsersState(pub UseStateHandle<Vec<Browser>>);
 
+#[derive(Clone, PartialEq)]
+pub struct DisplayErrorState(pub UseStateHandle<bool>);
+#[derive(Clone, PartialEq)]
+pub struct DisplayErrorData(pub UseStateHandle<Option<DisplayErrorInnerData>>);
+#[derive(Clone, PartialEq)]
+pub struct DisplayErrorInnerData {
+    pub error_reporter: ErrorReporter,
+    pub options_message: Option<String>,
+    pub options_buttons: Option<Vec<(String, Callback<()>)>>,
+}
+
 #[function_component(App)]
 pub fn app() -> Html {
-    let links = use_state(Vec::new);
     let create_link_state = use_state(|| false);
     let edit_link_state = use_state(|| false);
     let editing_link_id = use_state(|| None);
+    let display_error_state = use_state(|| false);
+
+    let links = use_state(Vec::new);
 
     let links_tags = use_state(HashMap::new);
     let displayed_tags = use_state(Vec::new);
 
     let links_browsers = use_state(HashMap::new);
     let displayed_browsers = use_state(Vec::new);
+
+    let display_error_data = use_state(|| None);
 
     {
         let links = links.clone();
@@ -111,6 +126,8 @@ pub fn app() -> Html {
         <ContextProvider<DisplayedTagsState> context={DisplayedTagsState(displayed_tags)}>
         <ContextProvider<LinksBrowsersState> context={LinksBrowsersState(links_browsers)}>
         <ContextProvider<DisplayedBrowsersState> context={DisplayedBrowsersState(displayed_browsers)}>
+        <ContextProvider<DisplayErrorState> context={DisplayErrorState(display_error_state.clone())}>
+        <ContextProvider<DisplayErrorData> context={DisplayErrorData(display_error_data)}>
 
             <Sidebar />
 
@@ -121,7 +138,12 @@ pub fn app() -> Html {
             if *edit_link_state {
                 <EditLink />
             }
+            if *display_error_state {
+                <DisplayError />
+            }
 
+        </ContextProvider<DisplayErrorData>>
+        </ContextProvider<DisplayErrorState>>
         </ContextProvider<DisplayedBrowsersState>>
         </ContextProvider<LinksBrowsersState>>
         </ContextProvider<DisplayedTagsState>>

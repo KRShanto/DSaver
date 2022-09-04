@@ -1,6 +1,7 @@
 pub mod app;
 pub mod browsers;
 pub mod create_link;
+pub mod display_error;
 pub mod edit_link;
 pub mod filter;
 pub mod show_links;
@@ -10,6 +11,7 @@ pub mod tags;
 pub use app::*;
 pub use browsers::*;
 pub use create_link::*;
+pub use display_error::*;
 pub use edit_link::*;
 pub use filter::*;
 pub use show_links::*;

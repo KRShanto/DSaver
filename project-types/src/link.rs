@@ -116,8 +116,3 @@ impl Link {
         self
     }
 }
-
-#[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum LinkSavingError {
-    WebpageNotFound,
-}
