@@ -126,35 +126,90 @@ pub fn new() -> Html {
     };
 
     html! {
-        <div>
-            <input type="text" ref={url_ref.clone()} placeholder="Url of the website" value="google.com"/>
-            <br />
-            <input type="text" ref={title_ref.clone()} placeholder="Title of the website" disabled={*title_disabled}/>
-            <br />
-            <div class="checkbox" onclick={
-                let title_disabled = title_disabled.clone();
-                move |_| {
-                    title_disabled.set(!*title_disabled);
-                }
-            }>
-                <p>{"Get the title from the webpage"}</p>
-                <div class="checkmark">{
-                    if *title_disabled {
-                        "✓"
-                    } else {
-                        "X"
-                    }
-                }</div>
-            </div>
-            <br />
-            <input type="text" ref={tags_ref.clone()} placeholder="Tags" value="Google"/>
-            <br />
-            <input type="text" ref={priority_ref.clone()} placeholder="priority" value="A"/>
-            <br />
-            <input type="text" ref={browser_ref.clone()} placeholder="Browser" value="Firefox"/>
-            <br />
+        <div class="create-link-form">
+            <h1 class="form-title">{"Create a new link"}</h1>
 
-            <button onclick={onclick}>{"Add"}</button>
+            <div class="form-wrapper">
+                <label for="create-url">{"Url of the webpage"}</label>
+                <br />
+                <input
+                    class="create-url"
+                    id="create-url"
+                    type="text"
+                    ref={url_ref.clone()}
+                    value="google.com"
+                />
+            </div>
+
+            <div class="form-wrapper">
+                <label for="create-title">{"Title of the webpage"}</label>
+                <br />
+                <input
+                    class="create-title"
+                    id="create-title"
+                    type="text"
+                    ref={title_ref.clone()}
+                    disabled={*title_disabled}
+                />
+                <div
+                    class="checkbox"
+                    onclick={
+                        let title_disabled = title_disabled.clone();
+                        move |_| {
+                            title_disabled.set(!*title_disabled);
+                        }
+                    }>
+                    <p>{"Get the title from the webpage"}</p>
+                    <div class="checkmark">{
+                        if *title_disabled {
+                            "✓"
+                        } else {
+                            "X"
+                        }
+                    }</div>
+                </div>
+            </div>
+
+            <div class="form-wrapper">
+                <label for="create-tags">{"Tags (separate with spaces)"}</label>
+                <br />
+                <input
+                    class="create-tags"
+                    id="create-tags"
+                    type="text"
+                    ref={tags_ref.clone()}
+                    value="Google"
+                />
+            </div>
+
+            <div class="form-wrapper">
+                <label for="create-priority">{"Priority of the link"}</label>
+                <br />
+                <input
+                    class="create-priority"
+                    id="create-priority"
+                    type="text"
+                    ref={priority_ref.clone()}
+                    value="A"
+            />
+            </div>
+
+            <div class="form-wrapper">
+                <label for="create-browser">{"From which browser you want to open this link"}</label>
+                <br />
+                <input
+                    class="create-browser"
+                    id="create-browser"
+                    type="text"
+                    ref={browser_ref.clone()}
+                    value="Firefox"
+                />
+            </div>
+
+            <button
+                class="submit"
+                onclick={onclick}
+            >{"Add"}</button>
         </div>
 
 
