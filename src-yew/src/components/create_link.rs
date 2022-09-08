@@ -1,6 +1,5 @@
 use crate::*;
 use itertools::Itertools;
-use wasm_bindgen::JsCast;
 
 #[function_component(CreateLink)]
 pub fn new() -> Html {
@@ -11,31 +10,30 @@ pub fn new() -> Html {
     let display_error_state = use_context::<DisplayErrorState>().unwrap().0;
     let display_error_data = use_context::<DisplayErrorData>().unwrap().0;
 
-    let url_ref = NodeRef::default();
-    let title_ref = NodeRef::default();
-    let tags_ref = NodeRef::default();
-    let priority_ref = NodeRef::default();
-    let browser_ref = NodeRef::default();
+    let (url_value, url_onkeyup) = use_input("");
+    let (title_value, title_onkeyup) = use_input("");
+    let (tags_value, tags_onkeyup) = use_input("");
+    let (priority_value, priority_onkeyup) = use_input("A");
+    let (browser_value, browser_onkeyup) = use_input("Default");
 
     let title_disabled = use_state(|| true);
 
-    // states for tags
-    let tags_value = use_state(String::new);
+    // previously created tags || tags that matches tags from `displayed_tags`
     let previously_matched_tags = use_state(Vec::new);
 
     let onclick = {
-        let url_ref = url_ref.clone();
-        let title_ref = title_ref.clone();
-        let tags_ref = tags_ref.clone();
-        let priority_ref = priority_ref.clone();
-        let browser_ref = browser_ref.clone();
+        let url_value = url_value.clone();
+        let title_value = title_value.clone();
+        let tags_value = tags_value.clone();
+        let priority_value = priority_value.clone();
+        let browser_value = browser_value.clone();
 
         move |_| {
-            let url = url_ref.cast::<HtmlInputElement>().unwrap().value();
-            let title = title_ref.cast::<HtmlInputElement>().unwrap().value();
-            let tags = tags_ref.cast::<HtmlInputElement>().unwrap().value();
-            let priority = priority_ref.cast::<HtmlInputElement>().unwrap().value();
-            let browser = browser_ref.cast::<HtmlInputElement>().unwrap().value();
+            let url = (*url_value).clone().trim().to_string();
+            let title = (*title_value).clone().trim().to_string();
+            let tags = (*tags_value).clone().trim().to_string();
+            let priority = (*priority_value).clone().trim().to_string();
+            let browser = browser_value.clone().trim().to_string();
             // TODO: trim() these
             let display_error_state = display_error_state.clone();
             let display_error_data = display_error_data.clone();
@@ -132,41 +130,43 @@ pub fn new() -> Html {
         }
     };
 
-    let tags_onchange = {
-        let tags_ref = tags_ref.clone();
-        let tags_value = tags_value.clone();
+    {
         let previously_matched_tags = previously_matched_tags.clone();
-        move |_| {
-            let tags = tags_ref.cast::<HtmlInputElement>().unwrap().value();
+        use_effect_with_deps(
+            move |tags| {
+                // let tags = tags_ref.cast::<HtmlInputElement>().unwrap().value();
+                let tags = (**tags).clone();
 
-            match tags.chars().last() {
-                // if the last character is blank, then do not show any tags suggestion
-                Some(tag) => {
-                    if tag.to_string() == " " {
-                        previously_matched_tags.set(Vec::new());
-                    } else {
-                        // get the current word / last word and find which tags are matched.
-                        // NOTE: the matched tags are only for current word.
-                        let current_word = tags.split_whitespace().last().unwrap_or("");
+                match tags.chars().last() {
+                    // if the last character is blank, then do not show any tags suggestion
+                    Some(tag) => {
+                        if tag.to_string() == " " {
+                            previously_matched_tags.set(Vec::new());
+                        } else {
+                            // get the current word / last word and find which tags are matched.
+                            // NOTE: the matched tags are only for current word.
+                            let current_word = tags.split_whitespace().last().unwrap_or("");
 
-                        let mut tags_vec = Vec::new();
+                            let mut tags_vec = Vec::new();
 
-                        // loop tags
-                        for tag in &*displayed_tags {
-                            if tag.starts_with(current_word) {
-                                tags_vec.push(tag.to_string());
+                            // loop tags
+                            for tag in &*displayed_tags {
+                                if tag.starts_with(current_word) {
+                                    tags_vec.push(tag.to_string());
+                                }
                             }
+
+                            previously_matched_tags.set(tags_vec);
                         }
-
-                        previously_matched_tags.set(tags_vec);
                     }
+                    None => previously_matched_tags.set(Vec::new()),
                 }
-                None => previously_matched_tags.set(Vec::new()),
-            }
 
-            tags_value.set(tags);
-        }
-    };
+                || ()
+            },
+            tags_value.clone(),
+        );
+    }
 
     html! {
         <div class="create-link-form">
@@ -179,7 +179,8 @@ pub fn new() -> Html {
                     class="create-url"
                     id="create-url"
                     type="text"
-                    ref={url_ref.clone()}
+                    value={(*url_value).clone()}
+                    onkeyup={url_onkeyup}
                 />
             </div>
 
@@ -190,7 +191,8 @@ pub fn new() -> Html {
                     class="create-title"
                     id="create-title"
                     type="text"
-                    ref={title_ref.clone()}
+                    value={(*title_value).clone()}
+                    onkeyup={title_onkeyup}
                     disabled={*title_disabled}
                 />
                 <div
@@ -232,9 +234,8 @@ pub fn new() -> Html {
                     class="create-tags"
                     id="create-tags"
                     type="text"
-                    ref={tags_ref.clone()}
                     value={(*tags_value).clone()}
-                    onkeyup={tags_onchange}
+                    onkeyup={tags_onkeyup}
                 />
 
                 <div class="previous-tags">
@@ -256,8 +257,8 @@ pub fn new() -> Html {
                     class="create-priority"
                     id="create-priority"
                     type="text"
-                    ref={priority_ref.clone()}
-                    value="A"
+                    value={(*priority_value).clone()}
+                    onkeyup={priority_onkeyup}
             />
             </div>
 
@@ -268,8 +269,8 @@ pub fn new() -> Html {
                     class="create-browser"
                     id="create-browser"
                     type="text"
-                    ref={browser_ref.clone()}
-                    value="Firefox"
+                    value={(*browser_value).clone()}
+                    onkeyup={browser_onkeyup}
                 />
             </div>
 
