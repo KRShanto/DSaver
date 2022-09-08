@@ -11,7 +11,6 @@ pub fn dis() -> Html {
     let options_message = data.options_message.clone();
     let options_buttons = data.options_buttons;
 
-    // actual_error why_error how_to_fix error_title when_error error_type
     html! {
         <>
         // component title

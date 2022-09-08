@@ -1,9 +1,11 @@
 use crate::*;
 use itertools::Itertools;
+use wasm_bindgen::JsCast;
 
 #[function_component(CreateLink)]
 pub fn new() -> Html {
     let links = use_context::<LinksState>().unwrap().0;
+    let displayed_tags = use_context::<DisplayedTagsState>().unwrap().0;
     let create_link_state = use_context::<CreateLinkState>().unwrap().0;
 
     let display_error_state = use_context::<DisplayErrorState>().unwrap().0;
@@ -16,6 +18,10 @@ pub fn new() -> Html {
     let browser_ref = NodeRef::default();
 
     let title_disabled = use_state(|| true);
+
+    // states for tags
+    let tags_value = use_state(String::new);
+    let previously_matched_tags = use_state(Vec::new);
 
     let onclick = {
         let url_ref = url_ref.clone();
@@ -30,6 +36,7 @@ pub fn new() -> Html {
             let tags = tags_ref.cast::<HtmlInputElement>().unwrap().value();
             let priority = priority_ref.cast::<HtmlInputElement>().unwrap().value();
             let browser = browser_ref.cast::<HtmlInputElement>().unwrap().value();
+            // TODO: trim() these
             let display_error_state = display_error_state.clone();
             let display_error_data = display_error_data.clone();
 
@@ -125,11 +132,47 @@ pub fn new() -> Html {
         }
     };
 
+    let tags_onchange = {
+        let tags_ref = tags_ref.clone();
+        let tags_value = tags_value.clone();
+        let previously_matched_tags = previously_matched_tags.clone();
+        move |_| {
+            let tags = tags_ref.cast::<HtmlInputElement>().unwrap().value();
+
+            match tags.chars().last() {
+                // if the last character is blank, then do not show any tags suggestion
+                Some(tag) => {
+                    if tag.to_string() == " " {
+                        previously_matched_tags.set(Vec::new());
+                    } else {
+                        // get the current word / last word and find which tags are matched.
+                        // NOTE: the matched tags are only for current word.
+                        let current_word = tags.split_whitespace().last().unwrap_or("");
+
+                        let mut tags_vec = Vec::new();
+
+                        // loop tags
+                        for tag in &*displayed_tags {
+                            if tag.starts_with(current_word) {
+                                tags_vec.push(tag.to_string());
+                            }
+                        }
+
+                        previously_matched_tags.set(tags_vec);
+                    }
+                }
+                None => previously_matched_tags.set(Vec::new()),
+            }
+
+            tags_value.set(tags);
+        }
+    };
+
     html! {
         <div class="create-link-form">
             <h1 class="form-title">{"Create a new link"}</h1>
 
-            <div class="form-wrapper">
+            <div class="form-wrapper" id="create-url-wrapper">
                 <label for="create-url">{"Url of the webpage"}</label>
                 <br />
                 <input
@@ -137,11 +180,10 @@ pub fn new() -> Html {
                     id="create-url"
                     type="text"
                     ref={url_ref.clone()}
-                    value="google.com"
                 />
             </div>
 
-            <div class="form-wrapper">
+            <div class="form-wrapper" id="create-title-wrapper">
                 <label for="create-title">{"Title of the webpage"}</label>
                 <br />
                 <input
@@ -170,19 +212,44 @@ pub fn new() -> Html {
                 </div>
             </div>
 
-            <div class="form-wrapper">
+            <div class="form-wrapper" id="create-tags-wrapper">
                 <label for="create-tags">{"Tags (separate with spaces)"}</label>
+                if tags_value.is_empty() {
+                    <></>
+                } else {
+                    <div class="tags">
+                        {
+                            tags_value.split_whitespace().map(|tag| {
+                                html! {
+                                    <span>{tag}</span>
+                                }
+                            }).collect::<Html>()
+                        }
+                    </div>
+                }
                 <br />
                 <input
                     class="create-tags"
                     id="create-tags"
                     type="text"
                     ref={tags_ref.clone()}
-                    value="Google"
+                    value={(*tags_value).clone()}
+                    onkeyup={tags_onchange}
                 />
+
+                <div class="previous-tags">
+                    <span class="title">{"Previous tags"}</span>
+                    {
+                        previously_matched_tags.iter().map(|tag| {
+                            html! {
+                                <button>{tag}</button>
+                            }
+                        }).collect::<Html>()
+                    }
+                </div>
             </div>
 
-            <div class="form-wrapper">
+            <div class="form-wrapper" id="create-priority-wrapper">
                 <label for="create-priority">{"Priority of the link"}</label>
                 <br />
                 <input
@@ -194,7 +261,7 @@ pub fn new() -> Html {
             />
             </div>
 
-            <div class="form-wrapper">
+            <div class="form-wrapper" id="create-browser-wrapper">
                 <label for="create-browser">{"From which browser you want to open this link"}</label>
                 <br />
                 <input
