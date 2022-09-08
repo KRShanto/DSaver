@@ -11,8 +11,10 @@ pub use weblog::{console_error, console_log};
 pub use yew::prelude::*;
 
 pub use components::*;
+pub use hooks::*;
 
 pub mod components;
+pub mod hooks;
 
 #[wasm_bindgen(module = "/assets/scripts/main.js")]
 extern "C" {
