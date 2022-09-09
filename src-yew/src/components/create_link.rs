@@ -173,28 +173,32 @@ pub fn new() -> Html {
             <h1 class="form-title">{"Create a new link"}</h1>
 
             <div class="form-wrapper" id="create-url-wrapper">
-                <label for="create-url">{"Url of the webpage"}</label>
-                <br />
-                <input
-                    class="create-url"
-                    id="create-url"
-                    type="text"
-                    value={(*url_value).clone()}
-                    onkeyup={url_onkeyup}
-                />
+                <div class="label-input">
+                    <label for="create-url" id="label-create-url">{"Url of the webpage"}</label>
+                    // <br />
+                    <input
+                        class="create-url"
+                        id="create-url"
+                        type="text"
+                        value={(*url_value).clone()}
+                        onkeyup={url_onkeyup}
+                    />
+                </div>
             </div>
 
             <div class="form-wrapper" id="create-title-wrapper">
-                <label for="create-title">{"Title of the webpage"}</label>
-                <br />
-                <input
-                    class="create-title"
-                    id="create-title"
-                    type="text"
-                    value={(*title_value).clone()}
-                    onkeyup={title_onkeyup}
-                    disabled={*title_disabled}
-                />
+                <div class="label-input">
+                    <label for="create-title" id="label-create-title">{"Title of the webpage"}</label>
+                    // <br />
+                    <input
+                        class="create-title"
+                        id="create-title"
+                        type="text"
+                        value={(*title_value).clone()}
+                        onkeyup={title_onkeyup}
+                        disabled={*title_disabled}
+                    />
+                </div>
                 <div
                     class="checkbox"
                     onclick={
@@ -215,29 +219,30 @@ pub fn new() -> Html {
             </div>
 
             <div class="form-wrapper" id="create-tags-wrapper">
-                <label for="create-tags">{"Tags (separate with spaces)"}</label>
-                if tags_value.is_empty() {
-                    <></>
-                } else {
-                    <div class="tags">
-                        {
-                            tags_value.split_whitespace().map(|tag| {
-                                html! {
-                                    <span>{tag}</span>
-                                }
-                            }).collect::<Html>()
-                        }
-                    </div>
-                }
-                <br />
-                <input
-                    class="create-tags"
-                    id="create-tags"
-                    type="text"
-                    value={(*tags_value).clone()}
-                    onkeyup={tags_onkeyup}
-                />
-
+                <div class="label-input">
+                    <label for="create-tags" id="label-create-tags">{"Tags (separate with spaces)"}</label>
+                    if tags_value.is_empty() {
+                        <></>
+                    } else {
+                        <div class="tags">
+                            {
+                                tags_value.split_whitespace().map(|tag| {
+                                    html! {
+                                        <span>{tag}</span>
+                                    }
+                                }).collect::<Html>()
+                            }
+                        </div>
+                    }
+                    // <br />
+                    <input
+                        class="create-tags"
+                        id="create-tags"
+                        type="text"
+                        value={(*tags_value).clone()}
+                        onkeyup={tags_onkeyup}
+                    />
+                </div>
                 <div class="previous-tags">
                     <span class="title">{"Previous tags"}</span>
                     {
@@ -251,7 +256,7 @@ pub fn new() -> Html {
             </div>
 
             <div class="form-wrapper" id="create-priority-wrapper">
-                <label for="create-priority">{"Priority of the link"}</label>
+                <label for="create-priority" id="label-create-priority">{"Priority of the link"}</label>
                 <br />
                 <input
                     class="create-priority"
@@ -263,7 +268,7 @@ pub fn new() -> Html {
             </div>
 
             <div class="form-wrapper" id="create-browser-wrapper">
-                <label for="create-browser">{"From which browser you want to open this link"}</label>
+                <label for="create-browser" id="label-create-browser">{"From which browser you want to open this link"}</label>
                 <br />
                 <input
                     class="create-browser"

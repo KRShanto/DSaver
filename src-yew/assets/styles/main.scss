@@ -11,3 +11,66 @@ body {
     background-color: rgb(36, 36, 36);
     color: white
 }
+
+.create-link-form {
+    border: 1px solid red;
+    width: 40%;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 10px;
+
+    .form-title {
+        text-align: center;
+    }
+
+    .form-wrapper {
+        border: 6px solid pink;
+        margin: 10px 0;
+        width: 100%;
+        position: relative;
+        // height: 60px;
+
+
+        label {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        input {
+            font-size: 20px;
+            // margin: 10px 0;
+            background-color: transparent;
+            color: white;
+            border: none;
+            outline: none;
+            border-bottom: 2px solid cyan;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+        }
+
+        .label-input {
+            position: relative;
+            border: 1px solid yellow;
+            transition: 3s;
+            overflow: hidden;
+            position: relative;
+            height: 60px;
+
+            label {
+                position: absolute;
+                bottom: 10px;
+            }
+        }
+    }
+
+    .form-wrapper#create-tags-wrapper {
+        span {
+            margin: 0 5px;
+            background-color: green;
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+    }
+}
