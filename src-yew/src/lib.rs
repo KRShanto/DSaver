@@ -65,3 +65,9 @@ extern "C" {
     #[wasm_bindgen(js_name = openBrowser, catch)]
     pub async fn open_browser(path: &str, browser: String) -> Result<JsValue, JsValue>;
 }
+
+#[wasm_bindgen(module = "/assets/scripts/formStyle.js")]
+extern "C" {
+    #[wasm_bindgen(js_name = "main")]
+    pub fn form_style_main();
+}

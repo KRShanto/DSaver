@@ -47,6 +47,16 @@ pub fn app() -> Html {
 
     let display_error_data = use_state(|| None);
 
+    // initials
+    use_effect_with_deps(
+        |_| {
+            form_style_main();
+
+            || ()
+        },
+        (),
+    );
+
     {
         let links = links.clone();
         use_effect_with_deps(
