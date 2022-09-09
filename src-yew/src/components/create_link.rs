@@ -218,22 +218,9 @@ pub fn new() -> Html {
                 </div>
             </div>
 
-            <div class="form-wrapper" id="create-tags-wrapper">
+            <div id="create-tags-wrapper" class="form-wrapper">
                 <div class="label-input">
                     <label for="create-tags" id="label-create-tags">{"Tags (separate with spaces)"}</label>
-                    if tags_value.is_empty() {
-                        <></>
-                    } else {
-                        <div class="tags">
-                            {
-                                tags_value.split_whitespace().map(|tag| {
-                                    html! {
-                                        <span>{tag}</span>
-                                    }
-                                }).collect::<Html>()
-                            }
-                        </div>
-                    }
                     // <br />
                     <input
                         class="create-tags"
@@ -243,16 +230,34 @@ pub fn new() -> Html {
                         onkeyup={tags_onkeyup}
                     />
                 </div>
-                <div class="previous-tags">
-                    <span class="title">{"Previous tags"}</span>
-                    {
-                        previously_matched_tags.iter().map(|tag| {
-                            html! {
-                                <button>{tag}</button>
-                            }
-                        }).collect::<Html>()
-                    }
-                </div>
+                if tags_value.is_empty() {
+                    <></>
+                } else {
+                    <div class="current-tags">
+                        <p class="title">{"Current Tags"}</p>
+                        {
+                            tags_value.split_whitespace().map(|tag| {
+                                html! {
+                                    <span>{tag}</span>
+                                }
+                            }).collect::<Html>()
+                        }
+                    </div>
+                }
+                if previously_matched_tags.is_empty() {
+                    <></>
+                } else {
+                    <div class="previous-tags">
+                        <p class="title">{"Previous tags"}</p>
+                        {
+                            previously_matched_tags.iter().map(|tag| {
+                                html! {
+                                    <button>{tag}</button>
+                                }
+                            }).collect::<Html>()
+                        }
+                    </div>
+                }
             </div>
 
             <div class="form-wrapper" id="create-priority-wrapper">
