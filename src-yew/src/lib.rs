@@ -16,7 +16,7 @@ pub use hooks::*;
 pub mod components;
 pub mod hooks;
 
-#[wasm_bindgen(module = "/assets/scripts/main.js")]
+#[wasm_bindgen(module = "/assets/scripts/communicator.js")]
 extern "C" {
     /// Get data from user's filesystem.
     ///
