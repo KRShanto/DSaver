@@ -49,7 +49,6 @@ pub fn show_links() -> Html {
 
     html! {
         <>
-        <h1>{"Temporary text"}</h1>
         <div>
             {
             prirorities.iter().map(|priority| {

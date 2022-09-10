@@ -135,7 +135,7 @@ pub fn new() -> Html {
         use_effect_with_deps(
             move |tags| {
                 // let tags = tags_ref.cast::<HtmlInputElement>().unwrap().value();
-                let tags = (**tags).clone();
+                let tags = (**tags).to_lowercase();
 
                 match tags.chars().last() {
                     // if the last character is blank, then do not show any tags suggestion
@@ -151,7 +151,7 @@ pub fn new() -> Html {
 
                             // loop tags
                             for tag in &*displayed_tags {
-                                if tag.starts_with(current_word) {
+                                if tag.to_lowercase().starts_with(current_word) {
                                     tags_vec.push(tag.to_string());
                                 }
                             }
@@ -228,6 +228,7 @@ pub fn new() -> Html {
                         type="text"
                         value={(*tags_value).clone()}
                         onkeyup={tags_onkeyup}
+                        // ref={tags_input_ref}
                     />
                 </div>
                 if tags_value.is_empty() {
@@ -250,9 +251,33 @@ pub fn new() -> Html {
                     <div class="previous-tags">
                         <p class="title">{"Previous tags"}</p>
                         {
-                            previously_matched_tags.iter().map(|tag| {
+                            (*previously_matched_tags).iter().map(|tag| {
+                                // let previously_matched_tags = previously_matched_tags.clone();
+                                let tags_value = tags_value.clone();
+                                let tag = tag.clone();
                                 html! {
-                                    <button>{tag}</button>
+                                    <button onclick={
+                                        // let previously_matched_tags = previously_matched_tags.clone();
+                                        let tag = tag.clone();
+                                        move |_| {
+                                            // tags's value
+                                            let previous_tags_value = (*tags_value).clone();
+
+                                            // split the tags by whitespace
+                                            let mut previous_tags_value_splitted: Vec<&str> =
+                                                previous_tags_value.split_whitespace().collect();
+
+                                            // replace the `tag` with the last element in the previous_tags_value_splitted
+                                            previous_tags_value_splitted.pop();
+                                            previous_tags_value_splitted.push(&tag);
+
+                                            // set the tags_value to update the tag's value
+                                            tags_value.set(previous_tags_value_splitted.join(" "));
+
+                                            // focus on the input
+                                            focus_tag();
+                                        }
+                                    }>{tag}</button>
                                 }
                             }).collect::<Html>()
                         }
