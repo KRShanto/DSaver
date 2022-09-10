@@ -134,7 +134,6 @@ pub fn new() -> Html {
         let previously_matched_tags = previously_matched_tags.clone();
         use_effect_with_deps(
             move |tags| {
-                // let tags = tags_ref.cast::<HtmlInputElement>().unwrap().value();
                 let tags = (**tags).to_lowercase();
 
                 match tags.chars().last() {
@@ -147,16 +146,16 @@ pub fn new() -> Html {
                             // NOTE: the matched tags are only for current word.
                             let current_word = tags.split_whitespace().last().unwrap_or("");
 
-                            let mut tags_vec = Vec::new();
+                            let mut prev_tags_vec = Vec::new();
 
                             // loop tags
-                            for tag in &*displayed_tags {
-                                if tag.to_lowercase().starts_with(current_word) {
-                                    tags_vec.push(tag.to_string());
+                            for dis_tag in &*displayed_tags {
+                                if dis_tag.to_lowercase().contains(current_word) {
+                                    prev_tags_vec.push(dis_tag.to_string());
                                 }
                             }
 
-                            previously_matched_tags.set(tags_vec);
+                            previously_matched_tags.set(prev_tags_vec);
                         }
                     }
                     None => previously_matched_tags.set(Vec::new()),
