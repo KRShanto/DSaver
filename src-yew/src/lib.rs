@@ -71,3 +71,9 @@ extern "C" {
     #[wasm_bindgen(js_name = "main")]
     pub fn form_style_main();
 }
+
+#[wasm_bindgen(module = "/assets/scripts/quick.js")]
+extern "C" {
+    #[wasm_bindgen(js_name = "focusTag")]
+    pub fn focus_tag();
+}
