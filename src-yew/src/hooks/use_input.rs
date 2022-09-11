@@ -2,6 +2,7 @@ use wasm_bindgen::JsCast;
 use web_sys::HtmlInputElement;
 use yew::prelude::*;
 
+// TODO:give example
 pub fn use_input(default: &str) -> (UseStateHandle<String>, Callback<KeyboardEvent>) {
     let input_state = use_state(|| default.to_string());
 
@@ -18,3 +19,9 @@ pub fn use_input(default: &str) -> (UseStateHandle<String>, Callback<KeyboardEve
 
     (input_state, onkeyup)
 }
+
+// FEATURE: In future
+pub struct InputOptions {
+    disable: bool,
+}
+

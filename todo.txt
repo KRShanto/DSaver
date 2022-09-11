@@ -1,5 +1,5 @@
-(B) When the user `focus` on  the tags input field, show all previous tags he has created (below the input tag) @Feature @BeforePublish
-(B) When the user `focus` on the browser input field, show some browser names (below the input tag) @Feature @BeforePublish
+x 2022-09-11 When the user `focus` on  the tags input field, show all previous tags he has created (below the input tag) pri:B @Feature @BeforePublish
+x 2022-09-11 When the user `focus` on the browser input field, show some browser names (below the input tag) pri:B @Feature @BeforePublish
 x 2022-08-31 Open the link when the user clicks on the open button pri:B @Feature
 x 2022-08-31 Link's creaton DATE pri:A
 (B) Hiding links Option @Feature
@@ -21,10 +21,16 @@ x 2022-09-03 Make a builder struct for `Link` for creating the Link pri:A
 x 2022-09-04 Make a struct that will represent the error. It will contain what the error is, why it occured, How to fix. It can also contain the *actual* error pri:A
 (C) Make a component for tracking states
 (C) Link refresh feature. Also all links (together) refresh feature @Feature
-(A) use labels in forms instead of placeholder
+x 2022-09-08 use labels in forms instead of placeholder pri:A
 (B) Add documentations @Task @BeforePublish
 (B) Check which platform (returned by tauri api) is for MacOS.     @BUG @BeforePublish @Task
 (B) trim() every values when getting from browser   @BeforePublish
 (B) Change logo and images   @BeforePublish
-(A) make a hook who to store the input value onchange
 (C) Get `url` from the clipboard @Feature
+x 2022-09-11 make a hook who to store the input value onchange pri:A
+(B) Give option to choose whether the user wants to (search on google || or youtube || or provide the url of the website directly). If the user wants to search on google, then accept the search string and create the url programatically -> start the url with google's search url and then put the string into the url @Feature
+(A) Make a struct that will hold some options for the use_input hook's input value. Make it a UseStateHandle, then return it. When user change it, the input's value's option will be change. For example: make an option `disable`, if this is true, then the hook will not accept any string for the input's value.
+(A) Make component for making forms
+(B) Show the logo of each browser in forms @Feature
+(A) Cancel button on form
+(A) Detect if the user clicks outside of the select div of the form, if so then remove the options div

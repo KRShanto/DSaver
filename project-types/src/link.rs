@@ -116,3 +116,25 @@ impl Link {
         self
     }
 }
+
+// FEATURE: In future
+pub enum LinkType {
+    Search(Search),
+    Webpage(Webpage),
+}
+
+pub struct Search {
+    pub engine: SearchEngine,
+    pub search_text: String,
+}
+
+pub enum SearchEngine {
+    Google,
+    Youtube, // TODO: add more
+}
+
+pub struct Webpage {
+    pub url: String,
+    pub description: String,
+    // thumbnail:
+}
