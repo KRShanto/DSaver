@@ -284,7 +284,14 @@ pub fn new() -> Html {
                     onclick={
                         let title_disabled = title_disabled.clone();
                         move |_| {
-                            title_disabled.set(!*title_disabled);
+                            if !*title_disabled {
+                                if (*title_value).is_empty() {
+                                    // if the title's value is empty then disable the input
+                                    title_disabled.set(true);
+                                }
+                            } else {
+                                title_disabled.set(false);
+                            }
                         }
                     }>
                     <div class="checkmark">{
