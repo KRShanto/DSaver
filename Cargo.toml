@@ -1,6 +1,0 @@
-[workspace]
-members = [
-  "src-yew",
-  "src-tauri",
-  "project-types"
-]

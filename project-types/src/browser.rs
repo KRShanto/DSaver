@@ -18,6 +18,16 @@ impl Browser {
      If the command gives `NotFound`, then the browser might not be available on the system
     */
 
+    /// Get the available browsers
+    pub fn get_vec() -> Vec<String> {
+        vec![
+            String::from("Firefox"),
+            String::from("Chrome"),
+            String::from("Brave"),
+            String::from("Default"),
+        ]
+    }
+
     pub fn open_in_windows(&self, url: &str) -> Result<(), Error> {
         let output = if let Some(name) = self.get_browser_name_windows() {
             Command::new("start").args([name, url]).output()

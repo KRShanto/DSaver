@@ -32,7 +32,7 @@ pub struct DisplayErrorInnerData {
 
 #[function_component(App)]
 pub fn app() -> Html {
-    let create_link_state = use_state(|| false);
+    let create_link_state = use_state(|| true); // TODO: until styling completes
     let edit_link_state = use_state(|| false);
     let editing_link_id = use_state(|| None);
     let display_error_state = use_state(|| false);
@@ -46,6 +46,16 @@ pub fn app() -> Html {
     let displayed_browsers = use_state(Vec::new);
 
     let display_error_data = use_state(|| None);
+
+    // initials
+    use_effect_with_deps(
+        |_| {
+            form_style_main();
+
+            || ()
+        },
+        (),
+    );
 
     {
         let links = links.clone();

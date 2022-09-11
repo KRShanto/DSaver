@@ -24,3 +24,4 @@ pub fn use_input(default: &str) -> (UseStateHandle<String>, Callback<KeyboardEve
 pub struct InputOptions {
     disable: bool,
 }
+

@@ -11,10 +11,12 @@ pub use weblog::{console_error, console_log};
 pub use yew::prelude::*;
 
 pub use components::*;
+pub use hooks::*;
 
 pub mod components;
+pub mod hooks;
 
-#[wasm_bindgen(module = "/assets/scripts/main.js")]
+#[wasm_bindgen(module = "/assets/scripts/communicator.js")]
 extern "C" {
     /// Get data from user's filesystem.
     ///
@@ -62,4 +64,16 @@ extern "C" {
     /// The argument `browser` must be a json of `Browser`
     #[wasm_bindgen(js_name = openBrowser, catch)]
     pub async fn open_browser(path: &str, browser: String) -> Result<JsValue, JsValue>;
+}
+
+#[wasm_bindgen(module = "/assets/scripts/formStyle.js")]
+extern "C" {
+    #[wasm_bindgen(js_name = "main")]
+    pub fn form_style_main();
+}
+
+#[wasm_bindgen(module = "/assets/scripts/quick.js")]
+extern "C" {
+    #[wasm_bindgen(js_name = "focusTag")]
+    pub fn focus_tag();
 }
