@@ -24,7 +24,8 @@ export function main() {
                 let labelUpper = document.createElement('label');
 
                 // span the label to the left of the input element 
-                labelUpper.textContent = label.textContent;
+                // labelUpper.textContent = label.textContent;
+                labelUpper.innerHTML = label.innerHTML;
                 labelUpper.htmlFor = label.htmlFor;
                 labelUpper.id = label.id;
                 labelUpper.className = label.className;
@@ -64,7 +65,8 @@ export function main() {
                 // spawn the new label
                 const labelDown = document.createElement('label');
 
-                labelDown.textContent = label.textContent;
+                // labelDown.textContent = label.textContent;
+                labelDown.innerHTML = label.innerHTML;
                 labelDown.htmlFor = label.htmlFor;
                 labelDown.id = label.id;
                 labelDown.className = label.className;

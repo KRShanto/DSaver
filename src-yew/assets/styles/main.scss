@@ -116,6 +116,8 @@ body {
         }
     }
 
+
+
     .select-form {
         $option-background: rgb(14, 31, 41);
 
@@ -191,6 +193,25 @@ body {
 
         .browser-div {
             width: 150px;
+        }
+    }
+
+    .option-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .submit {
+            background-color: green;
+            border-radius: 5px;
+            border: none;
+            box-shadow: 0 0 3px white;
+            padding: 15px 60px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0.1px 0.1px 0.1px black;
+
         }
     }
 

@@ -454,7 +454,10 @@ pub fn new() -> Html {
                 </div>
             </div>
 
-            <button class="submit" onclick={onclick}>{"Add"}</button>
+            <div class="option-buttons">
+                <button class="submit" onclick={onclick}>{"Add"}</button>
+                // TODO: cancel button
+            </div>
         </div>
 
 
