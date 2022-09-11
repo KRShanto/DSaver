@@ -29,6 +29,7 @@ export function main() {
                 labelUpper.htmlFor = label.htmlFor;
                 labelUpper.id = label.id;
                 labelUpper.className = label.className;
+                labelUpper.classList.add("active");
                 labelUpper.style.position = 'absolute';
                 labelUpper.style.marginLeft = '-50%';
                 labelUpper.style.top = '0';
@@ -70,6 +71,7 @@ export function main() {
                 labelDown.htmlFor = label.htmlFor;
                 labelDown.id = label.id;
                 labelDown.className = label.className;
+                labelDown.classList.remove('active');
                 labelDown.style.transition = '1.2s';
                 labelDown.style.width = '120%';
                 labelDown.style.marginLeft = '100%';
