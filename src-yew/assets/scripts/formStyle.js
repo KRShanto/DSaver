@@ -27,6 +27,7 @@ export function main() {
                 labelUpper.textContent = label.textContent;
                 labelUpper.htmlFor = label.htmlFor;
                 labelUpper.id = label.id;
+                labelUpper.className = label.className;
                 labelUpper.style.position = 'absolute';
                 labelUpper.style.marginLeft = '-50%';
                 labelUpper.style.top = '0';
@@ -66,6 +67,7 @@ export function main() {
                 labelDown.textContent = label.textContent;
                 labelDown.htmlFor = label.htmlFor;
                 labelDown.id = label.id;
+                labelDown.className = label.className;
                 labelDown.style.transition = '1.2s';
                 labelDown.style.width = '120%';
                 labelDown.style.marginLeft = '100%';

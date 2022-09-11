@@ -13,11 +13,16 @@ body {
 }
 
 .create-link-form {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     border: 1px solid red;
     width: 40%;
     margin: 0 auto;
     padding: 10px;
     border-radius: 10px;
+    background-color: rgb(55, 55, 103);
 
     .form-title {
         text-align: center;
@@ -28,17 +33,15 @@ body {
         margin: 10px 0;
         width: 100%;
         position: relative;
-        // height: 60px;
 
-
-        label {
+        .label {
             font-size: 18px;
             font-weight: bold;
         }
 
         input {
             font-size: 20px;
-            // margin: 10px 0;
+            // margin: 40px 0;
             background-color: transparent;
             color: white;
             border: none;
@@ -52,7 +55,7 @@ body {
         .label-input {
             position: relative;
             border: 1px solid yellow;
-            transition: 3s;
+            // transition: 3s;
             overflow: hidden;
             position: relative;
             height: 60px;
@@ -61,16 +64,103 @@ body {
                 position: absolute;
                 bottom: 10px;
             }
+
         }
     }
 
     .form-wrapper#create-tags-wrapper {
+        .current-tags {
+            margin-top: 30px;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
         span {
             margin: 0 5px;
             background-color: green;
             padding: 5px;
             border-radius: 10px;
         }
-
     }
+
+    .select-form {
+        $option-background: rgb(14, 31, 41);
+
+        border: 1px solid red;
+        display: flex;
+        padding: 10px 0;
+        // justify-content: space-around;
+        align-items: center;
+
+        .label {
+            margin-right: 20px;
+        }
+
+        .select-div {
+            position: relative;
+
+            .option-div {
+                transition: .5s;
+                transform-origin: top;
+                position: absolute;
+                z-index: 10;
+                width: 100%;
+                height: 200px;
+                overflow: scroll;
+                border-radius: 10px;
+                margin-top: 5px;
+                box-shadow: 0 0 3px white;
+
+            }
+
+
+            .option {
+                width: 100%;
+                background: $option-background;
+                color: white;
+                padding: 20px 0;
+                // border-radius: 5px;
+                text-align: center;
+                font-size: 14px;
+                font-weight: bold;
+                box-shadow: 1px 1px 1px black;
+                cursor: pointer;
+                user-select: none;
+
+                &:hover {
+                    background-color: rgb(22, 40, 51);
+                }
+            }
+
+            .select-button {
+                padding: 8px 0;
+                border-radius: 5px;
+                border: none;
+                box-shadow: 0 0 3px white;
+
+                &:hover {
+                    background-color: $option-background;
+                }
+            }
+
+            .option-div.show {
+                transform: scaley(1);
+            }
+
+            .option-div.hide {
+                transform: scaley(0);
+            }
+        }
+
+        .priority-div {
+            width: 90px;
+        }
+
+        .browser-div {
+            width: 150px;
+        }
+    }
+
+
 }
