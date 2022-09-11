@@ -287,20 +287,27 @@ pub fn new() -> Html {
                             title_disabled.set(!*title_disabled);
                         }
                     }>
-                    <p>{"Get the title from the webpage"}</p>
                     <div class="checkmark">{
                         if *title_disabled {
-                            "✓"
+                            html! {
+                                <img class="checked" src="icons/checked.svg" alt="Check mark" />
+                            }
                         } else {
-                            "X"
+                            html! {
+                                <img class="unchecked" src="icons/unchecked.svg" alt="Cross mark" />
+                            }
                         }
                     }</div>
+                    <p class="checkmark-title">{"Get the title from the webpage"}</p>
                 </div>
             </div>
 
             <div id="create-tags-wrapper" class="form-wrapper">
                 <div class="label-input">
-                    <label for="create-tags" class="label" id="label-create-tags">{"Tags (separate with spaces)"}</label>
+                    <label for="create-tags" class="label" id="label-create-tags">
+                        {"Tags "}
+                        <span>{"(separate with spaces)"}</span>
+                    </label>
                     <input
                         class="create-tags"
                         id="create-tags"
@@ -317,7 +324,7 @@ pub fn new() -> Html {
                         {
                             tags_value.split_whitespace().map(|tag| {
                                 html! {
-                                    <span>{tag}</span>
+                                    <span class="tag">{tag}</span>
                                 }
                             }).collect::<Html>()
                         }
@@ -333,7 +340,7 @@ pub fn new() -> Html {
                                 let tags_value = tags_value.clone();
                                 let tag = tag.clone();
                                 html! {
-                                    <button onclick={
+                                    <button class="tag" onclick={
                                         let tag = tag.clone();
                                         move |_| {
                                             // tags's value

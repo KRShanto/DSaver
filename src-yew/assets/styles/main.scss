@@ -66,6 +66,38 @@ body {
             }
 
         }
+
+        label#label-create-tags {
+            span {
+                opacity: 0.7;
+                font-size: 15px;
+            }
+        }
+    }
+
+    .form-wrapper#create-title-wrapper {
+
+        .checkbox {
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            .checkmark {
+                align-items: center;
+                display: inline-flex;
+
+                img {
+                    height: 18px;
+                }
+
+            }
+
+            .checkmark-title {
+                display: inline-block;
+                margin-left: 5px;
+            }
+        }
     }
 
     .form-wrapper#create-tags-wrapper {
@@ -76,7 +108,7 @@ body {
             flex-wrap: wrap;
         }
 
-        span {
+        .tag {
             margin: 0 5px;
             background-color: green;
             padding: 5px;
