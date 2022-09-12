@@ -1,6 +1,6 @@
 use crate::*;
 use itertools::Itertools;
-use webru::set_timeout;
+use webru::{callback, set_timeout};
 
 #[function_component(CreateLink)]
 pub fn new() -> Html {
@@ -250,6 +250,54 @@ pub fn new() -> Html {
         )
     }
 
+    {
+        let render_priority_div = render_priority_div.clone();
+        let priority_button_clicked_for_render = priority_button_clicked_for_render.clone();
+        use_effect_with_deps(
+            |render_priority_div| {
+                if **render_priority_div {
+                    let priority_not_clicked = callback(move || {
+                        priority_button_clicked_for_render.set(false);
+                    });
+
+                    if_not_clicked(
+                        "priority-select-button",
+                        priority_not_clicked.as_ref().unchecked_ref(),
+                    );
+
+                    priority_not_clicked.forget();
+                }
+
+                || {}
+            },
+            render_priority_div,
+        );
+    }
+
+    {
+        let render_browser_div = render_browser_div.clone();
+        let browser_button_clicked_for_render = browser_button_clicked_for_render.clone();
+        use_effect_with_deps(
+            |render_browser_div| {
+                if **render_browser_div {
+                    let browser_not_clicked = callback(move || {
+                        browser_button_clicked_for_render.set(false);
+                    });
+
+                    if_not_clicked(
+                        "browser-select-button",
+                        browser_not_clicked.as_ref().unchecked_ref(),
+                    );
+
+                    browser_not_clicked.forget();
+                }
+
+                || ()
+            },
+            render_browser_div,
+        )
+    }
+
     html! {
         <div class="create-link-form">
             <h1 class="form-title">{"Create a new link"}</h1>
@@ -380,7 +428,7 @@ pub fn new() -> Html {
                 <p class="label" id="label-create-priority">{"Priority of the link"}</p>
 
                 <div class="priority-div select-div">
-                    <button class="priority select-button option" onclick={
+                    <button id="priority-select-button" class="priority select-button option" onclick={
                             let priority_button_clicked_for_render = priority_button_clicked_for_render.clone();
                             let render_priority_div = render_priority_div.clone();
                             move |_| {
@@ -423,7 +471,7 @@ pub fn new() -> Html {
                 <p class="label" id="label-create-browser">{"From which browser you want to open this link"}</p>
 
                 <div class="browser-div select-div">
-                    <button class="browser select-button option " onclick={
+                    <button id="browser-select-button" class="browser select-button option" onclick={
                             let browser_button_clicked_for_render = browser_button_clicked_for_render.clone();
                             let render_browser_div = render_browser_div.clone();
                             move |_| {
