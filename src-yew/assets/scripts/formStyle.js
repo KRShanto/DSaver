@@ -91,5 +91,5 @@ export function main() {
                 }, TIME_TO_REMOVE - 700);
             }
         });
-    })
+    });
 }

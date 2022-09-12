@@ -1,10 +1,12 @@
 pub use std::collections::HashMap;
 
+pub use js_sys::Function;
 pub use project_types::*;
 pub use serde_json::from_str as string_to_struct;
 pub use serde_json::to_string as struct_to_string;
 pub use uuid::Uuid;
 pub use wasm_bindgen::prelude::*;
+pub use wasm_bindgen::JsCast;
 pub use wasm_bindgen_futures::spawn_local;
 pub use web_sys::HtmlInputElement;
 pub use weblog::{console_error, console_log};
@@ -76,4 +78,7 @@ extern "C" {
 extern "C" {
     #[wasm_bindgen(js_name = "focusTag")]
     pub fn focus_tag();
+
+    #[wasm_bindgen(js_name = "ifNotClicked")]
+    pub fn if_not_clicked(element_id: &str, what_to_do: &Function);
 }
