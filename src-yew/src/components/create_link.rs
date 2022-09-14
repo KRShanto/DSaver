@@ -32,12 +32,15 @@ pub fn new() -> Html {
 
     let priority_list = (b'A'..=b'Z').map(char::from);
 
+    let form_hide = use_state(|| false);
+
     let onclick = {
         let url_value = url_value.clone();
         let title_value = title_value.clone();
         let tags_value = tags_value.clone();
         let priority_value = priority_value.clone();
         let browser_value = browser_value.clone();
+        let create_link_state = create_link_state.clone();
 
         move |_| {
             let url = (*url_value).clone().trim().to_string();
@@ -299,7 +302,7 @@ pub fn new() -> Html {
     }
 
     html! {
-        <div class="create-link-form">
+        <div class={format!("create-link-form {}", if *form_hide { "hide"} else {""})}>
             <h1 class="form-title">{"Create a new link"}</h1>
 
             <div class="form-wrapper" id="create-url-wrapper">
@@ -517,7 +520,21 @@ pub fn new() -> Html {
 
             <div class="option-buttons">
                 <button class="submit" onclick={onclick}>{"Add"}</button>
-                // TODO: cancel button
+                <button class="cancel" onclick={
+                    let form_hide = form_hide.clone();
+                    move |_| {
+                        let create_link_state = create_link_state.clone();
+                        set_timeout(
+                            move || {
+                                create_link_state.set(false);
+                            },
+                            1000, // removing the form after 1sec because some animations might be are happening
+                        )
+                        .unwrap();
+
+                        form_hide.set(true);
+                    }
+                }>{"Cancel"}</button>
             </div>
         </div>
 

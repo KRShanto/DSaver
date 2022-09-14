@@ -261,3 +261,10 @@ body {
 
 
 }
+
+.create-link-form.hide {
+    transition: 0.5s;
+    // transform-origin: bottom;
+    // transform: scale(0);
+    top: -50%;
+}
