@@ -70,8 +70,12 @@ extern "C" {
 
 #[wasm_bindgen(module = "/assets/scripts/formStyle.js")]
 extern "C" {
-    #[wasm_bindgen(js_name = "main")]
-    pub fn form_style_main();
+    #[wasm_bindgen(js_name = "handleBlurEvent")]
+    pub fn handle_blur_event(event: FocusEvent);
+
+    #[wasm_bindgen(js_name = "handleFocusEvent")]
+    pub fn handle_focus_event(event: FocusEvent);
+
 }
 
 #[wasm_bindgen(module = "/assets/scripts/quick.js")]

@@ -311,6 +311,8 @@ pub fn new() -> Html {
                         type="text"
                         value={(*url_value).clone()}
                         onkeyup={url_onkeyup}
+                        onblur={handle_blur_event}
+                        onfocus={handle_focus_event}
                     />
                 </div>
             </div>
@@ -324,6 +326,8 @@ pub fn new() -> Html {
                         type="text"
                         value={(*title_value).clone()}
                         onkeyup={title_onkeyup}
+                        onblur={handle_blur_event}
+                        onfocus={handle_focus_event}
                         disabled={*title_disabled}
                     />
                 </div>
@@ -369,6 +373,8 @@ pub fn new() -> Html {
                         type="text"
                         value={(*tags_value).clone()}
                         onkeyup={tags_onkeyup}
+                        onblur={handle_blur_event}
+                        onfocus={handle_focus_event}
                     />
                 </div>
                 if tags_value.is_empty() {
