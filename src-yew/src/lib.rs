@@ -14,9 +14,11 @@ pub use yew::prelude::*;
 
 pub use components::*;
 pub use hooks::*;
+pub use lib_components::*;
 
 pub mod components;
 pub mod hooks;
+pub mod lib_components;
 
 #[wasm_bindgen(module = "/assets/scripts/communicator.js")]
 extern "C" {
