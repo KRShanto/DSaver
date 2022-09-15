@@ -238,24 +238,27 @@ body {
 
     .option-buttons {
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
         align-items: center;
 
         button {
             cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            box-shadow: 0 0 3px white;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            padding: 15px 60px;
+            text-shadow: 0.1px 0.1px 0.1px black;
         }
 
         .submit {
             background-color: green;
-            border-radius: 5px;
-            border: none;
-            box-shadow: 0 0 3px white;
-            padding: 15px 60px;
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 0.1px 0.1px 0.1px black;
+        }
 
+        .cancel {
+            background-color: rgb(255, 87, 87);
         }
     }
 
@@ -264,7 +267,5 @@ body {
 
 .create-link-form.hide {
     transition: 0.5s;
-    // transform-origin: bottom;
-    // transform: scale(0);
     top: -50%;
 }

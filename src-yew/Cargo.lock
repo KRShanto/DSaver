@@ -512,8 +512,7 @@ dependencies = [
 [[package]]
 name = "webru"
 version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bb3c66d87b00471f01146b34b5597cbb30638842fde2e6b54439024a9db1645c"
+source = "git+https://github.com/KRShanto/webru#e7c58c44ee7ee6cf9848609364bfd2f133f7879d"
 dependencies = [
  "js-sys",
  "wasm-bindgen",

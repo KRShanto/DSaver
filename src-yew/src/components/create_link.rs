@@ -301,8 +301,28 @@ pub fn new() -> Html {
         )
     }
 
+    {
+        let form_hide = form_hide.clone();
+        use_effect_with_deps(
+            move |form_hide| {
+                if **form_hide {
+                    set_timeout(
+                        move || {
+                            create_link_state.set(false);
+                        },
+                        1000, // removing the form after 1sec because some animations might be are happening
+                    )
+                    .unwrap();
+                }
+
+                || ()
+            },
+            form_hide,
+        );
+    }
+
     html! {
-        <div class={format!("create-link-form {}", if *form_hide { "hide"} else {""})}>
+        <div class={format!("create-link-form {}", if *form_hide { "hide"} else {""})} id="create-link-form">
             <h1 class="form-title">{"Create a new link"}</h1>
 
             <div class="form-wrapper" id="create-url-wrapper">
@@ -523,15 +543,6 @@ pub fn new() -> Html {
                 <button class="cancel" onclick={
                     let form_hide = form_hide.clone();
                     move |_| {
-                        let create_link_state = create_link_state.clone();
-                        set_timeout(
-                            move || {
-                                create_link_state.set(false);
-                            },
-                            1000, // removing the form after 1sec because some animations might be are happening
-                        )
-                        .unwrap();
-
                         form_hide.set(true);
                     }
                 }>{"Cancel"}</button>

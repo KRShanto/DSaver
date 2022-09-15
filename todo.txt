@@ -36,3 +36,6 @@ x 2022-09-11 make a hook who to store the input value onchange pri:A
 x 2022-09-13 Detect if the user clicks outside of the select div of the form, if so then remove the options div pri:A
 (A) Detect if the user clicks outside the form component, if so, remove the form component
 (C) Download video option @Feature
+(B) Comment
+(C) Try to style form's labels with Rust instead of js @Task
+(C) Neon colors @Feature
