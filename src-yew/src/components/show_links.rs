@@ -13,7 +13,7 @@ pub fn show_links() -> Html {
     let mut displayed_links_for_tags = Vec::new();
 
     // looping `links`'s tags with `displayed_tags` and if any `links.tags` match with `displayed_tags`,
-    // then the `link` will be pushed into `displayed_links`.
+    // then the `link` will be pushed into `displayed_links_for_tags`.
     for display_tag in (*displayed_tags).clone() {
         (*links).iter().for_each(|link| {
             for tag in &link.tags {
