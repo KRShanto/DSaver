@@ -1,32 +1,4 @@
 use crate::*;
-use webru::{callback, set_timeout};
-use yew::{html::ChildrenRenderer, virtual_dom::VChild};
-
-#[derive(Properties, PartialEq)]
-pub struct SelectProps {
-    pub children: ChildrenRenderer<SelectPropsChildren>,
-}
-
-#[derive(Clone, derive_more::From, PartialEq)]
-pub enum SelectPropsChildren {
-    Label(VChild<Label>),
-    Box(VChild<Box>),
-}
-
-#[allow(clippy::from_over_into)]
-impl Into<Html> for SelectPropsChildren {
-    fn into(self) -> Html {
-        match self {
-            SelectPropsChildren::Label(child) => child.into(),
-            SelectPropsChildren::Box(child) => child.into(),
-        }
-    }
-}
-
-#[derive(Properties, Eq, PartialEq)]
-pub struct LabelProps {
-    pub text: String,
-}
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct BoxProps {
@@ -34,28 +6,6 @@ pub struct BoxProps {
     pub class: String,
     pub id: String,
     pub value_state: UseStateHandle<String>,
-}
-
-#[function_component(Select)]
-pub fn select(props: &SelectProps) -> Html {
-    html! {
-        <>
-        <div class="form-wrapper select-form" >
-            { for props.children.iter() }
-        </div>
-        </>
-    }
-}
-
-#[function_component(Label)]
-pub fn label(props: &LabelProps) -> Html {
-    let text = props.text.clone();
-
-    html! {
-        <>
-            <p class="label">{text}</p>
-        </>
-    }
 }
 
 #[function_component(Box)]
