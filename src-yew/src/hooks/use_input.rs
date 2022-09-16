@@ -1,8 +1,10 @@
 use crate::*;
 
 // TODO:give example
-pub fn use_input(default: &str) -> (UseStateHandle<String>, Callback<KeyboardEvent>) {
-    // TODO: Value
+pub fn use_input(
+    default: &str,
+    options: &UseInputOptions,
+) -> (UseStateHandle<String>, Callback<KeyboardEvent>) {
     let input_state = use_state(|| default.to_string());
 
     let onkeyup = Callback::from({
@@ -19,7 +21,25 @@ pub fn use_input(default: &str) -> (UseStateHandle<String>, Callback<KeyboardEve
     (input_state, onkeyup)
 }
 
-// FEATURE: In future
-pub struct InputOptions {
-    disable: bool,
+#[derive(Clone, Debug, PartialEq, Eq, Default)]
+pub struct UseInputOptions {
+    pub disabled: bool,
+    pub input_type: InputType,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Default)]
+pub enum InputType {
+    #[default]
+    Text,
+    Number,
+    // Char
+}
+
+impl std::fmt::Display for InputType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            InputType::Text => f.write_str("text"),
+            InputType::Number => f.write_str("number"),
+        }
+    }
 }

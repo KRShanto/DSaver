@@ -18,3 +18,4 @@ yew = "0.19.3"
 project-types = {path = "../project-types", features = ["wasm"]}
 uuid = {version ="1.1.2", features=["v4", "js", "serde"]}
 itertools = "0.10.3"
+derive_more = "0.99.17"

@@ -39,3 +39,4 @@ x 2022-09-13 Detect if the user clicks outside of the select div of the form, if
 (B) Comment
 (C) Try to style form's labels with Rust instead of js @Task
 (C) Neon colors @Feature
+(A) If user doesn't give any tags, then the link doesn't show.. Fix it @BUG

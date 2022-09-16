@@ -21,10 +21,10 @@ impl Browser {
     /// Get the available browsers
     pub fn get_vec() -> Vec<String> {
         vec![
+            String::from("Default"),
             String::from("Firefox"),
             String::from("Chrome"),
             String::from("Brave"),
-            String::from("Default"),
         ]
     }
 

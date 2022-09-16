@@ -2,7 +2,7 @@
 
 // Focus on the `#create-tags` input element
 export function focusTag() {
-    const tag = document.getElementById("create-tags");
+    const tag = document.getElementById("input-create-tags");
 
     tag.focus();
 }
