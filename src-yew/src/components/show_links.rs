@@ -12,6 +12,15 @@ pub fn show_links() -> Html {
     // links to display
     let mut displayed_links_for_tags = Vec::new();
 
+    /* BUG
+    If user doesn't give any tags, then the link doesn't show.
+
+    This problem occur bcz we are showing the links based on the displayed tags. Which means only that link will be displayed whose tag is present in the displayed_tags state.
+
+    This problem can be solved by providing a default Tag i.e. "Default Tag"
+
+    */
+
     // looping `links`'s tags with `displayed_tags` and if any `links.tags` match with `displayed_tags`,
     // then the `link` will be pushed into `displayed_links_for_tags`.
     for display_tag in (*displayed_tags).clone() {
