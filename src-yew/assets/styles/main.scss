@@ -59,8 +59,6 @@ body {
 
         .label-input {
             position: relative;
-            // border: 1px solid yellow;
-            // transition: 3s;
             overflow: hidden;
             position: relative;
             height: 60px;
@@ -114,7 +112,7 @@ body {
             opacity: 0.8;
         }
 
-        .current-tags {
+        #current-tags {
             margin-top: 20px;
             width: 100%;
             display: flex;
@@ -126,7 +124,7 @@ body {
             }
         }
 
-        .previous-tags {
+        #previous-tags {
             margin-top: 10px;
             display: flex;
             flex-wrap: wrap;
@@ -185,9 +183,7 @@ body {
                 border-radius: 10px;
                 margin-top: 5px;
                 box-shadow: 0 0 3px white;
-
             }
-
 
             .option {
                 width: 100%;
