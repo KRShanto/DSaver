@@ -2,6 +2,8 @@ use crate::*;
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct BoxProps {
+    #[prop_or_default]
+    pub init_value: Option<String>,
     pub list: Vec<String>,
     pub class: String,
     pub id: String,
@@ -11,6 +13,7 @@ pub struct BoxProps {
 #[function_component(Box)]
 pub fn boxx(props: &BoxProps) -> Html {
     let BoxProps {
+        init_value,
         list,
         id,
         class,
@@ -20,7 +23,13 @@ pub fn boxx(props: &BoxProps) -> Html {
     let hide_or_show_class = use_state(|| "");
     let button_clicked_for_render = use_state(|| false);
     let render_div = use_state(|| false);
-    let list_value = use_state(|| list[0].clone());
+    let list_value = use_state(|| {
+        if let Some(value) = init_value {
+            value
+        } else {
+            list[0].clone()
+        }
+    });
 
     {
         let button_clicked_for_render = button_clicked_for_render.clone();
