@@ -17,7 +17,8 @@ pub(self) struct InputId(String);
 
 #[derive(Properties, PartialEq, Clone, Debug)]
 pub struct InputProps {
-    pub value_state: UseStateHandle<String>,
+    #[prop_or_default]
+    pub value_state: Option<UseStateHandle<String>>,
     #[prop_or_default]
     pub options: UseInputOptions,
     #[prop_or_default]
@@ -26,6 +27,8 @@ pub struct InputProps {
 
 #[function_component(Input)]
 pub fn input(props: &InputProps) -> Html {
+    // NOTE: If you give init_value and value_state, then value_state will be used to display the input
+
     let InputProps {
         value_state,
         options,
@@ -37,16 +40,45 @@ pub fn input(props: &InputProps) -> Html {
 
     let UseInputOptions {
         input_type,
-        disabled,
+        permission,
     } = options.clone();
 
-    let (value, onkeyup) = use_input(&init_value, &options);
+    let (value, onkeyup) = use_input(String::new(), &options);
 
     {
         let value_state = value_state.clone();
+        let value = value.clone();
+        let id = id.clone();
+        let init_value = init_value.clone();
         use_effect_with_deps(
-            move |value| {
-                value_state.set((**value).clone());
+            move |_| {
+                if let Some(state) = value_state {
+                    if !(*state).is_empty() {
+                        label_up(&format!("input-{}", id));
+                        value.set((*state).clone());
+                    }
+                } else if !init_value.is_empty() {
+                    label_up(&format!("input-{}", id));
+                    value.set(init_value.clone());
+                }
+
+                || ()
+            },
+            (),
+        );
+    }
+
+    {
+        let value_state = value_state.clone();
+        let value = value.clone();
+        use_effect_with_deps(
+            move |value: &UseStateHandle<String>| {
+                console_log!(format!("VALUE: {:?}", &value));
+
+                if let Some(state) = value_state {
+                    state.set((**value).clone());
+                }
+
                 || ()
             },
             value,
