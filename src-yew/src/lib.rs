@@ -83,12 +83,18 @@ extern "C" {
     #[wasm_bindgen(js_name = "handleFocusEvent")]
     pub fn handle_focus_event(event: FocusEvent);
 
+    #[wasm_bindgen(js_name = "labelUp")]
+    pub fn label_up(input_id: &str);
+
+    #[wasm_bindgen(js_name = "labelDown")]
+    pub fn label_down(input_id: &str);
+
 }
 
 #[wasm_bindgen(module = "/assets/scripts/quick.js")]
 extern "C" {
     #[wasm_bindgen(js_name = "focusTag")]
-    pub fn focus_tag();
+    pub fn focus_tag(input_id: &str);
 
     #[wasm_bindgen(js_name = "ifNotClicked")]
     pub fn if_not_clicked(element_id: &str, what_to_do: &Function);
