@@ -5,6 +5,7 @@ pub struct FormProps {
     pub form_render_state: UseStateHandle<bool>,
     pub id: String,
     pub title: String,
+    pub button_text: String,
     pub onclick: Callback<MouseEvent>,
     pub children: ChildrenRenderer<FormPropsChildren>,
 }
@@ -30,6 +31,7 @@ pub fn form(props: &FormProps) -> Html {
     let FormProps {
         title,
         id,
+        button_text,
         form_render_state,
         onclick,
         children,
@@ -65,7 +67,7 @@ pub fn form(props: &FormProps) -> Html {
                 { for children.iter() }
 
                 <div class="option-buttons">
-                    <button class="submit" {onclick}>{"Add"}</button>
+                    <button class="submit" {onclick}>{button_text}</button>
                     <button class="cancel" onclick={
                         let form_hide = form_hide.clone();
                         move |_| {

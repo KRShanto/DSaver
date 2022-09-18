@@ -132,7 +132,7 @@ pub fn editlink() -> Html {
 
     html! {
         <>
-        <Form title="Edit your link" id="edit-link" form_render_state={edit_link_state} {onclick}>
+        <Form title="Edit your link" id="edit-link" form_render_state={edit_link_state} {onclick} button_text={"Update"}>
             <InputWrapper id="edit-url">
                 <InputDiv>
                     <Label text="Url of the webpage"></Label>

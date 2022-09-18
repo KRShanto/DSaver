@@ -172,7 +172,7 @@ pub fn new() -> Html {
     }
 
     html! {
-        <Form title="Create a new link" id="create-link" form_render_state={create_link_state} {onclick}>
+        <Form title="Create a new link" id="create-link" form_render_state={create_link_state} {onclick} button_text="Add">
 
             <InputWrapper id="create-url">
                 <InputDiv>
