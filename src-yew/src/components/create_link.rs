@@ -188,7 +188,13 @@ pub fn new() -> Html {
                         value_state={title_value.clone()}
                         options={
                             UseInputOptions {
-                                disabled: *title_disabled,
+                                // disabled: *title_disabled,
+                                permission:
+                                    if *title_disabled {
+                                        InputPermission::Disabled
+                                    } else {
+                                        InputPermission::default()
+                                    },
                                 ..Default::default()
                             }
                         }
@@ -239,7 +245,7 @@ pub fn new() -> Html {
                                 tags_value.set(previous_tags_value_splitted.join(" "));
 
                                 // focus on the input
-                                focus_tag();
+                                focus_tag("input-create-tags");
                             }
                         ))
                     }

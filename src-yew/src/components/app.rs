@@ -32,7 +32,7 @@ pub struct DisplayErrorInnerData {
 
 #[function_component(App)]
 pub fn app() -> Html {
-    let create_link_state = use_state(|| true); // TODO: until styling completes
+    let create_link_state = use_state(|| false);
     let edit_link_state = use_state(|| false);
     let editing_link_id = use_state(|| None);
     let display_error_state = use_state(|| false);

@@ -59,7 +59,7 @@ pub fn form(props: &FormProps) -> Html {
 
     html! {
         <>
-            <div class={format!("{}-form {}", id, if *form_hide { "hide"} else {""} )} id={format!("{}-form", id)}>
+            <div class={format!("form {}-form {}", id, if *form_hide { "hide"} else {""} )} id={format!("{}-form", id)}>
                 <h1 class="form-title">{title}</h1>
 
                 { for children.iter() }

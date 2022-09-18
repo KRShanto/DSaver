@@ -12,7 +12,7 @@ body {
     color: white
 }
 
-.create-link-form {
+.form {
     position: fixed;
     left: 50%;
     top: 30%;
@@ -70,7 +70,8 @@ body {
 
         }
 
-        label#label-create-tags {
+        #label-create-tags,
+        #label-edit-tags {
             span {
                 opacity: 0.7;
                 font-size: 15px;
@@ -78,7 +79,8 @@ body {
         }
     }
 
-    .form-wrapper#create-title-wrapper {
+    #create-title-wrapper,
+    #edit-title-wrapper {
 
         .checkbox {
             margin-top: 5px;
@@ -103,7 +105,8 @@ body {
         }
     }
 
-    .form-wrapper#create-tags-wrapper {
+    #create-tags-wrapper,
+    #edit-tags-wrapper {
         margin-top: 10px;
         margin-bottom: 30px;
 
@@ -261,7 +264,7 @@ body {
 
 }
 
-.create-link-form.hide {
+.form.hide {
     transition: 0.5s;
     top: -50%;
 }

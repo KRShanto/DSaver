@@ -87,18 +87,26 @@ pub fn input(props: &InputProps) -> Html {
 
     html! {
         <>
-
             <input
                 {onkeyup}
                 id={format!("input-{}", id)}
-                {disabled}
                 type={format!("{}", input_type)}
-                value={(*value_state).clone()}
+                value={
+                    if permission != InputPermission::Disabled {
+                        if let Some(state) = value_state {
+                            (*state).clone()
+                        } else {
+                            (*value).clone()
+                        }
+                    } else {
+                        String::new()
+                    }
+                }
+                // disabled={permission == InputPermission::Disabled}
                 onblur={handle_blur_event}
                 onfocus={handle_focus_event}
 
             />
-
         </>
     }
 }
