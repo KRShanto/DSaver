@@ -2,10 +2,12 @@ use crate::*;
 
 // TODO:give example
 pub fn use_input(
-    default: &str,
+    default: String,
     options: &UseInputOptions,
 ) -> (UseStateHandle<String>, Callback<KeyboardEvent>) {
-    let input_state = use_state(|| default.to_string());
+    let permission = options.permission.clone();
+
+    let input_state = use_state(|| default);
 
     let onkeyup = Callback::from({
         let input_state = input_state.clone();
@@ -14,7 +16,12 @@ pub fn use_input(
             let event = event.target().unwrap();
             let value = event.dyn_into::<HtmlInputElement>().unwrap().value();
 
-            input_state.set(value);
+            if permission == InputPermission::WriteAndRead {
+                input_state.set(value);
+            } else {
+                // set the old value
+                input_state.set((*input_state).clone());
+            }
         }
     });
 
@@ -23,8 +30,8 @@ pub fn use_input(
 
 #[derive(Clone, Debug, PartialEq, Eq, Default)]
 pub struct UseInputOptions {
-    pub disabled: bool,
     pub input_type: InputType,
+    pub permission: InputPermission,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, Default)]
@@ -32,7 +39,8 @@ pub enum InputType {
     #[default]
     Text,
     Number,
-    // Char
+    // Char,
+    // Password,
 }
 
 impl std::fmt::Display for InputType {
@@ -42,4 +50,12 @@ impl std::fmt::Display for InputType {
             InputType::Number => f.write_str("number"),
         }
     }
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Default)]
+pub enum InputPermission {
+    #[default]
+    WriteAndRead,
+    ReadOnly,
+    Disabled,
 }
