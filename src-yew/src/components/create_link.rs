@@ -42,6 +42,13 @@ pub fn new() -> Html {
             let display_error_state = display_error_state.clone();
             let display_error_data = display_error_data.clone();
 
+            // tag's defualt value
+            let tags = if tags.is_empty() {
+                "GeneralLink".to_string()
+            } else {
+                tags
+            };
+
             let link = Link::new_with_date(url)
                 .title(title.is_empty().then(|| None).unwrap_or(Some(title)))
                 .tags(
