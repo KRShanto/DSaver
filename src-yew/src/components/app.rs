@@ -131,7 +131,7 @@ pub fn app() -> Html {
 
             <Sidebar />
 
-            <ShowLinks />
+            <DisplayLinks />
             if *create_link_state {
                 <CreateLink />
             }
