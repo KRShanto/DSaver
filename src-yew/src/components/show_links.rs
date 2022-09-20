@@ -99,7 +99,17 @@ pub fn show_links() -> Html {
                                 <button onclick={
                                     let links = links.clone();
                                     let link = link.clone();
+                                    let editing_link_id = editing_link_id.clone();
+                                    let edit_link_state = edit_link_state.clone();
                                     move |_| {
+                                        // Delete this link's EditLink component
+                                        if let Some(id) = *editing_link_id {
+                                            if id == link.id {
+                                                edit_link_state.set(false);
+                                                editing_link_id.set(None);
+                                            }
+                                        }
+
                                         let mut old_links = (*links).clone();
 
                                         // remove this link from `old_links`
