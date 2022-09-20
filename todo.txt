@@ -30,14 +30,17 @@ x 2022-09-08 use labels in forms instead of placeholder pri:A
 x 2022-09-11 make a hook who to store the input value onchange pri:A
 (B) Give option to choose whether the user wants to (search on google || or youtube || or provide the url of the website directly). If the user wants to search on google, then accept the search string and create the url programatically -> start the url with google's search url and then put the string into the url @Feature
 (A) Make a struct that will hold some options for the use_input hook's input value. Make it a UseStateHandle, then return it. When user change it, the input's value's option will be change. For example: make an option `disable`, if this is true, then the hook will not accept any string for the input's value.
-(A) Make component for making forms
+x 2022-09-20 Make component for making forms pri:A
 (B) Show the logo of each browser in forms @Feature
-(A) Cancel button on form
+x 2022-09-20 Cancel button on form pri:A
 x 2022-09-13 Detect if the user clicks outside of the select div of the form, if so then remove the options div pri:A
 (A) Detect if the user clicks outside the form component, if so, remove the form component
 (C) Download video option @Feature
 (B) Comment
 (C) Try to style form's labels with Rust instead of js @Task
 (C) Neon colors @Feature
-(A) If user doesn't give any tags, then the link doesn't show.. Fix it @BUG
-(A) If the EditLink component is opend, and the user deletes that link, then hide the component
+x 2022-09-20 If user doesn't give any tags, then the link doesn't show.. Fix it pri:A @BUG
+x 2022-09-20 If the EditLink component is opend, and the user deletes that link, then hide the component pri:A
+(B) Make a struct for holding some restrictions for the form, it will use the struct when the form is submitted. After that if the user do/type something against the restriction, then show an error. Store it in a struct so it can be reused @Task
+(A) If the user types on the input which is disabled from Rust, then show him/her (below the input) an error msg or when the user `focus`es on the input, immediately `blur` it.
+(C) Search Links @Feature

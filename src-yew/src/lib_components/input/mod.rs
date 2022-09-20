@@ -49,7 +49,6 @@ pub fn input(props: &InputProps) -> Html {
         let value_state = value_state.clone();
         let value = value.clone();
         let id = id.clone();
-        let init_value = init_value.clone();
         use_effect_with_deps(
             move |_| {
                 if let Some(state) = value_state {
