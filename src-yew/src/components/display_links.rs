@@ -52,22 +52,25 @@ pub fn show_links() -> Html {
         <div class="display-links">
             {
             prirorities.iter().map(|priority| {
+                // get the links according to the priority
+                let links_to_show = displayed_links.clone().into_iter().filter(|link| &link.priority == priority);
+
                 html! {
                     <>
-                    <h1>{priority}</h1>
+                    if links_to_show.clone().next().is_some() {
+                        <h1>{priority}</h1>
 
-                    {
-                    displayed_links.clone().into_iter().map(|link| {
-                        if &link.priority == priority {
+                        {
+                        links_to_show.clone().into_iter().map(|link| {
                             html! {
-                                <>
+                            <>
                                 <br />
                                 <p>{"Title: "}{link.title.as_ref().unwrap_or(&String::new())}</p>
                                 <p>{"URL: "}{&link.url}</p>
                                 <p>{"Domain: "}{link.domain.as_ref().unwrap_or(&String::new())}</p>
                                 <p>{"Tags: "}</p>
                                 <u>
-                                {
+                                    {
                                     link.tags.iter().map(|tag| {
                                         html! {
                                                 <li>{tag}</li>
@@ -111,15 +114,14 @@ pub fn show_links() -> Html {
                                         // store the links to the filesystem
                                         spawn_local(async move {
                                             let result = store_data(struct_to_string(&old_links).unwrap())
-                                            .await
-                                            .unwrap();
+                                                .await
+                                                .unwrap();
 
                                             // if the result is null, it means success
                                             if let Some(error) = result.as_string() {
                                                 console_error!(error);
                                             } else {
                                                 console_log!("Successfully deleted");
-
                                             }
                                         });
                                     }
@@ -128,7 +130,7 @@ pub fn show_links() -> Html {
                                     move |_| {
                                         let browser = link.browser.clone();
                                         let path = link.url.clone();
-                                        spawn_local( async move {
+                                        spawn_local(async move {
                                             let result = open_browser(&path, struct_to_string(&browser).unwrap())
                                                 .await
                                                 .unwrap()
@@ -136,7 +138,7 @@ pub fn show_links() -> Html {
                                                 .unwrap();
 
                                             if let Ok(error) = string_to_struct::<BrowserOpenError>(&result) {
-                                                match error {
+                                            match error {
                                                     BrowserOpenError::NotFound => console_error!("Browser not found"),
                                                     BrowserOpenError::Other(error) => console_error!(error),
                                                 }
@@ -144,20 +146,19 @@ pub fn show_links() -> Html {
                                                 console_log!("Successfully opened");
                                             }
                                         });
-                                    }
+                                        }
                                 }>{"Open"}</button>
                                 </>
-                            }
-                        } else {
-                            html!("")
+                                }
+
+                            }).collect::<Html>()
+
                         }
-                    }).collect::<Html>()
-                    }
+                    } else {}
                     </>
                 }
             }).collect::<Html>()
             }
-
         </div>
         </>
     }
