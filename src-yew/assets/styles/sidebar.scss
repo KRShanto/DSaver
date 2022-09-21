@@ -1,6 +1,5 @@
 .sidebar {
     width: 20%;
-    border: 1px solid yellow;
 
     .create-link-button {
         position: relative;
@@ -25,6 +24,7 @@
 
     .create-link-button.disabled {
         opacity: 0.2;
+        cursor: auto;
     }
 
     .filter {

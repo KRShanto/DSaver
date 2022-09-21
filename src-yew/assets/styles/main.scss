@@ -1,5 +1,6 @@
 @import "forms";
 @import "sidebar";
+@import "display_links";
 
 * {
     margin: 0;
@@ -17,9 +18,4 @@ body {
 
 .main-div {
     display: flex;
-}
-
-.display-links {
-    width: 80%;
-    border: 1px solid blue;
 }
