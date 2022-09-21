@@ -47,3 +47,5 @@ x 2022-09-20 If the EditLink component is opend, and the user deletes that link,
 (B) Filter by priority @Feature
 (B) animate the form when rendering (just like when hiding) @Task
 (A) Hide all links infos, just show the title... When the user double clicks on the link on the browser, When the user right click, show some options (open, edit, delete, etc..),Give an option to toggle "show full details".
+(B) Filter by domain name @Feature
+(B) Button to generate random links for development only @Task
