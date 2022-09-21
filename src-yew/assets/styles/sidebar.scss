@@ -1,0 +1,96 @@
+.sidebar {
+    width: 20%;
+    border: 1px solid yellow;
+
+    .create-link-button {
+        position: relative;
+        padding: 10px 30px;
+        font-size: 15px;
+        font-weight: bold;
+        background-color: blue;
+        color: white;
+        text-shadow: 0.1px 0.1px 0.1px black;
+        border: none;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 20px 0;
+        border-radius: 20px;
+        box-shadow: 0 0 3px white;
+
+        &:hover {
+            cursor: pointer;
+            opacity: 0.8;
+        }
+    }
+
+    .create-link-button.disabled {
+        opacity: 0.2;
+    }
+
+    .filter {
+
+        .filterable {
+            // border: 1px solid red;
+            margin: 30px 0;
+            font-weight: bold;
+
+            .title {
+                position: relative;
+                left: 20px;
+                font-size: 25px;
+            }
+
+            .elements {
+                display: flex;
+                flex-wrap: wrap;
+
+
+                .element {
+                    position: relative;
+                    margin: 10px;
+                    padding: 10px;
+                    border-radius: 10px;
+                    font-size: 15px;
+                    cursor: pointer;
+
+                    .count {
+                        // border: 1px solid red;                        
+                        background-color: skyblue;
+                        color: black;
+                        font-weight: bold;
+                        border-radius: 50%;
+                        padding: 5px 10px;
+                        position: absolute;
+                        top: -15px;
+                        right: -5px;
+                        font-size: 13px;
+                        // font-size: 20px;
+
+                    }
+                }
+
+                .tag {
+                    background-color: rgb(7, 94, 61);
+                }
+
+                .tag.clicked {
+                    $bgColor: rgb(2, 255, 137);
+                    background-color: $bgColor;
+                    box-shadow: 0 0 10px $bgColor;
+                    color: black;
+                }
+
+                .browser {
+                    background-color: rgb(6, 14, 106);
+                }
+
+                .browser.clicked {
+                    $bgColor: rgb(0, 208, 255);
+                    background-color: $bgColor;
+                    box-shadow: 0 0 10px $bgColor;
+                    color: black;
+                }
+            }
+        }
+    }
+}

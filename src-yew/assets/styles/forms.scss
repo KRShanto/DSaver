@@ -236,6 +236,10 @@
             color: white;
             padding: 15px 60px;
             text-shadow: 0.1px 0.1px 0.1px black;
+
+            &:hover {
+                opacity: 0.8;
+            }
         }
 
         .submit {

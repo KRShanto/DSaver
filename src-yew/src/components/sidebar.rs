@@ -5,8 +5,15 @@ pub fn sidebar() -> Html {
     let create_link_state = use_context::<CreateLinkState>().unwrap().0;
 
     html! {
-        <>
-            <button onclick={
+        <div class="sidebar">
+            <button class={classes!(
+                "create-link-button",
+                if *create_link_state {
+                    "disabled"
+                } else {
+                    "active"
+                }
+            )} onclick={
                 let create_link_state = create_link_state.clone();
                 move |_| {
                         create_link_state.set(true);
@@ -14,11 +21,10 @@ pub fn sidebar() -> Html {
             }>{"Create a New Link"}</button>
 
             // IN THE FUTURE
-            // <p>{"Show thumbnails"}</p>
-            // <p>{"Show descriptions"}</p>
+            // <p>{"Show full information"}</p>
             // <p>{"Show completed links"}</p>
 
             <Filter />
-        </>
+        </div>
     }
 }

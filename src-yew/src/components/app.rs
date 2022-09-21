@@ -129,9 +129,11 @@ pub fn app() -> Html {
         <ContextProvider<DisplayErrorState> context={DisplayErrorState(display_error_state.clone())}>
         <ContextProvider<DisplayErrorData> context={DisplayErrorData(display_error_data)}>
 
-            <Sidebar />
+            <div class="main-div">
+                <Sidebar />
+                <DisplayLinks />
+            </div>
 
-            <DisplayLinks />
             if *create_link_state {
                 <CreateLink />
             }
