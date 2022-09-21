@@ -44,10 +44,10 @@ pub fn editlink() -> Html {
 
     let onclick = Callback::from({
         let edit_link_state = edit_link_state.clone();
-        let title = (*title_value).clone();
-        let priority = (*priority_value).clone();
-        let tags = (*tags_value).clone();
-        let browser = (*browser_value).clone();
+        let title = title_value.to_string();
+        let priority = priority_value.to_string();
+        let tags = tags_value.to_string();
+        let browser = browser_value.to_string();
         let url = url.clone();
 
         // tag's defualt value

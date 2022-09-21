@@ -26,19 +26,20 @@ pub fn new() -> Html {
         .collect::<Vec<String>>();
 
     let onclick = Callback::from({
-        let url_value = url_value.clone();
-        let title_value = title_value.clone();
-        let tags_value = tags_value.clone();
-        let priority_value = priority_value.clone();
-        let browser_value = browser_value.clone();
+        let url = url_value.trim().to_string();
+        let title = title_value.trim().to_string();
+        let tags = tags_value.to_string();
+        let priority = priority_value.to_string();
+        let browser = browser_value.to_string();
         let create_link_state = create_link_state.clone();
 
         move |_| {
-            let url = (*url_value).clone().trim().to_string();
-            let title = (*title_value).clone().trim().to_string();
-            let tags = (*tags_value).clone().trim().to_string();
-            let priority = (*priority_value).clone();
-            let browser = browser_value.clone().trim().to_string();
+            let url = url.clone();
+            let title = title.clone();
+            let tags = tags.clone();
+            let priority = priority.clone();
+            let browser = browser.clone();
+
             let display_error_state = display_error_state.clone();
             let display_error_data = display_error_data.clone();
 
