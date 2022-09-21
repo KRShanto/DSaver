@@ -145,12 +145,7 @@ pub fn editlink() -> Html {
                     <Label text="Url of the webpage"></Label>
                     <Input
                         init_value={url}
-                        options={
-                            UseInputOptions {
-                                permission: InputPermission::ReadOnly,
-                                ..Default::default()
-                            }
-                        }
+                        options={UseInputOptions::permission(InputPermission::ReadOnly)}
                     />
                 </InputDiv>
             </InputWrapper>

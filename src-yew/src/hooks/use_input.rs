@@ -34,7 +34,24 @@ pub struct UseInputOptions {
     pub permission: InputPermission,
 }
 
+impl UseInputOptions {
+    pub fn input_type(itype: InputType) -> Self {
+        Self {
+            input_type: itype,
+            ..Default::default()
+        }
+    }
+
+    pub fn permission(perm: InputPermission) -> Self {
+        Self {
+            permission: perm,
+            ..Default::default()
+        }
+    }
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Default)]
+// TODO: only take those characters (from input) who are allowed to
 pub enum InputType {
     #[default]
     Text,

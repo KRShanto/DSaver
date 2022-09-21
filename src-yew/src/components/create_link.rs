@@ -195,16 +195,12 @@ pub fn new() -> Html {
                     <Input
                         value_state={title_value.clone()}
                         options={
-                            UseInputOptions {
-                                // disabled: *title_disabled,
-                                permission:
-                                    if *title_disabled {
-                                        InputPermission::Disabled
-                                    } else {
-                                        InputPermission::default()
-                                    },
-                                ..Default::default()
-                            }
+                            UseInputOptions::permission(
+                                if *title_disabled {
+                                    InputPermission::Disabled
+                                } else {
+                                    InputPermission::default()
+                            })
                         }
                     />
                 </InputDiv>
