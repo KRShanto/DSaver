@@ -44,3 +44,6 @@ x 2022-09-20 If the EditLink component is opend, and the user deletes that link,
 (B) Make a struct for holding some restrictions for the form, it will use the struct when the form is submitted. After that if the user do/type something against the restriction, then show an error. Store it in a struct so it can be reused @Task
 (A) If the user types on the input which is disabled from Rust, then show him/her (below the input) an error msg or when the user `focus`es on the input, immediately `blur` it.
 (C) Search Links @Feature
+(B) Filter by priority @Feature
+(B) animate the form when rendering (just like when hiding) @Task
+(A) Hide all links infos, just show the title... When the user double clicks on the link on the browser, When the user right click, show some options (open, edit, delete, etc..),Give an option to toggle "show full details".
