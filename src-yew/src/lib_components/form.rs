@@ -2,7 +2,6 @@ use crate::*;
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct FormProps {
-    pub form_render_state: UseStateHandle<bool>,
     pub id: String,
     pub title: String,
     pub button_text: String,
@@ -32,12 +31,12 @@ pub fn form(props: &FormProps) -> Html {
         title,
         id,
         button_text,
-        form_render_state,
         onclick,
         children,
     } = (*props).clone();
 
     let form_hide = use_state(|| false);
+    let popup_box_state = use_context::<PopupBoxState>().unwrap().0;
 
     {
         let form_hide = form_hide.clone();
@@ -46,7 +45,8 @@ pub fn form(props: &FormProps) -> Html {
                 if **form_hide {
                     set_timeout(
                         move || {
-                            form_render_state.set(false);
+                            // form_render_state.set(false);
+                            popup_box_state.set(PopupBox::None);
                         },
                         1000, // removing the form after 1sec because some animations might be are happening
                     )

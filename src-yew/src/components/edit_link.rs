@@ -5,7 +5,7 @@ pub fn editlink() -> Html {
     let links = use_context::<LinksState>().unwrap().0;
     let displayed_tags = use_context::<DisplayedTagsState>().unwrap().0;
     let editing_link_id = use_context::<EditingLinkIdState>().unwrap().0;
-    let edit_link_state = use_context::<EditLinkState>().unwrap().0;
+    // let edit_link_state = use_context::<EditLinkState>().unwrap().0;
     let editing_link = (links)
         .iter()
         .find(|link| link.id == (*editing_link_id).unwrap())
@@ -15,6 +15,8 @@ pub fn editlink() -> Html {
         .iter()
         .position(|link| link.id == (*editing_link_id).unwrap())
         .unwrap();
+
+    let popup_box_state = use_context::<PopupBoxState>().unwrap().0;
 
     let url = editing_link.url.clone();
     let title_value = use_state(|| editing_link.title.clone().unwrap());
@@ -43,7 +45,7 @@ pub fn editlink() -> Html {
         .collect::<Vec<String>>();
 
     let onclick = Callback::from({
-        let edit_link_state = edit_link_state.clone();
+        // let edit_link_state = edit_link_state.clone();
         let title = title_value.to_string();
         let priority = priority_value.to_string();
         let tags = tags_value.to_string();
@@ -72,7 +74,8 @@ pub fn editlink() -> Html {
 
             let links = links.clone();
             let editing_link_id = editing_link_id.clone();
-            let edit_link_state = edit_link_state.clone();
+            // let edit_link_state = edit_link_state.clone();
+            let popup_box_state = popup_box_state.clone();
 
             spawn_local(async move {
                 let mut old_links = (*links).clone();
@@ -80,7 +83,8 @@ pub fn editlink() -> Html {
                 links.set(old_links.clone());
 
                 // hide this component
-                edit_link_state.set(false);
+                // edit_link_state.set(false);
+                popup_box_state.set(PopupBox::EditLink);
                 editing_link_id.set(None);
 
                 // store the links to the filesystem
@@ -139,7 +143,7 @@ pub fn editlink() -> Html {
 
     html! {
         <>
-        <Form title="Edit your link" id="edit-link" form_render_state={edit_link_state} {onclick} button_text={"Update"}>
+        <Form title="Edit your link" id="edit-link" {onclick} button_text={"Update"}>
             <InputWrapper id="edit-url">
                 <InputDiv>
                     <Label text="Url of the webpage"></Label>
