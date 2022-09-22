@@ -82,6 +82,7 @@ pub fn show_links() -> Html {
                                                 <div class="info">
                                                     <h3 class="title">{link.title.as_ref().unwrap_or(&String::new())}</h3>
                                                     <p class="url">{&link.url}</p>
+                                                    // TODO: copy button
                                                     <ul class="tags">
                                                         {
                                                         link.tags.iter().map(|tag| {

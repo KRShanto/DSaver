@@ -101,7 +101,7 @@ pub fn input(props: &InputProps) -> Html {
                         String::new()
                     }
                 }
-                // disabled={permission == InputPermission::Disabled}
+                disabled={permission == InputPermission::Disabled}
                 onblur={handle_blur_event}
                 onfocus={handle_focus_event}
 

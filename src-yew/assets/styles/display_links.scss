@@ -60,12 +60,12 @@
         }
 
         .left-side {
-            border: 3px thick skyblue;
             margin-left: 10px;
             width: 100%;
 
             .link {
                 // border: 2px solid red;
+                background-color: rgb(1, 2, 37);
                 margin: 9px 0;
                 border-radius: 7px;
                 padding: 10px;
@@ -75,7 +75,6 @@
                 // justify-content: space-between;
 
                 .info {
-                    // border: 2px solid yellow;
                     width: 92%;
                 }
 
@@ -90,15 +89,16 @@
                         cursor: pointer;
                         border-radius: 5px;
                         border: none;
-                        box-shadow: 0 0 3px white;
+                        box-shadow: 0 0 4px rgb(255, 255, 255);
                         font-size: 15px;
                         font-weight: bold;
-                        color: white;
+                        color: cyan;
                         padding: 10px;
                         width: 100px;
                         text-shadow: 0.1px 0.1px 0.1px black;
 
-                        background-color: rgb(0, 130, 217);
+                        // background-color: rgb(0, 130, 217);
+                        background-color: rgb(44, 1, 123);
 
                         &:hover {
                             opacity: 0.8;
@@ -130,6 +130,7 @@
                         background-color: rgb(3, 45, 125);
                         color: white;
                         font-weight: bold;
+                        font-size: 14px;
                     }
 
                 }
