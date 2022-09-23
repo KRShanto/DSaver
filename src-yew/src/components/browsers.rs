@@ -67,7 +67,6 @@ pub fn browsers() -> Html {
                                 }
 
                                 displayed_browsers.set(old_displayed_browsers);
-                                // display.set(!*display);
                             }
                         }>
                             {browser}

@@ -3,10 +3,6 @@ use crate::*;
 #[derive(Clone, PartialEq)]
 pub struct LinksState(pub UseStateHandle<Vec<Link>>);
 #[derive(Clone, PartialEq)]
-// pub struct CreateLinkState(pub UseStateHandle<bool>);
-// #[derive(Clone, PartialEq)]
-// pub struct EditLinkState(pub UseStateHandle<bool>);
-// #[derive(Clone, PartialEq)]
 pub struct EditingLinkIdState(pub UseStateHandle<Option<Uuid>>);
 
 #[derive(Clone, PartialEq)]
@@ -19,8 +15,6 @@ pub struct LinksBrowsersState(pub UseStateHandle<HashMap<Browser, i32>>);
 #[derive(Clone, PartialEq)]
 pub struct DisplayedBrowsersState(pub UseStateHandle<Vec<Browser>>);
 
-// #[derive(Clone, PartialEq)]
-// pub struct DisplayErrorState(pub UseStateHandle<bool>);
 #[derive(Clone, PartialEq)]
 pub struct DisplayErrorData(pub UseStateHandle<Option<DisplayErrorInnerData>>);
 #[derive(Clone, PartialEq)]
@@ -44,10 +38,7 @@ pub enum PopupBox {
 
 #[function_component(App)]
 pub fn app() -> Html {
-    // let create_link_state = use_state(|| false);
-    // let edit_link_state = use_state(|| false);
     let editing_link_id = use_state(|| None);
-    // let display_error_state = use_state(|| false);
 
     let links = use_state(Vec::new);
 
@@ -60,24 +51,6 @@ pub fn app() -> Html {
     let display_error_data = use_state(|| None);
 
     let popup_box_state = use_state(PopupBox::default);
-
-    // {
-    //     let create_link_state = create_link_state.clone();
-    //     let edit_link_state = edit_link_state.clone();
-    //     let display_error_state = display_error_state.clone();
-    //     use_effect_with_deps(
-    //         |state| {
-    //             if **state {
-    //                 if **edit_link_state {
-    //                      edit_link_state.set(false);
-    //                 }
-    //             }
-
-    //             || ()
-    //         },
-    //         create_link_state,
-    //     );
-    // }
 
     {
         let links = links.clone();
@@ -128,7 +101,6 @@ pub fn app() -> Html {
                         }
                     }
 
-                    // browsers.push(link.browser.clone());
                     if let Some(browser) = browsers_map.get_mut(&link.browser) {
                         *browser += 1;
                     } else {
@@ -151,14 +123,11 @@ pub fn app() -> Html {
     html! {
         <>
         <ContextProvider<LinksState> context={LinksState(links)}>
-        // <ContextProvider<CreateLinkState> context={CreateLinkState(create_link_state.clone())}>
-        // <ContextProvider<EditLinkState> context={EditLinkState(edit_link_state.clone())}>
         <ContextProvider<EditingLinkIdState> context={EditingLinkIdState(editing_link_id)}>
         <ContextProvider<LinksTagsState> context={LinksTagsState(links_tags)}>
         <ContextProvider<DisplayedTagsState> context={DisplayedTagsState(displayed_tags)}>
         <ContextProvider<LinksBrowsersState> context={LinksBrowsersState(links_browsers)}>
         <ContextProvider<DisplayedBrowsersState> context={DisplayedBrowsersState(displayed_browsers)}>
-        // <ContextProvider<DisplayErrorState> context={DisplayErrorState(display_error_state.clone())}>
         <ContextProvider<DisplayErrorData> context={DisplayErrorData(display_error_data)}>
         <ContextProvider<PopupBoxState> context={PopupBoxState(popup_box_state.clone())}>
 
@@ -166,16 +135,6 @@ pub fn app() -> Html {
                 <Sidebar />
                 <DisplayLinks />
             </div>
-
-            // if *create_link_state {
-            //     <CreateLink />
-            // }
-            // if *edit_link_state {
-            //     <EditLink />
-            // }
-            // if *display_error_state {
-            //     <DisplayError />
-            // }
 
             {
 
@@ -195,14 +154,11 @@ pub fn app() -> Html {
 
         </ContextProvider<PopupBoxState>>
         </ContextProvider<DisplayErrorData>>
-        // </ContextProvider<DisplayErrorState>>
         </ContextProvider<DisplayedBrowsersState>>
         </ContextProvider<LinksBrowsersState>>
         </ContextProvider<DisplayedTagsState>>
         </ContextProvider<LinksTagsState>>
         </ContextProvider<EditingLinkIdState>>
-        // </ContextProvider<EditLinkState>>
-        // </ContextProvider<CreateLinkState>>
         </ContextProvider<LinksState>>
         </>
     }

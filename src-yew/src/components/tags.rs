@@ -7,7 +7,6 @@ pub fn tags() -> Html {
 
     let clicked_tag = use_state(|| None);
 
-    // let index = std::rc::Rc::new(std::cell::Cell::new(0));
     let mut index = 0;
     let clicked_index = use_state(|| None);
 

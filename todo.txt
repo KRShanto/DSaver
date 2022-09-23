@@ -24,12 +24,12 @@ x 2022-09-04 Make a struct that will represent the error. It will contain what t
 x 2022-09-08 use labels in forms instead of placeholder pri:A
 (B) Add documentations @Task @BeforePublish
 (B) Check which platform (returned by tauri api) is for MacOS.     @BUG @BeforePublish @Task
-(B) trim() every values when getting from browser   @BeforePublish
+x 2022-09-22 trim() every values when getting from browser   pri:B @BeforePublish
 (B) Change logo and images   @BeforePublish
 (C) Get `url` from the clipboard @Feature
 x 2022-09-11 make a hook who to store the input value onchange pri:A
 (B) Give option to choose whether the user wants to (search on google || or youtube || or provide the url of the website directly). If the user wants to search on google, then accept the search string and create the url programatically -> start the url with google's search url and then put the string into the url @Feature
-(A) Make a struct that will hold some options for the use_input hook's input value. Make it a UseStateHandle, then return it. When user change it, the input's value's option will be change. For example: make an option `disable`, if this is true, then the hook will not accept any string for the input's value.
+(C) Make a struct that will hold some options for the use_input hook's input value. Make it a UseStateHandle, then return it. When user change it, the input's value's option will be change. For example: make an option `disable`, if this is true, then the hook will not accept any string for the input's value.
 x 2022-09-20 Make component for making forms pri:A
 (B) Show the logo of each browser in forms @Feature
 x 2022-09-20 Cancel button on form pri:A
@@ -49,3 +49,7 @@ x 2022-09-20 If the EditLink component is opend, and the user deletes that link,
 (A) Hide all links infos, just show the title... When the user double clicks on the link on the browser, When the user right click, show some options (open, edit, delete, etc..),Give an option to toggle "show full details".
 (B) Filter by domain name @Feature
 (B) Button to generate random links for development only @Task
+(A) When the user opens the form, turn rest element's opacity low
+(B) Give a message or show something when the user won't have any links @Task
+(A) Show a loading bar while link in validating
+(A) copy the url to user's clipboard when user clicks on the copy button

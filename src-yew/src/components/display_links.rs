@@ -4,7 +4,6 @@ use itertools::Itertools;
 #[function_component(DisplayLinks)]
 pub fn show_links() -> Html {
     let links = use_context::<LinksState>().unwrap().0;
-    // let edit_link_state = use_context::<EditLinkState>().unwrap().0;
     let editing_link_id = use_context::<EditingLinkIdState>().unwrap().0;
     let displayed_tags = use_context::<DisplayedTagsState>().unwrap().0;
     let displayed_browsers = use_context::<DisplayedBrowsersState>().unwrap().0;
@@ -97,12 +96,10 @@ pub fn show_links() -> Html {
                                                 </div>
                                                 <div class="options">
                                                     <button class="edit" onclick={
-                                                        // let edit_link_state = edit_link_state.clone();
                                                         let popup_box_state = popup_box_state.clone();
                                                         let editing_link_id = editing_link_id.clone();
                                                         move |_| {
                                                             editing_link_id.set(Some(link.id));
-                                                            // edit_link_state.set(true);
                                                             popup_box_state.set(PopupBox::EditLink);
 
                                                         }
@@ -113,7 +110,6 @@ pub fn show_links() -> Html {
                                                         let path = link.url.clone();
 
                                                         move |_| {
-                                                            // let browser = link.browser.clone();
                                                             let browser = browser.clone();
                                                             let path = path.clone();
                                                             spawn_local(async move {
@@ -138,13 +134,11 @@ pub fn show_links() -> Html {
                                                         let links = links.clone();
                                                         let link = link.clone();
                                                         let editing_link_id = editing_link_id.clone();
-                                                        // let edit_link_state = edit_link_state.clone();
                                                         let popup_box_state = popup_box_state.clone();
                                                         move |_| {
                                                             // Delete this link's EditLink component
                                                             if let Some(id) = *editing_link_id {
                                                                 if id == link.id {
-                                                                    // edit_link_state.set(false);
                                                                     popup_box_state.set(PopupBox::None);
                                                                     editing_link_id.set(None);
                                                                 }

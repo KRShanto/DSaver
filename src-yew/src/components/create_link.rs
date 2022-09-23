@@ -5,10 +5,8 @@ use itertools::Itertools;
 pub fn new() -> Html {
     let links = use_context::<LinksState>().unwrap().0;
     let displayed_tags = use_context::<DisplayedTagsState>().unwrap().0;
-    // let create_link_state = use_context::<CreateLinkState>().unwrap().0;
     let popup_box_state = use_context::<PopupBoxState>().unwrap().0;
 
-    // let display_error_state = use_context::<DisplayErrorState>().unwrap().0;
     let display_error_data = use_context::<DisplayErrorData>().unwrap().0;
 
     let url_value = use_state(String::new);
@@ -32,7 +30,6 @@ pub fn new() -> Html {
         let tags = tags_value.to_string();
         let priority = priority_value.to_string();
         let browser = browser_value.to_string();
-        // let create_link_state = create_link_state.clone();
 
         move |_| {
             let url = url.clone();
@@ -41,7 +38,6 @@ pub fn new() -> Html {
             let priority = priority.clone();
             let browser = browser.clone();
 
-            // let display_error_state = display_error_state.clone();
             let display_error_data = display_error_data.clone();
 
             // tag's defualt value
@@ -63,11 +59,9 @@ pub fn new() -> Html {
                 .browser(Browser::from(browser));
 
             let links = links.clone();
-            // let create_link_state = create_link_state.clone();
             let popup_box_state = popup_box_state.clone();
             spawn_local(async move {
                 // hide the component
-                // create_link_state.set(false);
                 popup_box_state.set(PopupBox::None);
 
                 let new_link = add_data(
@@ -97,7 +91,6 @@ pub fn new() -> Html {
                             (
                                 String::from("Add"),
                                 Callback::from({
-                                    // let display_error_state = display_error_state.clone();
                                     let popup_box_state = popup_box_state.clone();
                                     let display_error_data = display_error_data.clone();
                                     move |_| {
@@ -117,7 +110,6 @@ pub fn new() -> Html {
                                         links.set(old_links);
 
                                         // hide the component
-                                        // display_error_state.set(false);
                                         popup_box_state.set(PopupBox::None);
                                         display_error_data.set(None);
                                     }
@@ -127,11 +119,9 @@ pub fn new() -> Html {
                                 String::from("Cancel"),
                                 Callback::from({
                                     let display_error_data = display_error_data.clone();
-                                    // let display_error_state = display_error_state.clone();
                                     let popup_box_state = popup_box_state.clone();
                                     move |_| {
                                         // hide the component
-                                        // display_error_state.set(false);
                                         popup_box_state.set(PopupBox::None);
                                         display_error_data.set(None);
                                     }
@@ -141,7 +131,6 @@ pub fn new() -> Html {
                     }));
 
                     // display the component `DisplayError`
-                    // display_error_state.set(true);
                     popup_box_state.set(PopupBox::DisplayError);
                 } else {
                     console_error!("Neither `Link` nor `ErrorReporter` was found")

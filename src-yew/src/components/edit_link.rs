@@ -45,7 +45,6 @@ pub fn editlink() -> Html {
         .collect::<Vec<String>>();
 
     let onclick = Callback::from({
-        // let edit_link_state = edit_link_state.clone();
         let title = title_value.to_string();
         let priority = priority_value.to_string();
         let tags = tags_value.to_string();
@@ -74,7 +73,6 @@ pub fn editlink() -> Html {
 
             let links = links.clone();
             let editing_link_id = editing_link_id.clone();
-            // let edit_link_state = edit_link_state.clone();
             let popup_box_state = popup_box_state.clone();
 
             spawn_local(async move {
@@ -83,7 +81,6 @@ pub fn editlink() -> Html {
                 links.set(old_links.clone());
 
                 // hide this component
-                // edit_link_state.set(false);
                 popup_box_state.set(PopupBox::EditLink);
                 editing_link_id.set(None);
 

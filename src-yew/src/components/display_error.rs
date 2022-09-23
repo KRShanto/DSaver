@@ -2,7 +2,6 @@ use crate::*;
 
 #[function_component(DisplayError)]
 pub fn dis() -> Html {
-    // let display_error_state = use_context::<DisplayErrorState>().unwrap();
     let popup_box_state = use_context::<PopupBoxState>().unwrap().0;
 
     let data_state = use_context::<DisplayErrorData>().unwrap();
@@ -96,7 +95,6 @@ pub fn dis() -> Html {
         <button onclick={
             move |_| {
                 // hide the component
-                // display_error_state.0.set(false);
                 popup_box_state.set(PopupBox::None);
 
                 // remove all the data
