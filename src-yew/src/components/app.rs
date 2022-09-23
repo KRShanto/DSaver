@@ -50,7 +50,6 @@ pub fn app() -> Html {
 
     let display_error_data = use_state(|| None);
 
-    // let popup_box_state = use_state(PopupBox::default);
     let popup_box_state = use_state(PopupBox::default);
 
     {

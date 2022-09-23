@@ -15,7 +15,6 @@
     }
 
     .form-wrapper {
-        // border: 6px solid pink;
         margin: 10px 0;
         width: 100%;
         position: relative;
@@ -32,7 +31,6 @@
 
         input {
             font-size: 20px;
-            // margin: 40px 0;
             background-color: transparent;
             color: white;
             border: none;
@@ -134,7 +132,6 @@
 
         .tag {
             margin: 0 5px;
-            // margin-bottom: 10px;
             padding: 5px 15px;
             border-radius: 5px;
             box-shadow: 0 0 3px white;
@@ -143,15 +140,10 @@
         }
     }
 
-
-
     .select-form {
         $option-background: rgb(14, 31, 41);
-
-        // border: 1px solid red;
         display: flex;
         padding: 10px 0;
-        // justify-content: space-around;
         align-items: center;
 
         .label {
@@ -179,7 +171,6 @@
                 background: $option-background;
                 color: white;
                 padding: 20px 0;
-                // border-radius: 5px;
                 text-align: center;
                 font-size: 14px;
                 font-weight: bold;
@@ -225,29 +216,41 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
+        $color: blue;
 
         button {
             cursor: pointer;
             border-radius: 5px;
-            border: none;
-            box-shadow: 0 0 3px white;
             font-size: 18px;
             font-weight: bold;
-            color: white;
             padding: 15px 60px;
-            text-shadow: 0.1px 0.1px 0.1px black;
-
-            &:hover {
-                opacity: 0.8;
-            }
+            background-color: transparent;
         }
 
         .submit {
-            background-color: green;
+            $color: rgb(0, 204, 85);
+            border: 3px solid $color;
+            color: $color;
+
+            &:hover {
+                background-color: $color;
+                color: white;
+                text-shadow: 0.05px 0.05px 1px black;
+                box-shadow: 0 0 15px $color;
+            }
         }
 
         .cancel {
-            background-color: rgb(255, 87, 87);
+            $color: rgb(248, 70, 34);
+            border: 3px solid $color;
+            color: $color;
+
+            &:hover {
+                background-color: $color;
+                color: white;
+                text-shadow: 0.05px 0.05px 1px black;
+                box-shadow: 0 0 15px $color;
+            }
         }
     }
 

@@ -3,29 +3,34 @@
     height: 100vh;
     position: fixed;
     overflow-y: scroll;
+    $color: rgb(0, 211, 226);
 
     .create-link-button {
         position: relative;
         padding: 10px 30px;
         font-size: 15px;
         font-weight: bold;
-        background-color: blue;
-        color: white;
-        text-shadow: 0.1px 0.1px 0.1px black;
-        border: none;
+        background-color: transparent;
+        border: 3px solid $color;
+        color: $color;
         left: 50%;
         transform: translateX(-50%);
         margin: 20px 0;
         border-radius: 20px;
-        box-shadow: 0 0 3px white;
 
         &:hover {
             cursor: pointer;
-            opacity: 0.8;
+            background-color: $color;
+            color: white;
+            text-shadow: 0.05px 0.05px 1px black;
+            box-shadow: 0 0 15px $color;
         }
     }
 
     .create-link-button.disabled {
+        background-color: $color;
+        color: black;
+        text-shadow: none;
         opacity: 0.2;
         cursor: auto;
     }
@@ -33,7 +38,6 @@
     .filter {
 
         .filterable {
-            // border: 1px solid red;
             margin: 30px 0;
             font-weight: bold;
 
@@ -59,7 +63,6 @@
                     box-shadow: 0 0 4px white;
 
                     .count {
-                        // border: 1px solid red;                        
                         background-color: skyblue;
                         color: black;
                         font-weight: bold;
@@ -69,7 +72,6 @@
                         top: -15px;
                         right: -5px;
                         font-size: 13px;
-                        // font-size: 20px;
 
                     }
                 }
