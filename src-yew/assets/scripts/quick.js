@@ -9,12 +9,22 @@ export function focusTag(inputId) {
 
 export function ifNotClicked(elementId, whatToDo) {
     document.addEventListener('click', event => {
-        // console.log('Target: ', event.target);
-
         const element = document.getElementById(elementId);
 
         if (event.target != element) {
             whatToDo();
         }
     });
+}
+
+export function downOpacity(elementId) {
+    const element = document.getElementById(elementId);
+
+    element.style.opacity = 0.3;
+}
+
+export function upOpacity(elementId) {
+    const element = document.getElementById(elementId);
+
+    element.style.opacity = 1.0;
 }

@@ -98,4 +98,10 @@ extern "C" {
 
     #[wasm_bindgen(js_name = "ifNotClicked")]
     pub fn if_not_clicked(element_id: &str, what_to_do: &Function);
+
+    #[wasm_bindgen(js_name = "downOpacity")]
+    pub fn down_opacity(element_id: &str);
+
+    #[wasm_bindgen(js_name = "upOpacity")]
+    pub fn up_opacity(element_id: &str);
 }

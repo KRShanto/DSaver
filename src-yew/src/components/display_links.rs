@@ -51,7 +51,7 @@ pub fn show_links() -> Html {
 
     html! {
         <>
-        <div class="display-links">
+        <div class="display-links" id="display-links">
             {
             prirorities.iter().map(|priority| {
                 i+=1;

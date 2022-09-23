@@ -50,6 +50,7 @@ pub fn app() -> Html {
 
     let display_error_data = use_state(|| None);
 
+    // let popup_box_state = use_state(PopupBox::default);
     let popup_box_state = use_state(PopupBox::default);
 
     {
@@ -120,6 +121,24 @@ pub fn app() -> Html {
         );
     }
 
+    {
+        let popup_box_state = popup_box_state.clone();
+        use_effect_with_deps(
+            move |state| {
+                if **state != PopupBox::None {
+                    down_opacity("display-links");
+                    down_opacity("sidebar");
+                } else {
+                    up_opacity("display-links");
+                    up_opacity("sidebar");
+                }
+
+                || ()
+            },
+            popup_box_state,
+        );
+    }
+
     html! {
         <>
         <ContextProvider<LinksState> context={LinksState(links)}>
@@ -131,7 +150,7 @@ pub fn app() -> Html {
         <ContextProvider<DisplayErrorData> context={DisplayErrorData(display_error_data)}>
         <ContextProvider<PopupBoxState> context={PopupBoxState(popup_box_state.clone())}>
 
-            <div class="main-div">
+            <div class="main-div" id="app">
                 <Sidebar />
                 <DisplayLinks />
             </div>

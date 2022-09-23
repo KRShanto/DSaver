@@ -6,7 +6,7 @@ pub fn sidebar() -> Html {
     let popup_box_state = use_context::<PopupBoxState>().unwrap().0;
 
     html! {
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
             <button class={classes!(
                 "create-link-button",
                 if let PopupBox::CreateLink = *popup_box_state {
