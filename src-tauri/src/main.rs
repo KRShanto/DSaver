@@ -11,7 +11,8 @@ fn main() {
             validate_link,
             open_browser_windows,
             open_browser_linux,
-            open_browser_macos
+            open_browser_macos,
+            generate,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,6 +1,8 @@
 use crate::*;
 
 #[tauri::command]
+// TODO try to handle more errors e.g permission errors
+// TODO return ErrorReporter
 pub async fn open_browser_windows(path: String, browser: String) -> Result<(), BrowserOpenError> {
     let browser: Browser = serde_json::from_str(&browser).unwrap();
 
@@ -13,6 +15,7 @@ pub async fn open_browser_windows(path: String, browser: String) -> Result<(), B
     }
 }
 
+// TODO return ErrorReporter
 #[tauri::command]
 pub async fn open_browser_linux(path: String, browser: String) -> Result<(), BrowserOpenError> {
     let browser: Browser = serde_json::from_str(&browser).unwrap();
@@ -27,6 +30,7 @@ pub async fn open_browser_linux(path: String, browser: String) -> Result<(), Bro
 }
 
 #[tauri::command]
+// TODO return ErrorReporter
 pub async fn open_browser_macos(path: String, browser: String) -> Result<(), BrowserOpenError> {
     let browser: Browser = serde_json::from_str(&browser).unwrap();
 

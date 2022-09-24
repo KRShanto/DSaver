@@ -21,6 +21,7 @@ tauri = { version = "1.0.5", features = ["fs-create-dir", "fs-read-dir", "fs-rea
 url = "2.2.2"
 webpage = "1.4.0"
 project-types = {path="../project-types"}
+rand = "0.8.5"
 
 [features]
 # by default Tauri runs in production mode

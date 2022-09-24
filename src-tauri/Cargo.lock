@@ -58,6 +58,7 @@ name = "app"
 version = "0.1.0"
 dependencies = [
  "project-types",
+ "rand 0.8.5",
  "serde",
  "serde_json",
  "tauri",
@@ -1940,6 +1941,7 @@ dependencies = [
 name = "project-types"
 version = "0.1.0"
 dependencies = [
+ "rand 0.8.5",
  "serde",
  "uuid 1.1.2",
 ]
