@@ -82,6 +82,18 @@ export async function openBrowser(path, browser) {
     const result = await invoke(functionName, { path, browser });
 
     return JSON.stringify(result);
+}
 
+// Generate some random links
+export async function generateLink() {
+    const invoke = window.__TAURI__.invoke;
+
+    const links = await invoke("generate");
+
+    let result = await storeData(JSON.stringify(links));
+
+    if (result === null) {
+        console.log("Random links are created");
+    }
 
 }
