@@ -3,36 +3,60 @@
     height: 100vh;
     position: fixed;
     overflow-y: scroll;
-    $color: rgb(0, 211, 226);
+    $createLinkColor: rgb(0, 211, 226);
 
-    .create-link-button {
-        position: relative;
-        padding: 10px 30px;
-        font-size: 15px;
-        font-weight: bold;
-        background-color: transparent;
-        border: 3px solid $color;
-        color: $color;
-        left: 50%;
-        transform: translateX(-50%);
-        margin: 20px 0;
-        border-radius: 20px;
 
-        &:hover {
-            cursor: pointer;
-            background-color: $color;
-            color: white;
-            text-shadow: 0.05px 0.05px 1px black;
-            box-shadow: 0 0 15px $color;
+    .buttons {
+        button {
+
+            padding: 10px 30px;
+            position: relative;
+            font-size: 15px;
+            font-weight: bold;
+            background-color: transparent;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 20px 0;
+            border-radius: 20px;
+
+            &:hover {
+                text-shadow: 0.05px 0.05px 1px black;
+                cursor: pointer;
+                color: white;
+            }
         }
-    }
 
-    .create-link-button.disabled {
-        background-color: $color;
-        color: black;
-        text-shadow: none;
-        opacity: 0.2;
-        cursor: auto;
+        .create-link-button {
+            border: 3px solid $createLinkColor;
+            color: $createLinkColor;
+
+            &:hover {
+                background-color: $createLinkColor;
+                box-shadow: 0 0 15px $createLinkColor;
+            }
+        }
+
+        .create-link-button.disabled {
+            background-color: $createLinkColor;
+            color: black;
+            text-shadow: none;
+            opacity: 0.2;
+            cursor: auto;
+        }
+
+        .generate-link {
+            $generateLinkColor: blue;
+
+            border: 3px solid $generateLinkColor;
+            color: $generateLinkColor;
+
+            &:hover {
+                background-color: $generateLinkColor;
+                box-shadow: 0 0 15px $generateLinkColor;
+            }
+
+        }
+
     }
 
     .filter {

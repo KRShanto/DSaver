@@ -7,19 +7,34 @@ pub fn sidebar() -> Html {
 
     html! {
         <div class="sidebar" id="sidebar">
-            <button class={classes!(
-                "create-link-button",
-                if let PopupBox::CreateLink = *popup_box_state {
-                    "disabled"
-                } else {
-                    "active"
-                }
+            <div class="buttons">
+                <div class="divider">
+                    <button class="generate-link" onclick={
+                        |_| {
+                            spawn_local(async move {
+                                generate_link().await.unwrap();
+                            });
+                        }
+                    }>{"Generate"}</button>
+                </div>
 
-            )} onclick={
-                move |_| {
-                        popup_box_state.set(PopupBox::CreateLink);
-                }
-            }>{"Create a New Link"}</button>
+                <div class="divider">
+                    <button class={classes!(
+                        "create-link-button",
+                        if let PopupBox::CreateLink = *popup_box_state {
+                            "disabled"
+                        } else {
+                            "active"
+                        }
+
+                    )} onclick={
+                        move |_| {
+                            popup_box_state.set(PopupBox::CreateLink);
+                        }
+                    }>{"Create a New Link"}</button>
+                </div>
+            </div>
+
 
             // IN THE FUTURE
             // <p>{"Show full information"}</p>
