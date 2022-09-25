@@ -3,6 +3,11 @@ use std::fmt::Display;
 use std::io::Error;
 use std::process::Command;
 
+use rand::{
+    distributions::{Distribution, Standard},
+    Rng,
+}; // 0.8.0
+
 #[derive(Clone, Serialize, Debug, Deserialize, PartialEq, Eq, Hash)]
 pub enum Browser {
     Firefox,
@@ -10,6 +15,17 @@ pub enum Browser {
     Brave,
     Default,
     // TODO: add more
+}
+
+impl Distribution<Browser> for Standard {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Browser {
+        match rng.gen_range(0..=2) {
+            0 => Browser::Firefox,
+            1 => Browser::Chrome,
+            2 => Browser::Default,
+            _ => Browser::Brave,
+        }
+    }
 }
 
 impl Browser {
