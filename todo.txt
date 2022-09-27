@@ -34,7 +34,7 @@ x 2022-09-20 Make component for making forms pri:A
 (B) Show the logo of each browser in forms @Feature
 x 2022-09-20 Cancel button on form pri:A
 x 2022-09-13 Detect if the user clicks outside of the select div of the form, if so then remove the options div pri:A
-(A) Detect if the user clicks outside the form component, if so, remove the form component
+x 2022-09-27 Detect if the user clicks outside the form component, if so, remove the form component pri:A
 (C) Download video option @Feature
 (B) Comment @Task
 (C) Try to style form's labels with Rust instead of js @Task
@@ -63,3 +63,5 @@ x 2022-09-25 Change the button's styles. pri:A
 (C) history of what the user do i.e. adds new link, share the link, edit the link etc. @Feature
 (C) Links and tag custom colors +Premium @Feature
 (B) Give an animation when any link is deleted +styles @Task
+(D) Increase the scope of this project. Turn this project into a note saving, file saving, file sharing, files hosting, note hosting, collaborating, http links saving etc....
+(A) Make a Popup component and put the createlink and editlink and displayerror into that.
