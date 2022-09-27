@@ -19,7 +19,7 @@ x 2022-08-31 Remove duplicate tags when creating  links pri:A
 x 2022-09-03 Get the domain name pri:A
 x 2022-09-03 Make a builder struct for `Link` for creating the Link pri:A
 x 2022-09-04 Make a struct that will represent the error. It will contain what the error is, why it occured, How to fix. It can also contain the *actual* error pri:A
-(C) Make a component for tracking states
+(A) Make a component for tracking states
 (C) Link refresh feature. Also all links (together) refresh feature @Feature
 x 2022-09-08 use labels in forms instead of placeholder pri:A
 (B) Add documentations @Task @BeforePublish
@@ -45,8 +45,8 @@ x 2022-09-20 If the EditLink component is opend, and the user deletes that link,
 (A) If the user types on the input which is disabled from Rust, then show him/her (below the input) an error msg or when the user `focus`es on the input, immediately `blur` it.
 (C) Search Links @Feature
 (B) Filter by priority @Feature
-(B) animate the form when rendering (just like when hiding) @Task
-(A) Hide all links infos, just show the title... When the user double clicks on the link on the browser, When the user right click, show some options (open, edit, delete, etc..),Give an option to toggle "show full details".
+(B) animate the form when rendering (just like when hiding) +styles @Task
+x 2022-09-27 Hide all links infos, just show the title... When the user double clicks on the link on the browser, When the user right click, show some options (open, edit, delete, etc..),Give an option to toggle "show full details". pri:A
 (B) Filter by domain name @Feature
 (B) Button to generate random links for development only @Task
 x 2022-09-23 When the user opens the form, turn rest element's opacity low pri:A
@@ -60,3 +60,6 @@ x 2022-09-25 Change the button's styles. pri:A
 (A) create mixins scss
 (B) See if reading/writting code from Rust directly is fast or same
 (A) Iterate tags and at the same time, update it.
+(C) history of what the user do i.e. adds new link, share the link, edit the link etc. @Feature
+(C) Links and tag custom colors +Premium @Feature
+(B) Give an animation when any link is deleted +styles @Task
