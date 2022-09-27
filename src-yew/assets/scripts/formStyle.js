@@ -45,6 +45,7 @@ export function labelDown(inputId) {
 
     setTimeout(() => {
         // remove the current label
+        // BUG: NotFoundError: The object can not be found here. ---- occurs when the component EditLink goes out of scope
         parent.removeChild(label);
     }, TIME_TO_REMOVE);
 
@@ -87,6 +88,7 @@ export function labelUp(inputId) {
 
     setTimeout(() => {
         // remove the current label
+        // BUG: NotFoundError: The object can not be found here. ---- occurs when the component EditLink goes out of scope
         parent.removeChild(label);
     }, TIME_TO_REMOVE);
 

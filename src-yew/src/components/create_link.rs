@@ -6,6 +6,7 @@ pub fn new() -> Html {
     let links = use_context::<LinksState>().unwrap().0;
     let displayed_tags = use_context::<DisplayedTagsState>().unwrap().0;
     let popup_box_state = use_context::<PopupBoxState>().unwrap().0;
+    let popup_box_ready_state = use_context::<PopupBoxReadyState>().unwrap().0;
 
     let display_error_data = use_context::<DisplayErrorData>().unwrap().0;
 
@@ -23,6 +24,25 @@ pub fn new() -> Html {
     let priority_list = (b'A'..=b'Z')
         .map(|c| char::from(c).to_string())
         .collect::<Vec<String>>();
+
+    use_effect_with_deps(
+        move |_| {
+            {
+                let popup_box_ready_state = popup_box_ready_state.clone();
+                set_timeout(
+                    move || {
+                        console_log!("Timeout complete");
+                        popup_box_ready_state.set(true);
+                    },
+                    100, // useing a timeout. bcz if we change this immediately, it won't be beneficial.
+                )
+                .unwrap();
+            }
+
+            move || popup_box_ready_state.set(false)
+        },
+        (),
+    );
 
     let onclick = Callback::from({
         let url = url_value.trim().to_string();

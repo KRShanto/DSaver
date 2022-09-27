@@ -2,11 +2,18 @@ use crate::*;
 
 #[function_component(Sidebar)]
 pub fn sidebar() -> Html {
-    // let create_link_state = use_context::<CreateLinkState>().unwrap().0;
     let popup_box_state = use_context::<PopupBoxState>().unwrap().0;
+    let popup_box_ready_state = use_context::<PopupBoxReadyState>().unwrap().0;
 
     html! {
-        <div class="sidebar" id="sidebar">
+        <div class="sidebar" id="sidebar" onclick={
+            let popup_box_state = popup_box_state.clone();
+            move |_| {
+                if *popup_box_ready_state && (*popup_box_state).clone() != PopupBox::None {
+                    popup_box_state.set(PopupBox::None);
+                }
+            }
+        }>
             <div class="buttons">
                 <div class="divider">
                     <button class="generate-link" onclick={

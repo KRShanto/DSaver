@@ -5,7 +5,6 @@ pub fn editlink() -> Html {
     let links = use_context::<LinksState>().unwrap().0;
     let displayed_tags = use_context::<DisplayedTagsState>().unwrap().0;
     let editing_link_id = use_context::<EditingLinkIdState>().unwrap().0;
-    // let edit_link_state = use_context::<EditLinkState>().unwrap().0;
     let editing_link = (links)
         .iter()
         .find(|link| link.id == (*editing_link_id).unwrap())
@@ -17,6 +16,7 @@ pub fn editlink() -> Html {
         .unwrap();
 
     let popup_box_state = use_context::<PopupBoxState>().unwrap().0;
+    let popup_box_ready_state = use_context::<PopupBoxReadyState>().unwrap().0;
 
     let url = editing_link.url.clone();
     let title_value = use_state(|| editing_link.title.clone().unwrap());
@@ -36,6 +36,25 @@ pub fn editlink() -> Html {
             (),
         );
     }
+
+    use_effect_with_deps(
+        move |_| {
+            {
+                let popup_box_ready_state = popup_box_ready_state.clone();
+                set_timeout(
+                    move || {
+                        console_log!("Timeout complete");
+                        popup_box_ready_state.set(true);
+                    },
+                    100, // useing a timeout. bcz if we change this immediately, it won't be beneficial.
+                )
+                .unwrap();
+            }
+
+            move || popup_box_ready_state.set(false)
+        },
+        (),
+    );
 
     // previously created tags || tags that matches tags from `displayed_tags`
     let previously_matched_tags = use_state(Vec::new);

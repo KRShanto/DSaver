@@ -27,6 +27,9 @@ pub struct DisplayErrorInnerData {
 #[derive(Clone, PartialEq)]
 pub struct PopupBoxState(pub UseStateHandle<PopupBox>);
 
+#[derive(Clone, PartialEq)]
+pub struct PopupBoxReadyState(pub UseStateHandle<bool>);
+
 #[derive(Clone, PartialEq, Eq, Default)]
 pub enum PopupBox {
     CreateLink,
@@ -51,6 +54,7 @@ pub fn app() -> Html {
     let display_error_data = use_state(|| None);
 
     let popup_box_state = use_state(PopupBox::default);
+    let popup_box_ready_state = use_state(|| false);
 
     {
         let links = links.clone();
@@ -148,6 +152,7 @@ pub fn app() -> Html {
         <ContextProvider<DisplayedBrowsersState> context={DisplayedBrowsersState(displayed_browsers)}>
         <ContextProvider<DisplayErrorData> context={DisplayErrorData(display_error_data)}>
         <ContextProvider<PopupBoxState> context={PopupBoxState(popup_box_state.clone())}>
+        <ContextProvider<PopupBoxReadyState> context={PopupBoxReadyState(popup_box_ready_state)}>
 
             <div class="main-div" id="app">
                 <Sidebar />
@@ -170,6 +175,7 @@ pub fn app() -> Html {
                 }
             }
 
+        </ContextProvider<PopupBoxReadyState>>
         </ContextProvider<PopupBoxState>>
         </ContextProvider<DisplayErrorData>>
         </ContextProvider<DisplayedBrowsersState>>
