@@ -81,7 +81,7 @@ pub fn editlink() -> Html {
                 links.set(old_links.clone());
 
                 // hide this component
-                popup_box_state.set(PopupBox::EditLink);
+                popup_box_state.set(PopupBox::None);
                 editing_link_id.set(None);
 
                 // store the links to the filesystem

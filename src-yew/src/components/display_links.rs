@@ -49,6 +49,10 @@ pub fn show_links() -> Html {
 
     let mut i = 0;
 
+    let mut display_link_index = 0;
+
+    let display_link_body: UseStateHandle<Option<i32>> = use_state(|| None);
+
     html! {
         <>
         <div class="display-links" id="display-links">
@@ -77,95 +81,137 @@ pub fn show_links() -> Html {
                                 </div>
                                 {
                                     links_to_show.clone().into_iter().map(|link| {
+                                        display_link_index += 1;
+
                                         html! {
                                             <div class="link">
-                                                <div class="info">
+                                                <div class="link-head">
                                                     <h3 class="title">{link.title.as_ref().unwrap_or(&String::new())}</h3>
-                                                    <p class="url">{&link.url}</p>
-                                                    // TODO: copy button
-                                                    <ul class="tags">
-                                                        {
-                                                        link.tags.iter().map(|tag| {
-                                                            html! {
-                                                                    <li class="tag">{tag}</li>
-                                                                }
-                                                            }).collect::<Html>()
-                                                        }
-                                                    </ul>
-                                                    <p class="date">{&link.date}</p>
-                                                </div>
-                                                <div class="options">
-                                                    <button class="edit" onclick={
-                                                        let popup_box_state = popup_box_state.clone();
-                                                        let editing_link_id = editing_link_id.clone();
+                                                    <div class="icon" onclick={
+                                                        let display_link_body = display_link_body.clone();
                                                         move |_| {
-                                                            editing_link_id.set(Some(link.id));
-                                                            popup_box_state.set(PopupBox::EditLink);
-
-                                                        }
-                                                    }>{"Edit"}</button>
-                                                    <button class="open" onclick={
-                                                        // TODO: show a title "open in <browser>"
-                                                        let browser = link.browser.clone();
-                                                        let path = link.url.clone();
-
-                                                        move |_| {
-                                                            let browser = browser.clone();
-                                                            let path = path.clone();
-                                                            spawn_local(async move {
-                                                                let result = open_browser(&path, struct_to_string(&browser).unwrap())
-                                                                    .await
-                                                                    .unwrap()
-                                                                    .as_string()
-                                                                    .unwrap();
-
-                                                                if let Ok(error) = string_to_struct::<BrowserOpenError>(&result) {
-                                                                match error {
-                                                                        BrowserOpenError::NotFound => console_error!("Browser not found"),
-                                                                        BrowserOpenError::Other(error) => console_error!(error),
-                                                                    }
+                                                            if let Some(display) = *display_link_body {
+                                                                if display == (display_link_index - 1) {
+                                                                    display_link_body.set(None);
                                                                 } else {
-                                                                    console_log!("Successfully opened");
+                                                                    display_link_body.set(Some(display_link_index - 1));
                                                                 }
-                                                            });
-                                                        }
-                                                    }>{"Open"}</button>
-                                                    <button class="delete" onclick={
-                                                        let links = links.clone();
-                                                        let link = link.clone();
-                                                        let editing_link_id = editing_link_id.clone();
-                                                        let popup_box_state = popup_box_state.clone();
-                                                        move |_| {
-                                                            // Delete this link's EditLink component
-                                                            if let Some(id) = *editing_link_id {
-                                                                if id == link.id {
-                                                                    popup_box_state.set(PopupBox::None);
-                                                                    editing_link_id.set(None);
-                                                                }
+                                                            } else {
+                                                                display_link_body.set(Some(display_link_index - 1));
                                                             }
 
-                                                            let mut old_links = (*links).clone();
-
-                                                            // remove this link from `old_links`
-                                                            old_links.retain(|old_link| old_link != &link);
-
-                                                            links.set(old_links.clone());
-
-                                                            // store the links to the filesystem
-                                                            spawn_local(async move {
-                                                                let result = store_data(struct_to_string(&old_links).unwrap())
-                                                                    .await
-                                                                    .unwrap();
-
-                                                                // if the result is null, it means success
-                                                                if let Some(error) = result.as_string() {
-                                                                    console_error!(error);
-                                                                } else {
-                                                                    console_log!("Successfully deleted");
-                                                                }
-                                                            });
                                                         }
-                                                    }>{"Delete"}</button>
+                                                    }>
+                                                        if let Some(display) = *display_link_body {
+                                                            if display == (display_link_index - 1) {
+                                                                <img class="up" src="icons/up-arrow.svg" alt="Up arrow" />
+                                                            } else {
+                                                                <img class="down" src="icons/down-arrow.svg" alt="Down arrow" />
+                                                            }
+                                                        } else {
+                                                            <img class="down" src="icons/down-arrow.svg" alt="Down arrow" />
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class={classes!(
+                                                    "link-body",
+                                                    if let Some(display) = *display_link_body {
+                                                        if display == (display_link_index - 1) {
+                                                            "display"
+                                                        } else {
+                                                            ""
+                                                        }
+                                                    } else {
+                                                        ""
+                                                    }
+                                                )}>
+                                                    <div class="info">
+                                                        <p class="url">{&link.url}</p>
+                                                        // TODO: copy button
+                                                        <ul class="tags">
+                                                            {
+                                                            link.tags.iter().map(|tag| {
+                                                                html! {
+                                                                        <li class="tag">{tag}</li>
+                                                                    }
+                                                                }).collect::<Html>()
+                                                            }
+                                                        </ul>
+                                                        <p class="date">{&link.date}</p>
+                                                    </div>
+                                                    <div class="options">
+                                                        <button class="edit" onclick={
+                                                            let popup_box_state = popup_box_state.clone();
+                                                            let editing_link_id = editing_link_id.clone();
+                                                            move |_| {
+                                                                editing_link_id.set(Some(link.id));
+                                                                popup_box_state.set(PopupBox::EditLink);
+
+                                                            }
+                                                        }>{"Edit"}</button>
+                                                        <button class="open" onclick={
+                                                            // TODO: show a title "open in <browser>"
+                                                            let browser = link.browser.clone();
+                                                            let path = link.url.clone();
+
+                                                            move |_| {
+                                                                let browser = browser.clone();
+                                                                let path = path.clone();
+                                                                spawn_local(async move {
+                                                                    let result = open_browser(&path, struct_to_string(&browser).unwrap())
+                                                                        .await
+                                                                        .unwrap()
+                                                                        .as_string()
+                                                                        .unwrap();
+
+                                                                    if let Ok(error) = string_to_struct::<BrowserOpenError>(&result) {
+                                                                    match error {
+                                                                            BrowserOpenError::NotFound => console_error!("Browser not found"),
+                                                                            BrowserOpenError::Other(error) => console_error!(error),
+                                                                        }
+                                                                    } else {
+                                                                        console_log!("Successfully opened");
+                                                                    }
+                                                                });
+                                                            }
+                                                        }>{"Open"}</button>
+                                                        <button class="delete" onclick={
+                                                            let links = links.clone();
+                                                            let link = link.clone();
+                                                            let editing_link_id = editing_link_id.clone();
+                                                            let popup_box_state = popup_box_state.clone();
+                                                            move |_| {
+                                                                // Delete this link's EditLink component
+                                                                if let Some(id) = *editing_link_id {
+                                                                    if id == link.id {
+                                                                        popup_box_state.set(PopupBox::None);
+                                                                        editing_link_id.set(None);
+                                                                    }
+                                                                }
+
+                                                                let mut old_links = (*links).clone();
+
+                                                                // remove this link from `old_links`
+                                                                old_links.retain(|old_link| old_link != &link);
+
+                                                                links.set(old_links.clone());
+
+                                                                // store the links to the filesystem
+                                                                spawn_local(async move {
+                                                                    let result = store_data(struct_to_string(&old_links).unwrap())
+                                                                        .await
+                                                                        .unwrap();
+
+                                                                    // if the result is null, it means success
+                                                                    if let Some(error) = result.as_string() {
+                                                                        console_error!(error);
+                                                                    } else {
+                                                                        console_log!("Successfully deleted");
+                                                                    }
+                                                                });
+                                                            }
+                                                        }>{"Delete"}</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         }

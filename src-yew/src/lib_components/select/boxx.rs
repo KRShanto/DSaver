@@ -26,6 +26,8 @@ pub fn boxx(props: &BoxProps) -> Html {
     let list_value = use_state(|| {
         if let Some(value) = init_value {
             value
+        } else if !(*value_state).is_empty() {
+            (*value_state).clone()
         } else {
             list[0].clone()
         }
