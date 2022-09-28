@@ -90,6 +90,12 @@ export async function generateLink() {
 
     const links = await invoke("generate");
 
+    let oldData = JSON.parse(await getData());
+
+    oldData.forEach(data => {
+        links.push(data);
+    });
+
     let result = await storeData(JSON.stringify(links));
 
     if (result === null) {
