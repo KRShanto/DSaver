@@ -2,7 +2,6 @@ use crate::*;
 use rand::prelude::*;
 use webpage::{Webpage, WebpageOptions};
 
-#[cfg(debug_assertions)]
 #[tauri::command]
 pub async fn generate() -> Vec<Link> {
     let mut random_links: Vec<Link> = Vec::new();

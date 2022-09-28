@@ -149,6 +149,7 @@ pub fn show_links() -> Html {
                                                     </div>
                                                     <div class="options">
                                                         <button class="edit" onclick={
+                                                            // TODO: Create a variable for this event
                                                             let popup_box_state = popup_box_state.clone();
                                                             let editing_link_id = editing_link_id.clone();
                                                             move |_| {
@@ -157,32 +158,35 @@ pub fn show_links() -> Html {
 
                                                             }
                                                         }>{"Edit"}</button>
-                                                        <button class="open" onclick={
-                                                            // TODO: show a title "open in <browser>"
-                                                            let browser = link.browser.clone();
-                                                            let path = link.url.clone();
+                                                        <button
+                                                            class="open"
+                                                            title={format!("Open in {}", link.browser)}
+                                                            onclick={
+                                                                let browser = link.browser.clone();
+                                                                let path = link.url.clone();
 
-                                                            move |_| {
-                                                                let browser = browser.clone();
-                                                                let path = path.clone();
-                                                                spawn_local(async move {
-                                                                    let result = open_browser(&path, struct_to_string(&browser).unwrap())
-                                                                        .await
-                                                                        .unwrap()
-                                                                        .as_string()
-                                                                        .unwrap();
+                                                                move |_| {
+                                                                    let browser = browser.clone();
+                                                                    let path = path.clone();
+                                                                    spawn_local(async move {
+                                                                        let result = open_browser(&path, struct_to_string(&browser).unwrap())
+                                                                            .await
+                                                                            .unwrap()
+                                                                            .as_string()
+                                                                            .unwrap();
 
-                                                                    if let Ok(error) = string_to_struct::<BrowserOpenError>(&result) {
-                                                                    match error {
-                                                                            BrowserOpenError::NotFound => console_error!("Browser not found"),
-                                                                            BrowserOpenError::Other(error) => console_error!(error),
+                                                                        if let Ok(error) = string_to_struct::<BrowserOpenError>(&result) {
+                                                                        match error {
+                                                                                BrowserOpenError::NotFound => console_error!("Browser not found"),
+                                                                                BrowserOpenError::Other(error) => console_error!(error),
+                                                                            }
+                                                                        } else {
+                                                                            console_log!("Successfully opened");
                                                                         }
-                                                                    } else {
-                                                                        console_log!("Successfully opened");
-                                                                    }
-                                                                });
+                                                                    });
+                                                                }
                                                             }
-                                                        }>{"Open"}</button>
+                                                        >{"Open"}</button>
                                                         <button class="delete" onclick={
                                                             let links = links.clone();
                                                             let link = link.clone();

@@ -56,6 +56,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "dsaver-frontend"
+version = "0.1.0"
+dependencies = [
+ "derive_more",
+ "dsaver-project-types",
+ "itertools",
+ "js-sys",
+ "serde",
+ "serde_json",
+ "uuid",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
+ "weblog",
+ "webru",
+ "yew",
+]
+
+[[package]]
+name = "dsaver-project-types"
+version = "0.1.0"
+dependencies = [
+ "js-sys",
+ "rand",
+ "serde",
+ "uuid",
+]
+
+[[package]]
 name = "either"
 version = "1.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -290,16 +319,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "project-types"
-version = "0.1.0"
-dependencies = [
- "js-sys",
- "rand",
- "serde",
- "uuid",
-]
-
-[[package]]
 name = "quote"
 version = "1.0.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -403,25 +422,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4614a76b2a8be0058caa9dbbaf66d988527d86d003c11a94fbd335d7661edcef"
 dependencies = [
  "autocfg",
-]
-
-[[package]]
-name = "src-yew"
-version = "0.1.0"
-dependencies = [
- "derive_more",
- "itertools",
- "js-sys",
- "project-types",
- "serde",
- "serde_json",
- "uuid",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
- "weblog",
- "webru",
- "yew",
 ]
 
 [[package]]

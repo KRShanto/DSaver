@@ -2,5 +2,5 @@ mod commands;
 
 pub use commands::*;
 
-pub use project_types::*;
+pub use dsaver_project_types::*;
 pub use std::io::ErrorKind;

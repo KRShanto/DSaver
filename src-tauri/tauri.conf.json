@@ -1,6 +1,6 @@
 {
   "package": {
-    "productName": "link-saver",
+    "productName": "dsaver",
     "version": "0.1.0"
   },
   "build": {
@@ -14,7 +14,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "com.dsaver.com",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -25,8 +25,8 @@
       "resources": [],
       "externalBin": [],
       "copyright": "",
-      "category": "DeveloperTool",
-      "shortDescription": "",
+      "category": "Productivity",
+      "shortDescription": "A data saving app",
       "longDescription": "",
       "deb": {
         "depends": []
@@ -64,9 +64,9 @@
     },
     "windows": [
       {
-        "title": "Link Saver",
-        "width": 800,
-        "height": 600,
+        "title": "DSaver",
+        "width": 1200,
+        "height": 900,
         "resizable": true,
         "fullscreen": false,
         "maximized": true

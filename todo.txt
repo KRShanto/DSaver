@@ -65,3 +65,4 @@ x 2022-09-25 Change the button's styles. pri:A
 (B) Give an animation when any link is deleted +styles @Task
 (D) Increase the scope of this project. Turn this project into a note saving, file saving, file sharing, files hosting, note hosting, collaborating, http links saving etc....
 (A) Make a Popup component and put the createlink and editlink and displayerror into that.
+(A) Show a laoding bar (on the border of the button) when generating random links

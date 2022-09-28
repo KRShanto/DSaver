@@ -15,6 +15,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
+name = "dsaver-project-types"
+version = "0.1.0"
+dependencies = [
+ "js-sys",
+ "rand",
+ "serde",
+ "uuid",
+]
+
+[[package]]
 name = "getrandom"
 version = "0.2.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -68,16 +78,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0a2ca2c61bc9f3d74d2886294ab7b9853abd9c1ad903a3ac7815c58989bb7bab"
 dependencies = [
  "unicode-ident",
-]
-
-[[package]]
-name = "project-types"
-version = "0.1.0"
-dependencies = [
- "js-sys",
- "rand",
- "serde",
- "uuid",
 ]
 
 [[package]]

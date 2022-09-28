@@ -1,3 +1,3 @@
 fn main() {
-    yew::start_app::<src_yew::App>();
+    yew::start_app::<dsaver_frontend::App>();
 }

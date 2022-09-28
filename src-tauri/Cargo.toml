@@ -1,13 +1,12 @@
 [package]
-name = "app"
+name = "dsaver"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
-default-run = "app"
+description = "A data saving app"
+authors = ["KR Shanto <khalilorrahman2005@gmail.com>"]
+repository = "https://github.com/KRShanto/DSaver"
+default-run = "dsaver"
 edition = "2021"
-rust-version = "1.57"
+rust-version = "1.63"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -18,10 +17,10 @@ tauri-build = { version = "1.1.1", features = [] }
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 tauri = { version = "1.1.1", features = ["fs-create-dir", "fs-read-dir", "fs-read-file", "fs-write-file", "os-all", "path-all"] }
-url = "2.2.2"
-webpage = "1.4.0"
-project-types = {path="../project-types"}
-rand = "0.8.5"
+url = "2.2"
+webpage = "1.4"
+dsaver-project-types = {path="../project-types"}
+rand = "0.8"
 
 [features]
 # by default Tauri runs in production mode
