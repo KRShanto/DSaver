@@ -2,7 +2,6 @@ use crate::*;
 use rand::prelude::*;
 use webpage::{Webpage, WebpageOptions};
 
-// TODO: use tokio::spawn
 #[cfg(debug_assertions)]
 #[tauri::command]
 pub async fn generate() -> Vec<Link> {

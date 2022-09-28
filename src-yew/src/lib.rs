@@ -77,6 +77,7 @@ extern "C" {
     /// Generate some random links
     ///
     /// This function doesn't return anything
+    #[cfg(debug_assertions)]
     #[wasm_bindgen(js_name = "generateLink", catch)]
     pub async fn generate_link() -> Result<JsValue, JsValue>;
 }

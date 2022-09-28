@@ -15,15 +15,18 @@ pub fn sidebar() -> Html {
             }
         }>
             <div class="buttons">
-                <div class="divider">
-                    <button class="generate-link" onclick={
-                        |_| {
-                            spawn_local(async move {
-                                generate_link().await.unwrap();
-                            });
-                        }
-                    }>{"Generate"}</button>
-                </div>
+                if cfg!(debug_assertions) {
+                    <div class="divider">
+                        <button class="generate-link" onclick={
+                            |_| {
+                                #[cfg(debug_assertions)]
+                                spawn_local(async move {
+                                    generate_link().await.unwrap();
+                                });
+                            }
+                        }>{"Generate"}</button>
+                    </div>
+                }
 
                 <div class="divider">
                     <button class={classes!(
