@@ -34,7 +34,7 @@ x 2022-09-20 Make component for making forms pri:A
 (B) Show the logo of each browser in forms @Feature
 x 2022-09-20 Cancel button on form pri:A
 x 2022-09-13 Detect if the user clicks outside of the select div of the form, if so then remove the options div pri:A
-(A) Detect if the user clicks outside the form component, if so, remove the form component
+x 2022-09-28 Detect if the user clicks outside the form component, if so, remove the form component pri:A
 (C) Download video option @Feature
 (B) Comment @Task
 (C) Try to style form's labels with Rust instead of js @Task
@@ -56,7 +56,7 @@ x 2022-09-23 When the user opens the form, turn rest element's opacity low pri:A
 x 2022-09-25 Change the button's styles. pri:A
 (B) Show an error if the user doesn't have the browser while opening the link @Task
 (A) Return ErrorReporter struct when browser fails to open
-(A) Use tokio to generate random links
+(B) Use tokio to generate random links
 (A) create mixins scss
 (B) See if reading/writting code from Rust directly is fast or same
 (A) Iterate tags and at the same time, update it.
