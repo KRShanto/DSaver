@@ -46,9 +46,11 @@ impl Browser {
 
     pub fn open_in_windows(&self, url: &str) -> Result<(), Error> {
         let output = if let Some(name) = self.get_browser_name_windows() {
-            Command::new("start").args([name, url]).output()
+            Command::new("cmd")
+                .args(["/c", "start", name, url])
+                .output()
         } else {
-            Command::new("start").arg(url).output()
+            Command::new("cmd").args(["/c", "start", url]).output()
         };
 
         match output {

@@ -26,7 +26,7 @@ pub async fn validate_link(link: String) -> Result<Link, ErrorReporter> {
 
             Ok(Link {
                 id: link.id,
-                url: link.url,
+                url: req_info.http.url,
                 title,
                 domain: Some(domain.to_string()),
                 tags: link.tags,
