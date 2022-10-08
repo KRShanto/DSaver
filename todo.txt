@@ -67,3 +67,4 @@ x 2022-09-25 Change the button's styles. pri:A
 (A) Make a Popup component and put the createlink and editlink and displayerror into that.
 (A) Show a laoding bar (on the border of the button) when generating random links
 (A) Make custom title instead of using the `title` property
+(B) Handle error when browser not available in user's device. @BUGFIX

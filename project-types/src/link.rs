@@ -23,7 +23,6 @@ impl Link {
             id: Uuid::new_v4(),
             url,
             title: None,
-            domain: None,
             tags: Vec::new(),
             priority: 'A',
             browser: Browser::Default,
@@ -62,7 +61,6 @@ impl Link {
             id: Uuid::new_v4(),
             url,
             title: None,
-            domain: None,
             tags: Vec::new(),
             priority: 'A',
             browser: Browser::Default,
@@ -83,11 +81,6 @@ impl Link {
 
     pub fn title(mut self, title: Option<String>) -> Self {
         self.title = title;
-        self
-    }
-
-    pub fn domain(mut self, domain: Option<String>) -> Self {
-        self.domain = domain;
         self
     }
 
