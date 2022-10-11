@@ -1,22 +1,58 @@
+use rand::{
+    distributions::{Distribution, Standard},
+    Rng,
+};
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 use std::io::Error;
 use std::process::Command;
 
-use rand::{
-    distributions::{Distribution, Standard},
-    Rng,
-}; // 0.8.0
-
+/// Available browsers through which a link can be opened.
+///
+/// For opening browsers and links, it runs commands according to the operating system.
+///
+/// Each browser has each command to open a website.
+///
+/// For example to open in chrome, you need to type `google-chrome yourwebsite.com` and to open in firefox, you need to type `firefox yourwebsite.com` in linux platforms.
+///
+/// Thats why opening links in specific browsers has some limitations. For that reason this enum has created.
+///
+/// User can specify in which browser they want to open a link.
+///
+/// For example, the user could want to open Music releted videos/links in chrome. And the user could want to open educational videos/links in firefox.
+///
+/// So he has options to specify which browser he wants to open the link.
+///
+/// # Example
+///
+/// You can open a browser using the `open_in_{os}` methods.
+///
+/// ```ignore
+/// # use dsaver_project_types::Browser;
+/// #
+/// let browser = Browser::Firefox;
+///
+/// // open in windows
+/// browser.open_in_windows("youtube.com");
+/// // open in macos
+/// browser.open_in_macos("youtube.com");
+/// // open in linux platforms
+/// browser.open_in_linux("youtube.com");
+/// ```
 #[derive(Clone, Serialize, Debug, Deserialize, PartialEq, Eq, Hash)]
 pub enum Browser {
+    /// Firefox web browser
     Firefox,
+    /// Chrome web browser
     Chrome,
+    /// Brave web browser
     Brave,
+    /// User's default browser
     Default,
     // TODO: add more
 }
 
+// implementing Distribution<Browser> for generating random browsers.
 impl Distribution<Browser> for Standard {
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Browser {
         match rng.gen_range(0..=2) {
@@ -29,11 +65,6 @@ impl Distribution<Browser> for Standard {
 }
 
 impl Browser {
-    /*
-    NOTE:
-     If the command gives `NotFound`, then the browser might not be available on the system
-    */
-
     /// Get the available browsers
     pub fn get_vec() -> Vec<String> {
         vec![
@@ -44,6 +75,15 @@ impl Browser {
         ]
     }
 
+    /// Open the browser in Windows.
+    ///
+    /// For opening a link in windows, you need to run the command:
+    ///
+    /// ```shell
+    /// cmd \c start {browser} {url}
+    /// ```
+    ///
+    /// This function does the same thing. It runs the command and put the appropriate browser name and URL into the command.
     pub fn open_in_windows(&self, url: &str) -> Result<(), Error> {
         let output = if let Some(name) = self.get_browser_name_windows() {
             Command::new("cmd")
@@ -60,6 +100,15 @@ impl Browser {
         }
     }
 
+    /// Open the browser in linux platforms.
+    ///
+    /// For opening a link in linux, you need to run the command:
+    ///
+    /// ```shell
+    /// {browser} {url}
+    /// ```
+    ///
+    /// This function does the same thing. it runs the command and put the appropriate browser name and URL into the command.
     pub fn open_in_linux(&self, url: &str) -> Result<(), Error> {
         let output = if let Some(name) = self.get_browser_name_linux() {
             Command::new(name).arg(url).output()
@@ -75,6 +124,11 @@ impl Browser {
         }
     }
 
+    /// Open the browser in macOS.
+    ///
+    /// # Warning
+    ///
+    /// This function is not tested in any macOS platforms. So this function can have some issues.
     // WARNING: This function is not tested
     pub fn open_in_macos(&self, url: &str) -> Result<(), Error> {
         let output = if let Some(name) = self.get_browser_name_macos() {
@@ -90,6 +144,7 @@ impl Browser {
         }
     }
 
+    /// Get the browser name for windows environment for using it in command line for opening that browser.
     pub fn get_browser_name_windows(&self) -> Option<&str> {
         Some(match self {
             Self::Firefox => "firefox",
@@ -99,6 +154,7 @@ impl Browser {
         })
     }
 
+    /// Get the browser name for linux environment for using it in command line for opening that browser.
     pub fn get_browser_name_linux(&self) -> Option<&str> {
         Some(match self {
             Self::Firefox => "firefox",
@@ -108,6 +164,7 @@ impl Browser {
         })
     }
 
+    /// Get the browser name for macOS environment for using it in command line for opening that browser.
     pub fn get_browser_name_macos(&self) -> Option<&str> {
         Some(match self {
             Self::Firefox => "Firefox",
@@ -130,17 +187,47 @@ impl Display for Browser {
 }
 
 impl From<String> for Browser {
+    /// Instantiate a new Browser instance from the given `String`.
+    ///
+    /// You can use both lowercase and uppercase characters.
+    ///
+    /// For now, you have 3 options: `firefox`, `chrome` and `brave`. If you pass anything else, it will return the `Default` variant.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use dsaver_project_types::Browser;
+    /// #
+    /// let browser = Browser::from(String::from("firefox"));
+    ///
+    /// assert_eq!(browser, Browser::Firefox);
+    /// ```
     fn from(string: String) -> Self {
-        match string.as_str() {
-            "Firefox" | "firefox" => Browser::Firefox,
-            "Chrome" | "chrome" => Browser::Chrome,
-            "Brave" | "brave" => Browser::Brave,
+        match string.to_lowercase().as_str() {
+            "firefox" => Browser::Firefox,
+            "chrome" => Browser::Chrome,
+            "brave" => Browser::Brave,
             _ => Browser::Default,
         }
     }
 }
 
 impl From<&str> for Browser {
+    /// Instantiate a new Browser instance from the given `&str`
+    ///
+    /// You can use both lowercase and uppercase characters.
+    ///
+    /// For now, you have 3 options: `firefox`, `chrome` and `brave`. If you pass anything else, it will return the `Default` variant.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use dsaver_project_types::Browser;
+    /// #
+    /// let browser = Browser::from("firefox");
+    ///
+    /// assert_eq!(browser, Browser::Firefox);
+    /// ```
     fn from(string: &str) -> Self {
         match string {
             "Firefox" | "firefox" => Browser::Firefox,
@@ -151,6 +238,11 @@ impl From<&str> for Browser {
     }
 }
 
+/// Possible errors when opening a browser
+///
+/// # Warning
+///
+/// In future this enum will be removed. And `ErrorReporter` will be used.
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub enum BrowserOpenError {
     NotFound,

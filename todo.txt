@@ -70,3 +70,5 @@ x 2022-09-25 Change the button's styles. pri:A
 (B) Handle error when browser not available in user's device. @BUGFIX
 (A) Create a validate method inside `Link` sturct
 (B) Make a plugin system @Feature +plugin
+(A) Check if the browser is present in user's device or not before creating link. 
+(A) Test macos browser opening @BUG 
