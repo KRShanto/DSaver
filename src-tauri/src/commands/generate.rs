@@ -26,8 +26,8 @@ pub async fn generate() -> Vec<Link> {
 
         random_links.push(
             Link::new(rand_url)
-                .title(Some(req_info.html.title.unwrap_or_default()))
-                .tags(rand_tags)
+                .title(req_info.html.title.unwrap_or_default())
+                .tags_vec(rand_tags)
                 .browser(browser)
                 .priority(priority)
                 .date(String::from("September 15, 2022")),

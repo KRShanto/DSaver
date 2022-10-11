@@ -70,13 +70,6 @@ pub fn editlink() -> Html {
         let browser = browser_value.to_string();
         let url = url.clone();
 
-        // tag's defualt value
-        let tags = if tags.is_empty() {
-            "GeneralLink".to_string()
-        } else {
-            tags
-        };
-
         move |_| {
             let new_link = Link {
                 id: editing_link.id,

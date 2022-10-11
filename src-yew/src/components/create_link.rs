@@ -1,5 +1,4 @@
 use crate::*;
-use itertools::Itertools;
 
 #[function_component(CreateLink)]
 pub fn new() -> Html {
@@ -60,23 +59,16 @@ pub fn new() -> Html {
 
             let display_error_data = display_error_data.clone();
 
-            // tag's defualt value
-            let tags = if tags.is_empty() {
-                "GeneralLink".to_string()
-            } else {
-                tags
-            };
-
             let link = Link::new_with_date(url)
-                .title(title.is_empty().then(|| None).unwrap_or(Some(title)))
-                .tags(
-                    tags.split_whitespace()
-                        .map(|s| s.to_string())
-                        .unique()
-                        .collect(),
-                )
+                .tags(tags)
                 .priority(priority.parse().unwrap())
                 .browser(Browser::from(browser));
+
+            let link = if title.is_empty() {
+                link
+            } else {
+                link.title(title)
+            };
 
             let links = links.clone();
             let popup_box_state = popup_box_state.clone();

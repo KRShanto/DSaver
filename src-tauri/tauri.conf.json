@@ -1,6 +1,6 @@
 {
   "package": {
-    "productName": "dsaver",
+    "productName": "DSaver",
     "version": "0.1.0"
   },
   "build": {
@@ -27,7 +27,7 @@
       "copyright": "",
       "category": "Productivity",
       "shortDescription": "A data saving app",
-      "longDescription": "",
+      "longDescription": "Dsaver is a data saving where you can save any website's links. Share them with others. You can also communicate with others too.",
       "deb": {
         "depends": []
       },

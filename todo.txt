@@ -68,3 +68,5 @@ x 2022-09-25 Change the button's styles. pri:A
 (A) Show a laoding bar (on the border of the button) when generating random links
 (A) Make custom title instead of using the `title` property
 (B) Handle error when browser not available in user's device. @BUGFIX
+(A) Create a validate method inside `Link` sturct
+(B) Make a plugin system @Feature +plugin

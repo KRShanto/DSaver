@@ -3,7 +3,7 @@
 // NOTE: If you want to send data to backend, you need to serialize it to JSON string and then in backend deserialize it to Rust object via `serde_json::from_str()`
 
 // The directory to store data from the app
-const ROOT_DIR = ".link-saver";
+const ROOT_DIR = ".DSaver";
 
 
 // Store data in the file system. It will return Option<String>. If it returns None, it means success. Else it means error. 
@@ -21,7 +21,6 @@ export async function storeData(fullData) {
         console.log("ERROR: ", error);
         return JSON.stringify(error);
     }
-
 }
 
 // Add data in the file system. It will return Option<String>. It will always return String. The string can be used by by parsing it from json to Rust structs. If this function successfully adds the data, then it will return `Link`. If any error occur, it will probably return `ErrorReporter`.

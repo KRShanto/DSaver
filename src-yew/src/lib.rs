@@ -1,3 +1,5 @@
+#![allow(clippy::let_unit_value)]
+
 pub use std::collections::HashMap;
 
 pub use dsaver_project_types::*;
