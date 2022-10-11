@@ -39,7 +39,7 @@ use std::process::Command;
 /// // open in linux platforms
 /// browser.open_in_linux("youtube.com");
 /// ```
-#[derive(Clone, Serialize, Debug, Deserialize, PartialEq, Eq, Hash)]
+#[derive(Clone, Serialize, Debug, Deserialize, PartialEq, Eq, Hash, Default)]
 pub enum Browser {
     /// Firefox web browser
     Firefox,
@@ -48,7 +48,8 @@ pub enum Browser {
     /// Brave web browser
     Brave,
     /// User's default browser
-    Default,
+    #[default]
+    SysDefault,
     // TODO: add more
 }
 
@@ -58,7 +59,7 @@ impl Distribution<Browser> for Standard {
         match rng.gen_range(0..=2) {
             0 => Browser::Firefox,
             1 => Browser::Chrome,
-            2 => Browser::Default,
+            2 => Browser::SysDefault,
             _ => Browser::Brave,
         }
     }
@@ -150,7 +151,7 @@ impl Browser {
             Self::Firefox => "firefox",
             Self::Chrome => "chrome",
             Self::Brave => "brave",
-            Self::Default => return None,
+            Self::SysDefault => return None,
         })
     }
 
@@ -160,7 +161,7 @@ impl Browser {
             Self::Firefox => "firefox",
             Self::Chrome => "google-chrome",
             Self::Brave => "brave-browser",
-            Self::Default => return None,
+            Self::SysDefault => return None,
         })
     }
 
@@ -170,7 +171,7 @@ impl Browser {
             Self::Firefox => "Firefox",
             Self::Chrome => "Google Chrome",
             Self::Brave => "Brave Browser",
-            Self::Default => return None,
+            Self::SysDefault => return None,
         })
     }
 }
@@ -181,7 +182,7 @@ impl Display for Browser {
             Self::Firefox => f.write_str("Firefox"),
             Self::Chrome => f.write_str("Chrome"),
             Self::Brave => f.write_str("Brave"),
-            Self::Default => f.write_str("Default Browser"),
+            Self::SysDefault => f.write_str("Default Browser"),
         }
     }
 }
@@ -207,7 +208,7 @@ impl From<String> for Browser {
             "firefox" => Browser::Firefox,
             "chrome" => Browser::Chrome,
             "brave" => Browser::Brave,
-            _ => Browser::Default,
+            _ => Browser::SysDefault,
         }
     }
 }
@@ -233,7 +234,7 @@ impl From<&str> for Browser {
             "Firefox" | "firefox" => Browser::Firefox,
             "Chrome" | "chrome" => Browser::Chrome,
             "Brave" | "brave" => Browser::Brave,
-            _ => Browser::Default,
+            _ => Browser::SysDefault,
         }
     }
 }

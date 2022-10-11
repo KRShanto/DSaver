@@ -169,7 +169,7 @@ impl Link {
     /// assert_eq!(link.url, "http://example.com".to_string());
     /// assert_eq!(link.title, None);
     /// assert_eq!(link.tags, vec!["GeneralTag".to_string()]);
-    /// assert_eq!(link.browser, Browser::Default);
+    /// assert_eq!(link.browser, Browser::SysDefault);
     /// assert_eq!(link.priority, 'A');
     /// assert_eq!(link.complete, false);
     /// assert_eq!(link.date, String::new());    
@@ -181,7 +181,7 @@ impl Link {
             title: None,
             tags: vec![String::from("GeneralTag")],
             priority: 'A',
-            browser: Browser::Default,
+            browser: Browser::default(),
             complete: false,
             date: String::from(""),
         }
@@ -226,7 +226,7 @@ impl Link {
             title: None,
             tags: vec![String::from("GeneralTag")],
             priority: 'A',
-            browser: Browser::Default,
+            browser: Browser::SysDefault,
             complete: false,
             date,
         }
@@ -358,7 +358,7 @@ impl Link {
     /// let link = Link::new("http://example.com");
     ///
     /// // before changing the browser
-    /// assert_eq!(link.browser, Browser::Default);
+    /// assert_eq!(link.browser, Browser::SysDefault);
     ///
     /// // change
     /// let link = link.browser(Browser::Chrome);
