@@ -1,3 +1,5 @@
+//! Useful tauri commands for building the application.
+
 #[cfg(debug_assertions)]
 mod generate;
 mod open_browser;

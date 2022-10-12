@@ -230,10 +230,10 @@ impl From<&str> for Browser {
     /// assert_eq!(browser, Browser::Firefox);
     /// ```
     fn from(string: &str) -> Self {
-        match string {
-            "Firefox" | "firefox" => Browser::Firefox,
-            "Chrome" | "chrome" => Browser::Chrome,
-            "Brave" | "brave" => Browser::Brave,
+        match string.to_lowercase().as_str() {
+            "firefox" => Browser::Firefox,
+            "chrome" => Browser::Chrome,
+            "brave" => Browser::Brave,
             _ => Browser::SysDefault,
         }
     }
