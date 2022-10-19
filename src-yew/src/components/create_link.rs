@@ -5,17 +5,18 @@ pub fn new() -> Html {
     let links = use_context::<LinksState>().unwrap().0;
     let displayed_tags = use_context::<DisplayedTagsState>().unwrap().0;
     let popup_box_state = use_context::<PopupBoxState>().unwrap().0;
-    let popup_box_ready_state = use_context::<PopupBoxReadyState>().unwrap().0;
 
     let display_error_data = use_context::<DisplayErrorData>().unwrap().0;
 
     let url_value = use_state(String::new);
     let title_value = use_state(String::new);
+    let desc_value = use_state(String::new);
     let tags_value = use_state(String::new);
     let priority_value = use_state(|| String::from("A"));
     let browser_value = use_state(|| String::from("Default"));
 
     let title_disabled = use_state(|| true);
+    let desc_disabled = use_state(|| true);
 
     // previously created tags || tags that matches tags from `displayed_tags`
     let previously_matched_tags = use_state(Vec::new);
@@ -24,28 +25,10 @@ pub fn new() -> Html {
         .map(|c| char::from(c).to_string())
         .collect::<Vec<String>>();
 
-    use_effect_with_deps(
-        move |_| {
-            {
-                let popup_box_ready_state = popup_box_ready_state.clone();
-                set_timeout(
-                    move || {
-                        console_log!("Timeout complete");
-                        popup_box_ready_state.set(true);
-                    },
-                    100, // useing a timeout. bcz if we change this immediately, it won't be beneficial.
-                )
-                .unwrap();
-            }
-
-            move || popup_box_ready_state.set(false)
-        },
-        (),
-    );
-
     let onclick = Callback::from({
         let url = url_value.trim().to_string();
         let title = title_value.trim().to_string();
+        let description = desc_value.trim().to_string();
         let tags = tags_value.to_string();
         let priority = priority_value.to_string();
         let browser = browser_value.to_string();
@@ -53,6 +36,7 @@ pub fn new() -> Html {
         move |_| {
             let url = url.clone();
             let title = title.clone();
+            let description = description.clone();
             let tags = tags.clone();
             let priority = priority.clone();
             let browser = browser.clone();
@@ -70,8 +54,15 @@ pub fn new() -> Html {
                 link.title(title)
             };
 
+            let link = if description.is_empty() {
+                link
+            } else {
+                link.description(description)
+            };
+
             let links = links.clone();
             let popup_box_state = popup_box_state.clone();
+
             spawn_local(async move {
                 // hide the component
                 popup_box_state.set(PopupBox::None);
@@ -189,101 +180,124 @@ pub fn new() -> Html {
     }
 
     html! {
-        <Form title="Create a new link" id="create-link" {onclick} button_text="Add">
+        <Popup title="Create a new link" id="create-link">
+            <Form id="create-link" {onclick} button_text="Add">
 
-            <InputWrapper id="create-url">
-                <InputDiv>
-                    <Label text="Url of the webpage"></Label>
-                    <Input value_state={url_value}/>
-                </InputDiv>
-            </InputWrapper>
+                <InputWrapper id="create-url">
+                    <InputDiv>
+                        <Label text="Url of the webpage"></Label>
+                        <Input value_state={url_value}/>
+                    </InputDiv>
+                </InputWrapper>
 
-            <InputWrapper id="create-title">
-                <InputDiv>
-                    <Label text="Title of the webpage"></Label>
-                    <Input
-                        value_state={title_value.clone()}
-                        options={
-                            UseInputOptions::permission(
-                                if *title_disabled {
-                                    InputPermission::Disabled
-                                } else {
-                                    InputPermission::default()
-                            })
+                <InputWrapper id="create-title">
+                    <InputDiv>
+                        <Label text="Title of the webpage"></Label>
+                        <Input
+                            value_state={title_value.clone()}
+                            options={
+                                UseInputOptions::permission(
+                                    if *title_disabled {
+                                        InputPermission::Disabled
+                                    } else {
+                                        InputPermission::default()
+                                })
+                            }
+                        />
+                    </InputDiv>
+                    <Checkbox
+                        label_text="Get the title from the webpage"
+                        input_value_is_empty={(*title_value).is_empty()}
+                        disabled={title_disabled}
+                    />
+                </InputWrapper>
+
+                <InputWrapper id="create-description">
+                    <InputDiv>
+                        <Label text="Description of the webpage"></Label>
+                        <Input
+                            value_state={desc_value.clone()}
+                            options={
+                                UseInputOptions::permission(
+                                    if *desc_disabled {
+                                        InputPermission::Disabled
+                                    } else {
+                                        InputPermission::default()
+                                })
+                            }
+                        />
+                    </InputDiv>
+                    <Checkbox
+                        label_text="Get the description from the webpage"
+                        input_value_is_empty={(*desc_value).is_empty()}
+                        disabled={desc_disabled}
+                    />
+                </InputWrapper>
+
+                <InputWrapper id="create-tags">
+                    <InputDiv>
+                        <Label text="Tags">
+                            <span>{"(separate with spaces)"}</span>
+                        </Label>
+                        <Input value_state={tags_value.clone()} />
+                    </InputDiv>
+
+                    <InputTags
+                        label_text="Current tags"
+                        id="current-tags"
+                        tags_values={tags_value.split_whitespace().map(|s| s.to_string()).collect::<Vec<String>>()}
+                    />
+
+                    <InputTags
+                        id="previous-tags"
+                        label_text="Previous tags"
+                        tags_values={(*previously_matched_tags).clone()}
+                        tag_type={
+                            TagsType::Button(Callback::from(
+                                move |args: (MouseEvent, String)| {
+                                    let (_, tag) = args;
+                                    // tags's value
+                                    let previous_tags_value = (*tags_value).clone();
+
+                                    // split the tags by whitespace
+                                    let mut previous_tags_value_splitted: Vec<&str> =
+                                        previous_tags_value.split_whitespace().collect();
+
+                                    // replace the `tag` with the last element in the previous_tags_value_splitted
+                                    previous_tags_value_splitted.pop();
+                                    previous_tags_value_splitted.push(&tag);
+
+                                    // set the tags_value to update the tag's value
+                                    tags_value.set(previous_tags_value_splitted.join(" "));
+
+                                    // focus on the input
+                                    focus_tag("input-create-tags");
+                                }
+                            ))
                         }
                     />
-                </InputDiv>
-                <Checkbox
-                    class="title"
-                    label_text="Get the title from the webpage"
-                    input_value_is_empty={(*title_value).is_empty()}
-                    disabled={title_disabled}
-                />
-            </InputWrapper>
+                </InputWrapper>
 
-            <InputWrapper id="create-tags">
-                <InputDiv>
-                    <Label text="Tags">
-                        <span>{"(separate with spaces)"}</span>
-                    </Label>
-                    <Input value_state={tags_value.clone()} />
-                </InputDiv>
+                <Select>
+                    <SelectLabel text="Priority of the link" />
+                    <Box
+                        list={priority_list}
+                        class="priority-div"
+                        id="priority-div"
+                        value_state={priority_value}
+                    />
+                </Select>
 
-                <InputTags
-                    label_text="Current tags"
-                    id="current-tags"
-                    tags_values={tags_value.split_whitespace().map(|s| s.to_string()).collect::<Vec<String>>()}
-                />
-
-                <InputTags
-                    id="previous-tags"
-                    label_text="Previous tags"
-                    tags_values={(*previously_matched_tags).clone()}
-                    tag_type={
-                        TagsType::Button(Callback::from(
-                            move |args: (MouseEvent, String)| {
-                                let (_, tag) = args;
-                                // tags's value
-                                let previous_tags_value = (*tags_value).clone();
-
-                                // split the tags by whitespace
-                                let mut previous_tags_value_splitted: Vec<&str> =
-                                    previous_tags_value.split_whitespace().collect();
-
-                                // replace the `tag` with the last element in the previous_tags_value_splitted
-                                previous_tags_value_splitted.pop();
-                                previous_tags_value_splitted.push(&tag);
-
-                                // set the tags_value to update the tag's value
-                                tags_value.set(previous_tags_value_splitted.join(" "));
-
-                                // focus on the input
-                                focus_tag("input-create-tags");
-                            }
-                        ))
-                    }
-                />
-            </InputWrapper>
-
-            <Select>
-                <SelectLabel text="Priority of the link" />
-                <Box
-                    list={priority_list}
-                    class="priority-div"
-                    id="priority-div"
-                    value_state={priority_value}
-                />
-            </Select>
-
-            <Select>
-                <SelectLabel text="From which browser you want to open this link" />
-                <Box
-                    list={Browser::get_vec()}
-                    class="browser-div"
-                    id="browser-div"
-                    value_state={browser_value}
-                />
-            </Select>
-        </Form>
+                <Select>
+                    <SelectLabel text="From which browser you want to open this link" />
+                    <Box
+                        list={Browser::get_vec()}
+                        class="browser-div"
+                        id="browser-div"
+                        value_state={browser_value}
+                    />
+                </Select>
+            </Form>
+        </Popup>
     }
 }

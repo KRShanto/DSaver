@@ -2,7 +2,6 @@ use crate::*;
 
 #[derive(Properties, PartialEq, Clone)]
 pub struct CheckboxProps {
-    pub class: String,
     pub label_text: String,
     pub input_value_is_empty: bool,
     pub disabled: UseStateHandle<bool>,
@@ -11,7 +10,6 @@ pub struct CheckboxProps {
 #[function_component(Checkbox)]
 pub fn checkbox(props: &CheckboxProps) -> Html {
     let CheckboxProps {
-        class,
         label_text,
         input_value_is_empty,
         disabled,
@@ -45,7 +43,7 @@ pub fn checkbox(props: &CheckboxProps) -> Html {
                         }
                     }
                 }</div>
-                <p class={format!("checkmark-{}", class)}>{label_text}</p>
+                <p class="checkmark-title">{label_text}</p>
             </div>
         </>
     }

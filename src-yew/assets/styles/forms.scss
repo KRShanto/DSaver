@@ -1,18 +1,7 @@
 .form {
-    position: fixed;
-    left: 50%;
-    top: 30%;
-    transform: translate(-50%, -50%);
-    width: 40%;
-    margin: 0 auto;
-    padding: 10px 30px;
-    border-radius: 10px;
-    background-color: rgb(1, 1, 21);
-    box-shadow: 0 0 5px white;
-
-    .form-title {
-        text-align: center;
-    }
+    // .form-title {
+    //     text-align: center;
+    // }
 
     .form-wrapper {
         margin: 10px 0;
@@ -22,7 +11,6 @@
         .label {
             font-size: 18px;
             font-weight: bold;
-
         }
 
         .label.active {
@@ -63,31 +51,32 @@
         }
     }
 
-    #create-title-wrapper,
-    #edit-title-wrapper {
+    // #create-title-wrapper,
+    // #edit-title-wrapper {
 
-        .checkbox {
-            margin-top: 5px;
-            display: flex;
+    .checkbox {
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .checkmark {
             align-items: center;
-            cursor: pointer;
+            display: inline-flex;
 
-            .checkmark {
-                align-items: center;
-                display: inline-flex;
-
-                img {
-                    height: 18px;
-                }
-
+            img {
+                height: 18px;
             }
 
-            .checkmark-title {
-                display: inline-block;
-                margin-left: 5px;
-            }
+        }
+
+        .checkmark-title {
+            display: inline-block;
+            margin-left: 5px;
         }
     }
+
+    // }
 
     #create-tags-wrapper,
     #edit-tags-wrapper {
@@ -255,9 +244,4 @@
     }
 
 
-}
-
-.form.hide {
-    transition: 0.5s;
-    top: -50%;
 }

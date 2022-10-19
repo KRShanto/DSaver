@@ -94,7 +94,7 @@ pub fn show_links() -> Html {
                                         html! {
                                             <div class="link">
                                                 <div class="link-head">
-                                                    <h3 class="title">{link.title.as_ref().unwrap_or(&String::new())}</h3>
+                                                    <h3 class="title">{link.title.clone().unwrap()}</h3>
                                                     <div class="icon" onclick={
                                                         let display_link_body = display_link_body.clone();
                                                         move |_| {
@@ -136,6 +136,7 @@ pub fn show_links() -> Html {
                                                     <div class="info">
                                                         <p class="url">{&link.url}</p>
                                                         // TODO: copy button
+                                                        <p class="description">{link.description.clone().unwrap()}</p>
                                                         <ul class="tags">
                                                             {
                                                             link.tags.iter().map(|tag| {
@@ -153,7 +154,7 @@ pub fn show_links() -> Html {
                                                             let popup_box_state = popup_box_state.clone();
                                                             let editing_link_id = editing_link_id.clone();
                                                             move |_| {
-                                                                editing_link_id.set(Some(link.id));
+                                                                editing_link_id.set(Some(link.id.unwrap()));
                                                                 popup_box_state.set(PopupBox::EditLink);
 
                                                             }
@@ -195,7 +196,7 @@ pub fn show_links() -> Html {
                                                             move |_| {
                                                                 // Delete this link's EditLink component
                                                                 if let Some(id) = *editing_link_id {
-                                                                    if id == link.id {
+                                                                    if id == link.id.unwrap() {
                                                                         popup_box_state.set(PopupBox::None);
                                                                         editing_link_id.set(None);
                                                                     }

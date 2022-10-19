@@ -7,19 +7,19 @@ pub fn editlink() -> Html {
     let editing_link_id = use_context::<EditingLinkIdState>().unwrap().0;
     let editing_link = (links)
         .iter()
-        .find(|link| link.id == (*editing_link_id).unwrap())
+        .find(|link| link.id.unwrap() == (*editing_link_id).unwrap())
         .unwrap()
         .clone();
     let editing_link_position = (*links)
         .iter()
-        .position(|link| link.id == (*editing_link_id).unwrap())
+        .position(|link| link.id.unwrap() == (*editing_link_id).unwrap())
         .unwrap();
 
     let popup_box_state = use_context::<PopupBoxState>().unwrap().0;
-    let popup_box_ready_state = use_context::<PopupBoxReadyState>().unwrap().0;
 
     let url = editing_link.url.clone();
     let title_value = use_state(|| editing_link.title.clone().unwrap());
+    let desc_value = use_state(|| editing_link.description.clone().unwrap());
     let tags_value = use_state(String::new); // it will be updated when the component is ready. If we use the initial value, then it throws some errors (I don't know exactly why).
     let priority_value = use_state(|| editing_link.priority.to_string());
     let browser_value = use_state(|| editing_link.browser.to_string());
@@ -37,25 +37,6 @@ pub fn editlink() -> Html {
         );
     }
 
-    use_effect_with_deps(
-        move |_| {
-            {
-                let popup_box_ready_state = popup_box_ready_state.clone();
-                set_timeout(
-                    move || {
-                        console_log!("Timeout complete");
-                        popup_box_ready_state.set(true);
-                    },
-                    100, // useing a timeout. bcz if we change this immediately, it won't be beneficial.
-                )
-                .unwrap();
-            }
-
-            move || popup_box_ready_state.set(false)
-        },
-        (),
-    );
-
     // previously created tags || tags that matches tags from `displayed_tags`
     let previously_matched_tags = use_state(Vec::new);
 
@@ -65,6 +46,7 @@ pub fn editlink() -> Html {
 
     let onclick = Callback::from({
         let title = title_value.to_string();
+        let description = desc_value.to_string();
         let priority = priority_value.to_string();
         let tags = tags_value.to_string();
         let browser = browser_value.to_string();
@@ -75,6 +57,7 @@ pub fn editlink() -> Html {
                 id: editing_link.id,
                 url: url.clone(),
                 title: Some(title.clone()),
+                description: Some(description.to_string()),
                 tags: tags.split_whitespace().map(|s| s.to_string()).collect(),
                 priority: priority.chars().next().unwrap(),
                 browser: Browser::from(browser.clone()),
@@ -150,90 +133,96 @@ pub fn editlink() -> Html {
     }
 
     html! {
-        <>
-        <Form title="Edit your link" id="edit-link" {onclick} button_text={"Update"}>
-            <InputWrapper id="edit-url">
-                <InputDiv>
-                    <Label text="Url of the webpage"></Label>
-                    <Input
-                        init_value={url}
-                        options={UseInputOptions::permission(InputPermission::ReadOnly)}
+        <Popup title="Edit your link" id="edit-link">
+            <Form  id="edit-link" {onclick} button_text={"Update"}>
+                <InputWrapper id="edit-url">
+                    <InputDiv>
+                        <Label text="Url of the webpage"></Label>
+                        <Input
+                            init_value={url}
+                            options={UseInputOptions::permission(InputPermission::ReadOnly)}
+                        />
+                    </InputDiv>
+                </InputWrapper>
+
+                <InputWrapper id="edit-title">
+                    <InputDiv>
+                        <Label text="Title of the webpage"/>
+                        <Input value_state={title_value} />
+                    </InputDiv>
+                </InputWrapper>
+
+                <InputWrapper id="edit-description">
+                    <InputDiv>
+                        <Label text="Description of the webpage" />
+                        <Input value_state={desc_value} />
+                    </InputDiv>
+                </InputWrapper>
+
+                <InputWrapper id="edit-tags">
+                    <InputDiv>
+                        <Label text="Tags">
+                            <span>{" (separate with spaces)"}</span>
+                        </Label>
+                        <Input value_state={tags_value.clone()} />
+                    </InputDiv>
+
+                    <InputTags
+                        label_text="Current tags"
+                        id="current-tags"
+                        tags_values={tags_value.split_whitespace().map(|s| s.to_string()).collect::<Vec<String>>()}
                     />
-                </InputDiv>
-            </InputWrapper>
 
-            <InputWrapper id="edit-title">
-                <InputDiv>
-                    <Label text="Title of the webpage"/>
-                    <Input value_state={title_value} />
-                </InputDiv>
-            </InputWrapper>
+                    <InputTags
+                        id="previous-tags"
+                        label_text="Previous tags"
+                        tags_values={(*previously_matched_tags).clone()}
+                        tag_type={
+                            TagsType::Button(Callback::from(
+                                move |args: (MouseEvent, String)| {
+                                    let (_, tag) = args;
+                                    // tags's value
+                                    let previous_tags_value = (*tags_value).clone();
 
-            <InputWrapper id="edit-tags">
-                <InputDiv>
-                    <Label text="Tags">
-                        <span>{" (separate with spaces)"}</span>
-                    </Label>
-                    <Input value_state={tags_value.clone()} />
-                </InputDiv>
+                                    // split the tags by whitespace
+                                    let mut previous_tags_value_splitted: Vec<&str> =
+                                        previous_tags_value.split_whitespace().collect();
 
-                <InputTags
-                    label_text="Current tags"
-                    id="current-tags"
-                    tags_values={tags_value.split_whitespace().map(|s| s.to_string()).collect::<Vec<String>>()}
-                />
+                                    // replace the `tag` with the last element in the previous_tags_value_splitted
+                                    previous_tags_value_splitted.pop();
+                                    previous_tags_value_splitted.push(&tag);
 
-                <InputTags
-                    id="previous-tags"
-                    label_text="Previous tags"
-                    tags_values={(*previously_matched_tags).clone()}
-                    tag_type={
-                        TagsType::Button(Callback::from(
-                            move |args: (MouseEvent, String)| {
-                                let (_, tag) = args;
-                                // tags's value
-                                let previous_tags_value = (*tags_value).clone();
+                                    // set the tags_value to update the tag's value
+                                    tags_value.set(previous_tags_value_splitted.join(" "));
 
-                                // split the tags by whitespace
-                                let mut previous_tags_value_splitted: Vec<&str> =
-                                    previous_tags_value.split_whitespace().collect();
+                                    // focus on the input
+                                    focus_tag("input-edit-tags");
+                                }
+                            ))
+                        }
+                    />
+                </InputWrapper>
 
-                                // replace the `tag` with the last element in the previous_tags_value_splitted
-                                previous_tags_value_splitted.pop();
-                                previous_tags_value_splitted.push(&tag);
+                <Select>
+                    <SelectLabel text="Priority of the link" />
+                    <Box
+                        list={priority_list}
+                        class="priority-div"
+                        id="priority-div"
+                        value_state={priority_value}
+                    />
+                </Select>
 
-                                // set the tags_value to update the tag's value
-                                tags_value.set(previous_tags_value_splitted.join(" "));
-
-                                // focus on the input
-                                focus_tag("input-edit-tags");
-                            }
-                        ))
-                    }
-                />
-            </InputWrapper>
-
-            <Select>
-                <SelectLabel text="Priority of the link" />
-                <Box
-                    list={priority_list}
-                    class="priority-div"
-                    id="priority-div"
-                    value_state={priority_value}
-                />
-            </Select>
-
-            <Select>
-                <SelectLabel text="From which browser you want to open this link" />
-                <Box
-                    list={Browser::get_vec()}
-                    class="browser-div"
-                    id="browser-div"
-                    value_state={browser_value}
-                />
-            </Select>
-        </Form>
-
-        </>
+                <Select>
+                    <SelectLabel text="From which browser you want to open this link" />
+                    <Box
+                        list={Browser::get_vec()}
+                        class="browser-div"
+                        id="browser-div"
+                        value_state={browser_value}
+                    />
+                </Select>
+            </Form>
+        </Popup>
     }
 }

@@ -1,0 +1,38 @@
+.popup {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 40%;
+    margin: 0 auto;
+    padding: 10px 30px;
+    border-radius: 10px;
+    background-color: rgb(1, 1, 21);
+    box-shadow: 0 0 5px white;
+
+    .popup-title {
+        text-align: center;
+    }
+
+    // TODO: Imporve it later
+    .cancel {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+}
+
+
+
+.popup.hide {
+    transition: 0.5s;
+    top: -50%;
+}
