@@ -13,7 +13,7 @@ x 2022-08-27 Use contexts instead of passing by props over and over again pri:A 
 (B) Try to remove `clone()`s from codes @Task @BeforePublish
 (C) Make unit tests @Task
 x 2022-08-31 Remove duplicate tags when creating  links pri:A
-(A) Check why `cargo doc` is not working
+(C) Check why `cargo doc` is not working
 (C) keyboard shortcuts @Feature
 (C) Make a browser extension who can run the commands/cli to add a link from browser +Cli @Feature
 x 2022-09-03 Get the domain name pri:A
@@ -48,7 +48,7 @@ x 2022-09-20 If the EditLink component is opend, and the user deletes that link,
 (B) animate the form when rendering (just like when hiding) +styles @Task
 x 2022-09-27 Hide all links infos, just show the title... When the user double clicks on the link on the browser, When the user right click, show some options (open, edit, delete, etc..),Give an option to toggle "show full details". pri:A
 (B) Filter by domain name @Feature
-(B) Button to generate random links for development only @Task
+x 2022-10-19 Button to generate random links for development only pri:B @Task
 x 2022-09-23 When the user opens the form, turn rest element's opacity low pri:A
 (B) Give a message or show something when the user won't have any links @Task
 (A) Show a loading bar while link in validating
@@ -56,7 +56,7 @@ x 2022-09-23 When the user opens the form, turn rest element's opacity low pri:A
 x 2022-09-25 Change the button's styles. pri:A
 (B) Show an error if the user doesn't have the browser while opening the link @Task
 (A) Return ErrorReporter struct when browser fails to open
-(B) Use tokio to generate random links
+(D) Use tokio to generate random links
 (A) create mixins scss
 (B) See if reading/writting code from Rust directly is fast or same
 (A) Iterate tags and at the same time, update it.
@@ -75,3 +75,4 @@ x 2022-10-17 Make a Popup component and put the createlink and editlink and disp
 (A) Use `textarea` for editing discriptions
 (B) Check all documentation @BeforePublish 
 (A) Change the command name `validate_link` to `fetch_link`
+(B) Change tag option. When user changes a tag, then change all link's tag  @Feature
