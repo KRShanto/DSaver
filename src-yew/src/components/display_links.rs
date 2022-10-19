@@ -97,9 +97,17 @@ pub fn show_links() -> Html {
                                                     <div class="title-area" ondblclick={
                                                         let browser = link.browser.clone();
                                                         let url = link.url.clone();
+                                                        let display_link_body = display_link_body.clone();
 
                                                         move |_| {
-                                                            open_user_browser(url.clone(), browser.clone());
+                                                            // if current link is not opened, then open the browser on dblclick
+                                                            if let Some(display) = *display_link_body {
+                                                                if display != (display_link_index - 1) {
+                                                                    open_user_browser(url.clone(), browser.clone());
+                                                                }
+                                                            } else {
+                                                                open_user_browser(url.clone(), browser.clone());
+                                                            }
                                                         }
                                                 }   >
                                                         <h3 class="title">{link.title.clone().unwrap()}</h3>
