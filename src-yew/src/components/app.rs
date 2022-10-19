@@ -1,7 +1,18 @@
 use crate::*;
 
+/// State of collection of [`Link`]s.
+/// 
+/// This state will be used everywhere in the app.
+/// 
+/// So if you need to update/change/delete/add the list of links in frontend, you should update this state.
 #[derive(Clone, PartialEq)]
 pub struct LinksState(pub UseStateHandle<Vec<Link>>);
+
+/// The `id` of the link who is selected for editing
+/// 
+/// When the user selects a link to edit, the id of that link will be store in this state so that other components can know that which [`Link`] to edit and display.
+/// 
+/// If the value is `None`, it means that no link is selected.
 #[derive(Clone, PartialEq)]
 pub struct EditingLinkIdState(pub UseStateHandle<Option<Uuid>>);
 
