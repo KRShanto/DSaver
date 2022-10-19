@@ -39,7 +39,7 @@ use uuid::Uuid;
 ///     }
 /// }
 /// ```
-/// And in your rust code call the js function
+/// And in your rust frontend code call the js function
 ///
 /// ```ignore
 /// #[wasm_bindgen(module = "/assets/scripts/write.js")]
@@ -78,7 +78,17 @@ use uuid::Uuid;
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Hash, Eq)]
 pub struct Link {
     /// Unique identifier for this link
-    pub id: Uuid,
+    ///
+    /// # Warning
+    ///
+    /// This shouldn't be `None` when getting it from the filesystem.
+    ///
+    /// If the value of it is `None`, it means that the link is not saved in the filesystem
+    ///
+    /// If the value is `Some(Uuid)`, it means that either the link is not saved in the filesystem or the link is saved.
+    ///
+    /// So before saving it, make sure that it `Some(_)`
+    pub id: Option<Uuid>,
     /// HTTP url of the web page
     ///
     /// This must be a valid URL. You should validate the url before saving the link into filesystem.
@@ -88,6 +98,8 @@ pub struct Link {
     /// This tag can be automatically fetched from the website by validating the link.
     ///
     /// Or user can use his/her own title.
+    ///
+    /// # Warning
     ///
     /// It shouldn't be `None` when you are saving the link.
     ///
@@ -103,6 +115,26 @@ pub struct Link {
     ///
     /// And if the value is Some("some title"), it means that the title has already been fetched and the website has a title.
     pub title: Option<String>,
+    /// Description of the webapage
+    ///
+    /// This tag can be automatically fetched from the website by the link.
+    ///
+    /// Or user can use his/her own description.
+    ///
+    /// # Warning
+    ///
+    /// It shouldn't be `None` when you are saving the link.
+    ///
+    /// Otherwise, you will get an error when you try to fetch the link.
+    ///
+    /// If the website desn't have a description, then it will be empty.
+    ///
+    /// Note that if the value is `None`, it means that the description has not yet fetched.
+    ///
+    /// And if the value is Some(""), it means that the the description has already been fetched but the website has empty title.
+    ///
+    /// And if the value is Some("some description"), it means that the description has already been fetched and the website has a description.
+    pub description: Option<String>,
     /// Tags for the link
     ///
     /// Tag is like a directory where you can structure your multiple files inside a directory. And you go to that specific directory to see only those files that you saved inside that directory.
@@ -176,9 +208,10 @@ impl Link {
     /// ```
     pub fn new<T: AsRef<str> + Display>(url: T) -> Self {
         Link {
-            id: Uuid::new_v4(),
+            id: Some(Uuid::new_v4()),
             url: url.to_string(),
             title: None,
+            description: None,
             tags: vec![String::from("GeneralTag")],
             priority: 'A',
             browser: Browser::default(),
@@ -221,9 +254,10 @@ impl Link {
         );
 
         Link {
-            id: Uuid::new_v4(),
+            id: Some(Uuid::new_v4()),
             url: url.to_string(),
             title: None,
+            description: None,
             tags: vec![String::from("GeneralTag")],
             priority: 'A',
             browser: Browser::SysDefault,
@@ -252,6 +286,29 @@ impl Link {
     /// ```
     pub fn title<T: AsRef<str> + Display>(mut self, title: T) -> Self {
         self.title = Some(title.to_string());
+        self
+    }
+
+    /// Change the `description` field of the link
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// # use dsaver_project_types::Link;
+    /// #
+    /// let link = Link::new("http://example.com");
+    ///
+    /// // before changing the description
+    /// assert_eq!(link.description, None);
+    ///
+    /// // change
+    /// let link = link.description("An example website. You can find lots of examples in it");
+    ///
+    /// // after changing the description
+    /// assert_eq!(link.description, Some("An example website. You can find lots of examples in it".to_string()));
+    /// ```
+    pub fn description<T: AsRef<str> + Display>(mut self, description: T) -> Self {
+        self.description = Some(description.to_string());
         self
     }
 
