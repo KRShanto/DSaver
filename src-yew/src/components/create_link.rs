@@ -174,7 +174,7 @@ pub fn new() -> Html {
                 <InputWrapper id="create-url">
                     <InputDiv>
                         <Label text="Url of the webpage"></Label>
-                        <Input value_state={url_value}/>
+                        <Input value_state={url_value} init_focus={true}/>
                     </InputDiv>
                 </InputWrapper>
 

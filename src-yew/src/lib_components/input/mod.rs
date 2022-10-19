@@ -23,6 +23,8 @@ pub struct InputProps {
     pub options: UseInputOptions,
     #[prop_or_default]
     pub init_value: String,
+    #[prop_or_default]
+    pub init_focus: bool,
 }
 
 #[function_component(Input)]
@@ -33,10 +35,12 @@ pub fn input(props: &InputProps) -> Html {
         value_state,
         options,
         init_value,
+        init_focus,
     } = (*props).clone();
 
     // the class and id will come from the parent `InputDiv`
     let id = use_context::<InputId>().unwrap().0;
+    let id = format!("input-{}", id);
 
     let UseInputOptions {
         input_type,
@@ -53,12 +57,16 @@ pub fn input(props: &InputProps) -> Html {
             move |_| {
                 if let Some(state) = value_state {
                     if !(*state).is_empty() {
-                        label_up(&format!("input-{}", id));
+                        label_up(&id);
                         value.set((*state).clone());
                     }
                 } else if !init_value.is_empty() {
-                    label_up(&format!("input-{}", id));
+                    label_up(&id);
                     value.set(init_value.clone());
+                }
+
+                if init_focus {
+                    focus_tag(&id);
                 }
 
                 || ()
@@ -72,8 +80,6 @@ pub fn input(props: &InputProps) -> Html {
         let value = value.clone();
         use_effect_with_deps(
             move |value: &UseStateHandle<String>| {
-                console_log!(format!("VALUE: {:?}", &value));
-
                 if let Some(state) = value_state {
                     state.set((**value).clone());
                 }
@@ -88,7 +94,7 @@ pub fn input(props: &InputProps) -> Html {
         <>
             <input
                 {onkeyup}
-                id={format!("input-{}", id)}
+                {id}
                 type={format!("{}", input_type)}
                 value={
                     if permission != InputPermission::Disabled {
