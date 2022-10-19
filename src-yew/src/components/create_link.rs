@@ -85,52 +85,40 @@ pub fn new() -> Html {
                 } else if let Ok(error) = string_to_struct::<ErrorReporter>(&new_link) {
                     // fill data for `DisplayError` component
                     display_error_data.set(Some(DisplayErrorInnerData {
+                        class: DisplayErrorClass::Error,
                         error_reporter: error,
                         options_message: Some(
                             "You can still add the link to the collections. Do you want to add it?"
                                 .to_string(),
                         ),
-                        options_buttons: Some(vec![
-                            (
-                                String::from("Add"),
-                                Callback::from({
-                                    let popup_box_state = popup_box_state.clone();
-                                    let display_error_data = display_error_data.clone();
-                                    move |_| {
-                                        // push the old (created by user) link to the cold collections
-                                        let mut old_links = (*links).clone();
-                                        old_links.push(link.clone());
+                        options_buttons: Some(vec![DisplayErrorButton {
+                            name: String::from("Add"),
+                            button_type: DisplayErrorButtonType::Danger,
+                            callback: Callback::from({
+                                let popup_box_state = popup_box_state.clone();
+                                let display_error_data = display_error_data.clone();
+                                move |_| {
+                                    // push the old (created by user) link to the cold collections
+                                    let mut old_links = (*links).clone();
+                                    old_links.push(link.clone());
 
-                                        {
-                                            let old_links = old_links.clone();
-                                            spawn_local(async move {
-                                                store_data(struct_to_string(&old_links).unwrap())
-                                                    .await
-                                                    .unwrap();
-                                            });
-                                        }
-
-                                        links.set(old_links);
-
-                                        // hide the component
-                                        popup_box_state.set(PopupBox::None);
-                                        display_error_data.set(None);
+                                    {
+                                        let old_links = old_links.clone();
+                                        spawn_local(async move {
+                                            store_data(struct_to_string(&old_links).unwrap())
+                                                .await
+                                                .unwrap();
+                                        });
                                     }
-                                }),
-                            ),
-                            (
-                                String::from("Cancel"),
-                                Callback::from({
-                                    let display_error_data = display_error_data.clone();
-                                    let popup_box_state = popup_box_state.clone();
-                                    move |_| {
-                                        // hide the component
-                                        popup_box_state.set(PopupBox::None);
-                                        display_error_data.set(None);
-                                    }
-                                }),
-                            ),
-                        ]),
+
+                                    links.set(old_links);
+
+                                    // hide the component
+                                    popup_box_state.set(PopupBox::None);
+                                    display_error_data.set(None);
+                                }
+                            }),
+                        }]),
                     }));
 
                     // display the component `DisplayError`

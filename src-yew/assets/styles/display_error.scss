@@ -1,0 +1,80 @@
+:root {
+    --popup-color: red; // default color (red)
+}
+
+#popup-display-error {
+    border: 1px solid var(--popup-color);
+    box-shadow: 0 0 10px var(--popup-color);
+
+    .popup-title {
+        color: var(--popup-color);
+    }
+}
+
+#popup-display-error.warn {
+    --popup-color: yellow;
+}
+
+.display-error {
+    font-size: 20px;
+
+    div {
+        margin-top: 20px;
+
+        p {
+            margin-top: 10px;
+            // margin-left: 10px;
+        }
+    }
+
+    ul {
+        margin-left: 50px;
+
+        li {
+            margin-top: 5px;
+        }
+    }
+
+    .when-error {
+        text-align: center;
+        font-size: 27px;
+        font-style: italic;
+    }
+
+    .options-buttons {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        --color: rgb(0, 153, 204); // default color (blue)
+
+        button {
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 15px 60px;
+            background-color: transparent;
+            // $color: rgb(0, 153, 204);
+            border: 3px solid var(--color);
+            color: var(--color);
+
+            &:hover {
+                background-color: var(--color);
+                color: white;
+                text-shadow: 0.05px 0.05px 1px black;
+                box-shadow: 0 0 15px var(--color);
+            }
+        }
+
+        button.red {
+            --color: red;
+        }
+
+        button.blue {
+            --color: rgb(0, 153, 204);
+        }
+
+    }
+
+}

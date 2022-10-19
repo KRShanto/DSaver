@@ -17,11 +17,74 @@ pub struct DisplayedBrowsersState(pub UseStateHandle<Vec<Browser>>);
 
 #[derive(Clone, PartialEq)]
 pub struct DisplayErrorData(pub UseStateHandle<Option<DisplayErrorInnerData>>);
+
+#[derive(Clone, PartialEq, Eq)]
+pub enum DisplayErrorClass {
+    Warn,
+    Error,
+}
+
+#[derive(Clone, PartialEq, Eq)]
+pub enum DisplayErrorButtonType {
+    Safe,
+    Danger,
+}
+
 #[derive(Clone, PartialEq)]
+pub struct DisplayErrorButton {
+    pub name: String,
+    pub button_type: DisplayErrorButtonType,
+    pub callback: Callback<()>,
+}
+
+#[derive(Clone, PartialEq, )]
 pub struct DisplayErrorInnerData {
+    pub class: DisplayErrorClass,
     pub error_reporter: ErrorReporter,
     pub options_message: Option<String>,
-    pub options_buttons: Option<Vec<(String, Callback<()>)>>,
+    // pub options_buttons: Option<Vec<((String, DisplayErrorButtonType), Callback<()>)>>,
+    pub options_buttons: Option<Vec<DisplayErrorButton>>
+}
+
+impl DisplayErrorInnerData {
+    /// Get a default value for debugging purposes.
+    /// 
+    /// *It won't work in the production environment. So if you are using this function, make sure to use `cfg(debug_assertions)` to call it only in the dev environment*
+    #[cfg(debug_assertions)]
+    pub fn get_default(
+        popup_box_state: UseStateHandle<PopupBox>, 
+        display_error_inner_data: UseStateHandle<Option<Self>>
+    ) -> Self {
+        let error_reporter = ErrorReporterBuilder {
+            actual_error: 
+                "thread 'main' panicked at 'called `Option::unwrap()` on a `None` value', src/main.rs:4:25 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
+            why_error: vec!["You have not given a value"],
+            how_to_fix: vec!["Give a value to the input", "The value must be valid string"],
+            error_title: "Value not found",
+            when_error: "getting a input from you",
+            error_type: ErrorType::InvalidOrNotFound,
+            }.build();
+
+        Self {
+            class: DisplayErrorClass::Error,
+            error_reporter,
+            options_message: Some(String::from("You can again type your input")),
+            options_buttons: Some(vec![
+                DisplayErrorButton {
+                    name: String::from("Type again"),
+                    button_type: DisplayErrorButtonType::Safe,
+                    callback: Callback::from({
+                        move |_| {
+                            println!("Type again pressed");
+
+                            popup_box_state.set(PopupBox::None);
+                            display_error_inner_data.set(None);
+                        }
+                    })
+                }                         
+            ]),
+        }
+    }
 }
 
 #[derive(Clone, PartialEq)]
