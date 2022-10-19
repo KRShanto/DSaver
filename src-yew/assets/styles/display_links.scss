@@ -58,18 +58,25 @@
                 background-color: rgb(1, 2, 37);
                 margin: 15px 0;
                 border-radius: 7px;
-                padding: 10px;
+                padding: 4px;
                 width: inherit;
-                // display: flex;
                 box-shadow: 0 0 5px white;
 
                 .link-head {
                     display: flex;
-                    justify-content: space-between;
                     align-items: center;
+
+                    .title-area {
+                        padding: 10px;
+                        width: 95%;
+                    }
 
                     .title {
                         color: rgb(182, 182, 182);
+                        -webkit-user-select: none;
+                        -ms-user-select: none;
+                        user-select: none;
+
                     }
 
                     .icon {
@@ -96,17 +103,11 @@
                     display: flex;
                     max-height: 0;
                     overflow: hidden;
-                    // transform-origin: top;
-                    // transform: scaleY(0);
-                    // transition: 0.5s;
-
+                    padding: 0 10px 0 10px;
                 }
 
                 .link-body.display {
-                    // transition: 2s;
                     max-height: 60000px;
-                    // transition: 10s;
-                    // transform: scaleY(1);
                 }
 
                 .info {

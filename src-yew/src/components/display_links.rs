@@ -94,7 +94,16 @@ pub fn show_links() -> Html {
                                         html! {
                                             <div class="link">
                                                 <div class="link-head">
-                                                    <h3 class="title">{link.title.clone().unwrap()}</h3>
+                                                    <div class="title-area" ondblclick={
+                                                        let browser = link.browser.clone();
+                                                        let url = link.url.clone();
+
+                                                        move |_| {
+                                                            open_user_browser(url.clone(), browser.clone());
+                                                        }
+                                                }   >
+                                                        <h3 class="title">{link.title.clone().unwrap()}</h3>
+                                                    </div>
                                                     <div class="icon" onclick={
                                                         let display_link_body = display_link_body.clone();
                                                         move |_| {
@@ -164,27 +173,10 @@ pub fn show_links() -> Html {
                                                             title={format!("Open in {}", link.browser)}
                                                             onclick={
                                                                 let browser = link.browser.clone();
-                                                                let path = link.url.clone();
+                                                                let url = link.url.clone();
 
                                                                 move |_| {
-                                                                    let browser = browser.clone();
-                                                                    let path = path.clone();
-                                                                    spawn_local(async move {
-                                                                        let result = open_browser(&path, struct_to_string(&browser).unwrap())
-                                                                            .await
-                                                                            .unwrap()
-                                                                            .as_string()
-                                                                            .unwrap();
-
-                                                                        if let Ok(error) = string_to_struct::<BrowserOpenError>(&result) {
-                                                                        match error {
-                                                                                BrowserOpenError::NotFound => console_error!("Browser not found"),
-                                                                                BrowserOpenError::Other(error) => console_error!(error),
-                                                                            }
-                                                                        } else {
-                                                                            console_log!("Successfully opened");
-                                                                        }
-                                                                    });
+                                                                    open_user_browser(url.clone(), browser.clone());
                                                                 }
                                                             }
                                                         >{"Open"}</button>
@@ -241,4 +233,24 @@ pub fn show_links() -> Html {
         </div>
         </>
     }
+}
+
+/// Open user's selected browser
+fn open_user_browser(url: String, browser: Browser) {
+    spawn_local(async move {
+        let result = open_browser(&url, struct_to_string(&browser).unwrap())
+            .await
+            .unwrap()
+            .as_string()
+            .unwrap();
+
+        if let Ok(error) = string_to_struct::<BrowserOpenError>(&result) {
+            match error {
+                BrowserOpenError::NotFound => console_error!("Browser not found"),
+                BrowserOpenError::Other(error) => console_error!(error),
+            }
+        } else {
+            console_log!("Successfully opened");
+        }
+    });
 }
