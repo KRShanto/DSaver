@@ -11,7 +11,59 @@ use serde::{Deserialize, Serialize};
 /// This struct holds lots of information about the error and also how to fix the error.
 ///
 /// Use [`ErrorReporterBuilder`] to instanciate a new [`ErrorReporter`].
-// TODO: Make an example based on examples of ErrorReporterBuilder's fields
+///
+/// # Example
+///
+/// ```
+/// use std::fs::File;
+/// use std::io::Read;
+/// use home::home_dir;
+/// use dsaver_project_types::{ErrorReporter, ErrorReporterBuilder, ErrorType};
+///
+/// /// Get details about the user
+/// fn get_details() -> Result<String, ErrorReporter> {
+///     // read the file details.md
+///     match home_dir() {
+///         Some(home_dir) => {
+///             let file_path = home_dir.join("details.md");
+///             match File::open(file_path) {
+///                 Ok(mut file) => {
+///                     // file exists, now read the file and return its content.
+///
+///                     let mut details = String::new();
+///                     file.read_to_string(&mut details).unwrap(); // handle error here
+///
+///                     Ok(details)
+///                 }
+///                 Err(err) => Err(ErrorReporterBuilder {
+///                     actual_error: &err.to_string(),
+///                     why_error: vec![
+///                         "The file details.md not found in the home directory",
+///                         "Tried to find the file details.md which contains information about you. But the file doesn't exists in the home directory"
+///                     ],
+///                     how_to_fix: vec![
+///                         &format!("Go to your home directory ({})", home_dir.display()),
+///                         "Create `details.md` file in your home directory and put some information about you"
+///                     ],
+///                     error_title: "File Not Found",
+///                     when_error: "finding the file details.md in the home directory",
+///                     error_type: ErrorType::FileNotFound,
+///                 }
+///                 .build()),
+///             }
+///         }
+///         None => Err(ErrorReporterBuilder {
+///             actual_error: "None",
+///             why_error: vec!["Your home directory not found"],
+///             how_to_fix: vec!["Put your home directory into the path variable"],
+///             error_title: "Directory Not Found",
+///             when_error: "finding the home directory",
+///             error_type: ErrorType::DirectoryNotFound,
+///         }
+///         .build()),
+///     }
+/// }
+/// ```
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub struct ErrorReporter {
     /// The actual error (i.e. A panic message)
@@ -34,6 +86,8 @@ impl ErrorReporter {
     /// If you are handling an [`Result`] or anything like that, then you can `match` that result to get the error and put that error into this field.
     ///
     /// This field is for exact error that was encountered.
+    ///
+    /// If you do not have any such error, then return "None".
     pub fn actual_error(&self) -> &str {
         &self.actual_error
     }
@@ -46,7 +100,7 @@ impl ErrorReporter {
     ///
     /// - The file *details.md* not found
     ///
-    /// - Extected a file named *details.md* which will contain some details about you. But found nothing.
+    /// - Extected a file named *details.md* in your home directory which will contain some details about you. But found nothing.
     pub fn why_error(&self) -> &Vec<String> {
         &self.why_error
     }
@@ -57,7 +111,7 @@ impl ErrorReporter {
     ///
     /// Some example:
     ///
-    /// - Create a file *details.md* in your *home/project/* directory and write some details about you
+    /// - Create a file *details.md* in your *home/* directory and write some details about you
     ///
     /// - After creating the file, click the button *Show* again.
     pub fn how_to_fix(&self) -> &Vec<String> {
@@ -106,6 +160,8 @@ pub struct ErrorReporterBuilder<'a> {
     /// If you are handling an [`Result`] or anything like that, then you can `match` that result to get the error and put that error into this field.
     ///
     /// This field is for exact error that was encountered.
+    ///
+    /// If you do not have any such error, then return "None".
     pub actual_error: &'a str,
     /// Why the error happened
     ///
@@ -115,7 +171,7 @@ pub struct ErrorReporterBuilder<'a> {
     ///
     /// - The file *details.md* not found
     ///
-    /// - Extected a file named *details.md* which will contain some details about you. But found nothing.
+    /// - Extected a file named *details.md* in your home directory which will contain some details about you. But found nothing.
     pub why_error: Vec<&'a str>,
     /// How to fix the error
     ///
@@ -123,7 +179,7 @@ pub struct ErrorReporterBuilder<'a> {
     ///
     /// Some example:
     ///
-    /// - Create a file *details.md* in your *home/project/* directory and write some details about you
+    /// - Create a file *details.md* in your *home/* directory and write some details about you
     ///
     /// - After creating the file, click the button *Show* again.
     pub how_to_fix: Vec<&'a str>,
@@ -190,6 +246,14 @@ pub enum ErrorType {
     ///
     /// This variant is every commands inside the [`open_browser`] module.
     BrowserNotFound,
+    /// File not found
+    ///
+    /// This variant is for every commands who didn't find the expected file
+    FileNotFound,
+    /// Directory not found
+    ///
+    /// This variant is for every commands who didn't find the expected directory
+    DirectoryNotFound,
     /// Unknown error.
     ///
     /// This variant is for every commands who isn't sure what the error is.

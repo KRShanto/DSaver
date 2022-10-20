@@ -15,5 +15,9 @@ js-sys = {version = "0.3.59", optional = true}
 rand = "0.8.5"
 itertools = "0.10"
 
+[dev-dependencies]
+home = "0.5.4"
+
 [features]
 wasm = ["js-sys"]
+
