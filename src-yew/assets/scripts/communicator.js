@@ -78,9 +78,12 @@ export async function openBrowser(path, browser) {
         functionName = "open_browser_macos";
     }
 
-    const result = await invoke(functionName, { path, browser });
-
-    return JSON.stringify(result);
+    try {
+        const result = await invoke(functionName, { path, browser });
+        return JSON.stringify(result);
+    } catch (err) {
+        return JSON.stringify(err);
+    }
 }
 
 // Generate some random links

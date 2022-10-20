@@ -9,6 +9,7 @@ pub fn show_links() -> Html {
     let displayed_browsers = use_context::<DisplayedBrowsersState>().unwrap().0;
     let popup_box_state = use_context::<PopupBoxState>().unwrap().0;
     let popup_box_ready_state = use_context::<PopupBoxReadyState>().unwrap().0;
+    let display_error_data = use_context::<DisplayErrorData>().unwrap().0;
 
     // links to display
     let mut displayed_links_for_tags = Vec::new();
@@ -98,15 +99,17 @@ pub fn show_links() -> Html {
                                                         let browser = link.browser.clone();
                                                         let url = link.url.clone();
                                                         let display_link_body = display_link_body.clone();
+                                                        let display_error_data = display_error_data.clone();
+                                                        let popup_box_state = popup_box_state.clone();
 
                                                         move |_| {
                                                             // if current link is not opened, then open the browser on dblclick
                                                             if let Some(display) = *display_link_body {
                                                                 if display != (display_link_index - 1) {
-                                                                    open_user_browser(url.clone(), browser.clone());
+                                                                    open_user_browser(url.clone(), browser.clone(), display_error_data.clone(), popup_box_state.clone());
                                                                 }
                                                             } else {
-                                                                open_user_browser(url.clone(), browser.clone());
+                                                                open_user_browser(url.clone(), browser.clone(),display_error_data.clone(), popup_box_state.clone());
                                                             }
                                                         }
                                                 }   >
@@ -182,9 +185,11 @@ pub fn show_links() -> Html {
                                                             onclick={
                                                                 let browser = link.browser.clone();
                                                                 let url = link.url.clone();
+                                                                let display_error_data = display_error_data.clone();
+                                                                let popup_box_state = popup_box_state.clone();
 
                                                                 move |_| {
-                                                                    open_user_browser(url.clone(), browser.clone());
+                                                                    open_user_browser(url.clone(), browser.clone(),display_error_data.clone(), popup_box_state.clone());
                                                                 }
                                                             }
                                                         >{"Open"}</button>
@@ -244,7 +249,12 @@ pub fn show_links() -> Html {
 }
 
 /// Open user's selected browser
-fn open_user_browser(url: String, browser: Browser) {
+fn open_user_browser(
+    url: String,
+    browser: Browser,
+    display_error_data: UseStateHandle<Option<DisplayErrorInnerData>>,
+    popup_box_state: UseStateHandle<PopupBox>,
+) {
     spawn_local(async move {
         let result = open_browser(&url, struct_to_string(&browser).unwrap())
             .await
@@ -252,11 +262,16 @@ fn open_user_browser(url: String, browser: Browser) {
             .as_string()
             .unwrap();
 
-        if let Ok(error) = string_to_struct::<BrowserOpenError>(&result) {
-            match error {
-                BrowserOpenError::NotFound => console_error!("Browser not found"),
-                BrowserOpenError::Other(error) => console_error!(error),
-            }
+        if let Ok(error_reporter) = string_to_struct::<ErrorReporter>(&result) {
+            display_error_data.set(Some(DisplayErrorInnerData {
+                class: DisplayErrorClass::Error,
+                error_reporter,
+                // TODO: reporting options
+                options_buttons: None,
+                options_message: None,
+            }));
+
+            popup_box_state.set(PopupBox::DisplayError);
         } else {
             console_log!("Successfully opened");
         }

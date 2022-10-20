@@ -53,18 +53,6 @@ pub enum Browser {
     // TODO: add more
 }
 
-// implementing Distribution<Browser> for generating random browsers.
-impl Distribution<Browser> for Standard {
-    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Browser {
-        match rng.gen_range(0..=2) {
-            0 => Browser::Firefox,
-            1 => Browser::Chrome,
-            2 => Browser::SysDefault,
-            _ => Browser::Brave,
-        }
-    }
-}
-
 impl Browser {
     /// Get the available browsers
     pub fn get_vec() -> Vec<String> {
@@ -239,13 +227,14 @@ impl From<&str> for Browser {
     }
 }
 
-/// Possible errors when opening a browser
-///
-/// # Warning
-///
-/// In future this enum will be removed. And `ErrorReporter` will be used.
-#[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Eq)]
-pub enum BrowserOpenError {
-    NotFound,
-    Other(String),
+// implementing Distribution<Browser> for generating random browsers.
+impl Distribution<Browser> for Standard {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Browser {
+        match rng.gen_range(0..=2) {
+            0 => Browser::Firefox,
+            1 => Browser::Chrome,
+            2 => Browser::SysDefault,
+            _ => Browser::Brave,
+        }
+    }
 }

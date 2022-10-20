@@ -114,7 +114,7 @@ pub async fn validate_link(link: String) -> Result<Link, ErrorReporter> {
             // maybe the website is not working | or the url is not valid
             Err(
                 ErrorReporterBuilder {
-                    error_title: "Not Found",
+                    error_title: "Website Not Found",
                     actual_error: &err.to_string(),
                     why_error: vec!["Url is not valid", "The website is not working"],
                     how_to_fix: vec![

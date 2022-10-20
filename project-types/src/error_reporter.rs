@@ -186,4 +186,12 @@ pub enum ErrorType {
     ///
     /// This variant is from the [`validate_link`] command.
     PageNotFound,
+    /// Browser not available
+    ///
+    /// This variant is every commands inside the [`open_browser`] module.
+    BrowserNotFound,
+    /// Unknown error.
+    ///
+    /// This variant is for every commands who isn't sure what the error is.
+    Others,
 }

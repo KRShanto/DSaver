@@ -38,7 +38,7 @@ use webpage::{Webpage, WebpageOptions};
 /// }
 /// ```
 ///
-/// Import that js function with wasm_bindgen
+/// If you are using wasm with Rust then import that js function with wasm_bindgen
 ///
 /// ```ignore
 /// use wasm_bindgen::prelude::*;
