@@ -84,7 +84,6 @@ impl Browser {
 
         match output {
             Ok(_) => Ok(()),
-            // TODO: give a better error
             Err(err) => Err(err),
         }
     }
@@ -108,8 +107,7 @@ impl Browser {
 
         match output {
             Ok(_) => Ok(()),
-            // TODO: provide a better error
-            Err(e) => Err(e),
+            Err(err) => Err(err),
         }
     }
 
@@ -128,8 +126,7 @@ impl Browser {
 
         match output {
             Ok(_) => Ok(()),
-            // TODO: provide a better error
-            Err(e) => Err(e),
+            Err(err) => Err(err),
         }
     }
 

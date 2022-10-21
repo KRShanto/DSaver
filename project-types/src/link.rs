@@ -73,8 +73,6 @@ use uuid::Uuid;
 ///
 /// [`writeFile`]: https://www.tauri.app/v1/api/js/fs#writefile
 /// [`createDir`]: https://www.tauri.app/v1/api/js/fs#createdir
-///
-// TODO: add example: create link in yew environment
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Hash, Eq)]
 pub struct Link {
     /// Unique identifier for this link
@@ -147,9 +145,9 @@ pub struct Link {
     ///
     /// Tags are very powerful feature of this app.
     ///
-    /// *[FUTURE]* You can hide your links by using tags. You can even lock them with a password.
+    /// *FUTURE* You can hide your links by using tags. You can even lock them with a password.
     ///
-    /// *[FUTURE]* You can use individual passwords for individual tags or you can use a master password for multiple tags.
+    /// *FUTURE* You can use individual passwords for individual tags or you can use a master password for multiple tags.
     pub tags: Vec<String>,
     /// Priority of the link
     ///
@@ -161,7 +159,7 @@ pub struct Link {
     ///
     /// The default value is `A`.
     ///
-    /// *[FUTURE]* You can also filter the links by using the priority.
+    /// *FUTURE* You can also filter the links by using the priority.
     pub priority: char,
     /// The browser through which the link will be opened.
     ///
@@ -169,7 +167,7 @@ pub struct Link {
     pub browser: Browser,
     /// Is the link is completed or not.
     ///
-    /// *[FUTURE]* You can also filter the links by using this property.
+    /// *FUTURE* You can also filter the links by using this property.
     pub complete: bool,
     /// Link's creation date
     ///
@@ -179,7 +177,7 @@ pub struct Link {
     ///
     /// You can use [`new_with_date`](#method.new_with_date) to automatically create a link object with the local date.
     ///
-    /// *[FUTURE]* You can sort links by oldest links or latest links
+    /// *FUTURE* You can sort links by oldest links or latest links
     pub date: String,
 }
 

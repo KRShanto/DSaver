@@ -8,8 +8,7 @@ use webpage::{Webpage, WebpageOptions};
 ///
 /// It will fetch the title, description and thumbnail for the link. And if they are available then it will return them on a new instance of [`Link`].
 ///
-///
-/// *[FUTURE]* If the website returns 404 error, then it will return an error.
+/// *FUTURE* If the website returns 404 error, then it will return an error.
 ///
 /// # Arguments
 ///
@@ -58,7 +57,7 @@ use webpage::{Webpage, WebpageOptions};
 ///        // handle any error
 ///        console.error("Some error occured while validating the link: ", err);
 ///    }
-///}
+/// }
 /// ```
 #[tauri::command]
 pub async fn validate_link(link: String) -> Result<Link, ErrorReporter> {

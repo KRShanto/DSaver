@@ -133,7 +133,7 @@ impl ErrorReporter {
     ///
     /// Describe when the error actually happened.
     ///
-    /// *NOTE:*  At the time of [`build`] this struct, it will automatically put the text `Error occurred when` before this field's value. For example, if you give the text *finding the file*, it will be *Error occured when finding the file* after constructing the struct.
+    /// *NOTE:*  At the time of [`build`](ErrorReporterBuilder#method.build) this struct, it will automatically put the text `Error occurred when` before this field's value. For example, if you give the text *finding the file*, it will be *Error occured when finding the file* after constructing the struct.
     ///
     /// Some examples:
     ///
@@ -150,7 +150,7 @@ impl ErrorReporter {
 
 /// Builder struct for [`ErrorReporter`]
 ///
-/// After instanciate this struct, call the [`build`] method to return a [`ErrorReporter`] instance.
+/// After instanciate this struct, call the [`build`](#method.build) method to return a [`ErrorReporter`] instance.
 ///
 /// See the docs of [`ErrorReporter`] for more information.
 #[derive(Debug, Clone, Eq, Hash, Serialize, Deserialize, PartialEq)]
@@ -195,7 +195,7 @@ pub struct ErrorReporterBuilder<'a> {
     ///
     /// Describe when the error actually happened.
     ///
-    /// *NOTE:*  At the time of [`build`] this struct, it will automatically put the text `Error occurred when` before this field's value. For example, if you give the text *finding the file*, it will be *Error occured when finding the file* after constructing the struct.
+    /// *NOTE:*  At the time of [`build`](#method.build) this struct, it will automatically put the text `Error occurred when` before this field's value. For example, if you give the text *finding the file*, it will be *Error occured when finding the file* after constructing the struct.
     ///
     /// Some examples:
     ///
@@ -236,15 +236,19 @@ impl<'a> ErrorReporterBuilder<'a> {
 pub enum ErrorType {
     /// The url is invalid or the website is not accessible.
     ///
-    /// This variant is from the [`validate_link`] command.        
+    /// This variant is from the [`validate_link`](../../../../src-tauri/target/doc/dsaver/fn.validate_link.html) command.
     InvalidOrNotFound,
     /// 404 returned by the website.
     ///
-    /// This variant is from the [`validate_link`] command.
+    /// This variant is from the [`validate_link`](../../../../src-tauri/target/doc/dsaver/fn.validate_link.html) command.
     PageNotFound,
     /// Browser not available
     ///
-    /// This variant is every commands inside the [`open_browser`] module.
+    /// This variant is for [`open_browser_linux`], [`open_browser_macos`] and [`open_browser_windows`] commands.
+    ///
+    /// [`open_browser_linux`]: ../../../../src-tauri/target/doc/dsaver/fn.open_browser_linux.html
+    /// [`open_browser_macos`]: ../../../../src-tauri/target/doc/dsaver/fn.open_browser_macos.html
+    /// [`open_browser_windows`]: ../../../../src-tauri/target/doc/dsaver/fn.open_browser_windows.html
     BrowserNotFound,
     /// File not found
     ///
