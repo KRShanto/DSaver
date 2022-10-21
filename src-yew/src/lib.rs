@@ -102,7 +102,7 @@ extern "C" {
 
 }
 
-#[wasm_bindgen(module = "/assets/scripts/quick.js")]
+#[wasm_bindgen(module = "/assets/scripts/utils.js")]
 extern "C" {
     #[wasm_bindgen(js_name = "focusTag")]
     pub fn focus_tag(input_id: &str);
@@ -115,4 +115,9 @@ extern "C" {
 
     #[wasm_bindgen(js_name = "upOpacity")]
     pub fn up_opacity(element_id: &str);
+
+    #[cfg(debug_assertions)]
+    #[wasm_bindgen(catch)]
+    pub async fn init() -> Result<JsValue, JsValue>;
+
 }
