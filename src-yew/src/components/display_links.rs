@@ -169,31 +169,21 @@ pub fn show_links() -> Html {
                                                         <p class="date">{&link.date}</p>
                                                     </div>
                                                     <div class="options">
-                                                        <button class="edit" onclick={
+                                                        <button class="edit button" onclick={
                                                             // TODO: Create a variable for this event
                                                             let popup_box_state = popup_box_state.clone();
                                                             let editing_link_id = editing_link_id.clone();
                                                             move |_| {
                                                                 editing_link_id.set(Some(link.id.unwrap()));
                                                                 popup_box_state.set(PopupBox::EditLink);
-
                                                             }
                                                         }>{"Edit"}</button>
-                                                        <button
-                                                            class="open"
-                                                            title={format!("Open in {}", link.browser)}
-                                                            onclick={
-                                                                let browser = link.browser.clone();
-                                                                let url = link.url.clone();
-                                                                let display_error_data = display_error_data.clone();
-                                                                let popup_box_state = popup_box_state.clone();
-
-                                                                move |_| {
-                                                                    open_user_browser(url.clone(), browser.clone(),display_error_data.clone(), popup_box_state.clone());
-                                                                }
-                                                            }
-                                                        >{"Open"}</button>
-                                                        <button class="delete" onclick={
+                                                        <Open
+                                                            href={link.url.clone()}
+                                                            class="open button"
+                                                            browser={link.browser.clone()}
+                                                        >{"Open"}</Open>
+                                                        <button class="delete button" onclick={
                                                             let links = links.clone();
                                                             let link = link.clone();
                                                             let editing_link_id = editing_link_id.clone();
@@ -256,7 +246,7 @@ fn open_user_browser(
     popup_box_state: UseStateHandle<PopupBox>,
 ) {
     spawn_local(async move {
-        let result = open_browser(&url, struct_to_string(&browser).unwrap())
+        let result = open_browser(url, struct_to_string(&browser).unwrap())
             .await
             .unwrap()
             .as_string()

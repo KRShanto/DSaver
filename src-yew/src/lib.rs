@@ -76,7 +76,7 @@ extern "C" {
     ///
     /// The argument `browser` must be a json of `Browser`
     #[wasm_bindgen(js_name = openBrowser, catch)]
-    pub async fn open_browser(path: &str, browser: String) -> Result<JsValue, JsValue>;
+    pub async fn open_browser(path: String, browser: String) -> Result<JsValue, JsValue>;
 
     /// Generate some random links
     ///

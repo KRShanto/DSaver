@@ -121,7 +121,7 @@
                     width: 8%;
                     position: relative;
 
-                    button {
+                    .button {
                         margin: 5px 0;
                         display: block;
                         cursor: pointer;
@@ -135,6 +135,7 @@
                         width: 100px;
                         text-shadow: 0.1px 0.1px 0.1px black;
                         background-color: rgb(44, 1, 123);
+                        text-align: center;
 
                         &:hover {
                             opacity: 0.8;
