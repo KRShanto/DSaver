@@ -74,8 +74,11 @@ export async function openBrowser(path, browser) {
         functionName = "open_browser_windows";
     } else if (platformName === "linux") {
         functionName = "open_browser_linux";
-    } else {
+    } else if (platformName === "darwin") {
         functionName = "open_browser_macos";
+    } else {
+        console.error("ERROR: Unsupported platform");
+        return;
     }
 
     try {
