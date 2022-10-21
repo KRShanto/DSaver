@@ -28,3 +28,5 @@ export function upOpacity(elementId) {
 
     element.style.opacity = 1.0;
 }
+
+export async function initial() { }

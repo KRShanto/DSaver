@@ -117,7 +117,7 @@ extern "C" {
     pub fn up_opacity(element_id: &str);
 
     #[cfg(debug_assertions)]
-    #[wasm_bindgen(catch)]
+    #[wasm_bindgen(js_name = "initial", catch)]
     pub async fn init() -> Result<JsValue, JsValue>;
 
 }

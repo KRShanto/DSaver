@@ -130,6 +130,15 @@ pub fn app() -> Html {
     let popup_box_state = use_state(PopupBox::default);
     let popup_box_ready_state = use_state(|| false);
 
+    #[cfg(debug_assertions)]
+    use_effect_with_deps(move |_| {
+        spawn_local(async move {
+            init().await.unwrap();
+        });
+
+        || ()
+    }, ());
+
     {
         let links = links.clone();
         use_effect_with_deps(
