@@ -77,3 +77,4 @@ x 2022-10-17 Make a Popup component and put the createlink and editlink and disp
 (A) Change the command name `validate_link` to `fetch_link`
 (B) Change tag option. When user changes a tag, then change all link's tag  @Feature
 (A) give dark white color to the uneditable inputs
+x 2022-10-22 When the user types something on the `<input>` the cursor goes at the end of all characters even if the cursor is in the middle pri:A @BUG

@@ -90,6 +90,22 @@ pub fn input(props: &InputProps) -> Html {
         );
     }
 
+    {
+        let value = value.clone();
+        use_effect_with_deps(
+            move |value_state| {
+                if let Some(state) = value_state {
+                    if (**state).clone() != (*value).clone() {
+                        value.set((**state).clone());
+                    }
+                }
+
+                || ()
+            },
+            value_state,
+        );
+    }
+
     html! {
         <>
             <input
@@ -98,19 +114,15 @@ pub fn input(props: &InputProps) -> Html {
                 type={format!("{}", input_type)}
                 value={
                     if permission != InputPermission::Disabled {
-                        if let Some(state) = value_state {
-                            (*state).clone()
-                        } else {
-                            (*value).clone()
-                        }
+                        (*value).clone()
                     } else {
                         String::new()
                     }
                 }
                 disabled={permission == InputPermission::Disabled}
+                readonly={permission == InputPermission::ReadOnly}
                 onblur={handle_blur_event}
                 onfocus={handle_focus_event}
-
             />
         </>
     }
