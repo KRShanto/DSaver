@@ -56,7 +56,6 @@ export function labelDown(inputId) {
 }
 
 export function labelUp(inputId) {
-    console.log("The id: " + inputId);
     const element = document.getElementById(inputId);
     const label = element.labels[0];
     const parent = element.parentElement;

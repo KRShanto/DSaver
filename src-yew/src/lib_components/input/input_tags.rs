@@ -28,33 +28,33 @@ pub fn input_tags(props: &InputTagsProps) -> Html {
     html! {
         <>
         if tags_values.is_empty() {
-                    <></>
-                } else {
-                    <div {id}>
-                        <p class="title">{label_text}</p>
-                        {
-                            tags_values.into_iter().map(move |tag| {
-                                match tag_type.clone() {
-                                    TagsType::Text => {
-                                        html! {
-                                            <span class="tag">{tag}</span>
-                                        }
-                                    }
-                                    TagsType::Button(onclick) => {
-                                        html! {
-                                            <button class="tag" onclick={
-                                                let tag = tag.clone();
-                                                move |event| {
-                                                    onclick.emit((event, tag.clone()))
-                                                }
-                                            }>{tag}</button>
-                                        }
-                                    }
+            <></>
+        } else {
+            <div {id}>
+                <p class="title">{label_text}</p>
+                {
+                    tags_values.into_iter().map(move |tag| {
+                        match tag_type.clone() {
+                            TagsType::Text => {
+                                html! {
+                                    <span class="tag">{tag}</span>
                                 }
-                            }).collect::<Html>()
+                            }
+                            TagsType::Button(onclick) => {
+                                html! {
+                                    <button class="tag" onclick={
+                                        let tag = tag.clone();
+                                        move |event| {
+                                            onclick.emit((event, tag.clone()))
+                                        }
+                                    }>{tag}</button>
+                                }
+                            }
                         }
-                    </div>
+                    }).collect::<Html>()
                 }
+            </div>
+        }
         </>
     }
 }

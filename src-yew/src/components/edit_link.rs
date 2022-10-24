@@ -1,4 +1,5 @@
 use crate::*;
+use itertools::Itertools;
 
 #[function_component(EditLink)]
 pub fn editlink() -> Html {
@@ -20,22 +21,9 @@ pub fn editlink() -> Html {
     let url = editing_link.url.clone();
     let title_value = use_state(|| editing_link.title.clone().unwrap());
     let desc_value = use_state(|| editing_link.description.clone().unwrap());
-    let tags_value = use_state(String::new); // it will be updated when the component is ready. If we use the initial value, then it throws some errors (I don't know exactly why).
+    let tags_value = use_state(|| editing_link.tags.join(" "));
     let priority_value = use_state(|| editing_link.priority.to_string());
     let browser_value = use_state(|| editing_link.browser.to_string());
-
-    {
-        let tags_value = tags_value.clone();
-        use_effect_with_deps(
-            move |_| {
-                label_up("input-edit-tags");
-                tags_value.set(editing_link.tags.join(" "));
-
-                || ()
-            },
-            (),
-        );
-    }
 
     // previously created tags || tags that matches tags from `displayed_tags`
     let previously_matched_tags = use_state(Vec::new);
@@ -58,7 +46,11 @@ pub fn editlink() -> Html {
                 url: url.clone(),
                 title: Some(title.clone()),
                 description: Some(description.to_string()),
-                tags: tags.split_whitespace().map(|s| s.to_string()).collect(),
+                tags: tags
+                    .split_whitespace()
+                    .unique()
+                    .map(|s| s.to_string())
+                    .collect(),
                 priority: priority.chars().next().unwrap(),
                 browser: Browser::from(browser.clone()),
                 complete: editing_link.complete,

@@ -47,22 +47,34 @@ pub fn input(props: &InputProps) -> Html {
         permission,
     } = options.clone();
 
-    let (value, onkeyup) = use_input(String::new(), &options);
+    let (value, onkeyup) = use_input(
+        if let Some(value_state) = value_state.clone() {
+            let value = value_state.to_string();
+
+            if !value.is_empty() {
+                value
+            } else {
+                String::new()
+            }
+        } else if !init_value.is_empty() {
+            init_value.clone()
+        } else {
+            String::new()
+        },
+        &options,
+    );
 
     {
         let value_state = value_state.clone();
-        let value = value.clone();
         let id = id.clone();
         use_effect_with_deps(
             move |_| {
-                if let Some(state) = value_state {
-                    if !(*state).is_empty() {
+                if let Some(value_state) = value_state {
+                    if !value_state.to_string().is_empty() {
                         label_up(&id);
-                        value.set((*state).clone());
                     }
                 } else if !init_value.is_empty() {
                     label_up(&id);
-                    value.set(init_value.clone());
                 }
 
                 if init_focus {
@@ -76,33 +88,34 @@ pub fn input(props: &InputProps) -> Html {
     }
 
     {
-        let value_state = value_state.clone();
-        let value = value.clone();
-        use_effect_with_deps(
-            move |value: &UseStateHandle<String>| {
-                if let Some(state) = value_state {
-                    state.set((**value).clone());
-                }
+        if let Some(value_state) = value_state.clone() {
+            let value = value.clone();
+            use_effect_with_deps(
+                move |value_state| {
+                    if value.to_string() != value_state.to_string() {
+                        value.set(value_state.to_string());
+                    }
 
-                || ()
-            },
-            value,
-        );
+                    || ()
+                },
+                value_state,
+            );
+        }
     }
 
     {
         let value = value.clone();
         use_effect_with_deps(
-            move |value_state| {
-                if let Some(state) = value_state {
-                    if (**state).clone() != (*value).clone() {
-                        value.set((**state).clone());
+            move |value: &UseStateHandle<String>| {
+                if let Some(value_state) = value_state {
+                    if value_state.to_string() != value.to_string() {
+                        value_state.set(value.to_string());
                     }
                 }
 
                 || ()
             },
-            value_state,
+            value,
         );
     }
 
