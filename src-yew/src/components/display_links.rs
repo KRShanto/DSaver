@@ -8,7 +8,6 @@ pub fn show_links() -> Html {
     let displayed_tags = use_context::<DisplayedTagsState>().unwrap().0;
     let displayed_browsers = use_context::<DisplayedBrowsersState>().unwrap().0;
     let popup_box_state = use_context::<PopupBoxState>().unwrap().0;
-    let popup_box_ready_state = use_context::<PopupBoxReadyState>().unwrap().0;
     let display_error_data = use_context::<DisplayErrorData>().unwrap().0;
 
     // links to display
@@ -57,14 +56,7 @@ pub fn show_links() -> Html {
 
     html! {
         <>
-        <div class="display-links" id="display-links" onclick={
-            let popup_box_state = popup_box_state.clone();
-            move |_| {
-                if *popup_box_ready_state && (*popup_box_state).clone() != PopupBox::None {
-                    popup_box_state.set(PopupBox::None);
-                }
-            }
-        }>
+        <div class="display-links" id="display-links">
             {
             prirorities.iter().map(|priority| {
                 i+=1;

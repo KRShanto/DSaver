@@ -104,6 +104,9 @@ pub struct PopupBoxState(pub UseStateHandle<PopupBox>);
 #[derive(Clone, PartialEq)]
 pub struct PopupBoxReadyState(pub UseStateHandle<bool>);
 
+#[derive(Clone, PartialEq)]
+pub struct PopupBoxHideState(pub UseStateHandle<bool>);
+
 #[derive(Clone, PartialEq, Eq, Default)]
 pub enum PopupBox {
     CreateLink,
@@ -129,6 +132,7 @@ pub fn app() -> Html {
 
     let popup_box_state = use_state(PopupBox::default);
     let popup_box_ready_state = use_state(|| false);
+    let popup_box_hide_state = use_state(|| false);
 
     #[cfg(debug_assertions)]
     use_effect_with_deps(move |_| {
@@ -212,11 +216,9 @@ pub fn app() -> Html {
         use_effect_with_deps(
             move |state| {
                 if **state != PopupBox::None {
-                    down_opacity("display-links");
-                    down_opacity("sidebar");
+                    down_opacity("app");
                 } else {
-                    up_opacity("display-links");
-                    up_opacity("sidebar");
+                    up_opacity("app");
                 }
 
                 || ()
@@ -224,6 +226,18 @@ pub fn app() -> Html {
             popup_box_state,
         );
     }
+
+    let onclick={
+        let popup_box_state = popup_box_state.clone();
+        let popup_box_ready_state = popup_box_ready_state.clone();
+        let popup_box_hide_state = popup_box_hide_state.clone();
+        move |_| {
+            if *popup_box_ready_state && (*popup_box_state).clone() != PopupBox::None {
+                // popup_box_state.set(PopupBox::None);
+                popup_box_hide_state.set(true);
+            }
+        }
+    };
 
     html! {
         <>
@@ -236,11 +250,12 @@ pub fn app() -> Html {
         <ContextProvider<DisplayErrorData> context={DisplayErrorData(display_error_data)}>
         <ContextProvider<PopupBoxState> context={PopupBoxState(popup_box_state.clone())}>
         <ContextProvider<PopupBoxReadyState> context={PopupBoxReadyState(popup_box_ready_state)}>
+        <ContextProvider<PopupBoxHideState> context={PopupBoxHideState(popup_box_hide_state)}>
 
-            <div class="main-div" id="app">
+            <main class="main-div" id="app" {onclick}>
                 <Sidebar />
                 <DisplayLinks />
-            </div>
+            </main>
 
             {
 
@@ -258,6 +273,7 @@ pub fn app() -> Html {
                 }
             }
 
+        </ContextProvider<PopupBoxHideState>>
         </ContextProvider<PopupBoxReadyState>>
         </ContextProvider<PopupBoxState>>
         </ContextProvider<DisplayErrorData>>
