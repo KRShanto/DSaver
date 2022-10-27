@@ -12,12 +12,10 @@ pub use wasm_bindgen::JsCast;
 pub use wasm_bindgen_futures::spawn_local;
 pub use web_sys::HtmlInputElement;
 pub use weblog::{console_error, console_log};
-pub use webru::{
-    callback, callback_with_arg, clear_interval, clear_timeout, set_interval, set_timeout,
-};
-pub use yew::prelude::*;
+pub use webru::*;
 pub use yew::{
     html::{Children, ChildrenRenderer, ChildrenWithProps},
+    prelude::*,
     virtual_dom::VChild,
 };
 
@@ -108,7 +106,7 @@ extern "C" {
     pub fn focus_tag(input_id: &str);
 
     #[wasm_bindgen(js_name = "ifNotClicked")]
-    pub fn if_not_clicked(element_id: &str, what_to_do: &Function);
+    pub fn if_not_clicked(element_id: &str, what_to_do: &Function) -> Function;
 
     #[wasm_bindgen(js_name = "downOpacity")]
     pub fn down_opacity(element_id: &str);

@@ -7,22 +7,30 @@ export function focusTag(inputId) {
     tag.focus();
 }
 
+// Call the callback `whatToDo` when the user don't click on the `elementId` element.
 export function ifNotClicked(elementId, whatToDo) {
-    document.addEventListener('click', event => {
+    function callback(event) {
         const element = document.getElementById(elementId);
+        console.log("I am calling from Bangladesh");
 
         if (event.target != element) {
             whatToDo();
         }
-    });
+    }
+
+    document.addEventListener('click', callback);
+
+    return () => document.removeEventListener('click', callback);
 }
 
+// Decrease the opacity of the given id
 export function downOpacity(elementId) {
     const element = document.getElementById(elementId);
 
     element.style.opacity = 0.3;
 }
 
+// Increase the opacity of the given id
 export function upOpacity(elementId) {
     const element = document.getElementById(elementId);
 

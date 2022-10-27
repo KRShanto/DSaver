@@ -76,17 +76,31 @@ pub fn boxx(props: &BoxProps) -> Html {
         let id = id.clone();
         use_effect_with_deps(
             move |render_div| {
-                if **render_div {
+                let remove_button_not_clicked = if **render_div {
                     let button_not_clicked = callback(move || {
                         button_clicked_for_render.set(false);
                     });
 
-                    if_not_clicked(&id, button_not_clicked.as_ref().unchecked_ref());
+                    let remove_button_not_clicked =
+                        if_not_clicked(&id, button_not_clicked.as_ref().unchecked_ref());
 
-                    button_not_clicked.forget();
+                    (Some(remove_button_not_clicked), Some(button_not_clicked))
+                } else {
+                    (None, None)
+                };
+
+                || {
+                    // remove the event listener when the component is unmounted
+                    if let Some(remove_button_not_clicked) = remove_button_not_clicked.0 {
+                        remove_button_not_clicked
+                            .call0(&JsValue::UNDEFINED)
+                            .unwrap();
+                    }
+
+                    if let Some(button_not_clicked) = remove_button_not_clicked.1 {
+                        button_not_clicked.forget();
+                    }
                 }
-
-                || {}
             },
             render_div,
         );
