@@ -11,7 +11,6 @@ export function focusTag(inputId) {
 export function ifNotClicked(elementId, whatToDo) {
     function callback(event) {
         const element = document.getElementById(elementId);
-        console.log("I am calling from Bangladesh");
 
         if (event.target != element) {
             whatToDo();
@@ -37,4 +36,6 @@ export function upOpacity(elementId) {
     element.style.opacity = 1.0;
 }
 
+// Intially run any code when the app starts.
+// This funciton is useful if you want to debug something when the app starts (temporarily).
 export async function initial() { }

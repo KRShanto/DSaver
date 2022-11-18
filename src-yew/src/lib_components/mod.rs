@@ -1,3 +1,5 @@
+//! A module for components that will help you build your application.
+
 pub mod form;
 pub mod input;
 pub mod open;

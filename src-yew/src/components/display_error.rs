@@ -1,5 +1,16 @@
 use crate::*;
 
+/// Display an error popup to the user
+///
+/// Use this if you want to show any kind of error/failure/warning to the user
+///
+/// This component is a popup box and it will appear if you set the [`PopupBox`] to [`PopupBox::CreateLink`].
+///
+/// Before you can use this component you need to set its data in [`DisplayErrorData`].
+///
+/// Note that if you remove its data before this component is closed, it will be panic.
+///
+/// When this component goes out of scope, it will make the state [`DisplayErrorData`] to be [`None`].
 #[function_component(DisplayError)]
 pub fn dis() -> Html {
     let data_state = use_context::<DisplayErrorData>().unwrap();
@@ -8,6 +19,9 @@ pub fn dis() -> Html {
     let error_reporter = data.error_reporter.clone();
     let options_message = data.options_message.clone();
     let options_buttons = data.options_buttons;
+
+    // clear all the data when the component is unmounted
+    use_effect_with_deps(move |_| move || data_state.0.set(None), ());
 
     let class = match data.class {
         DisplayErrorClass::Error => "error",
@@ -22,9 +36,6 @@ pub fn dis() -> Html {
             classes={vec![class]}
         >
             <div class="display-error">
-                // error title
-                // <h2>{error_reporter.error_title()}</h2>
-
                 <div class="inner">
                     // when error
                     <div class="when-error">

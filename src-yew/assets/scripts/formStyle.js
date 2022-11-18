@@ -88,6 +88,7 @@ export function labelUp(inputId) {
     setTimeout(() => {
         // remove the current label
         // BUG: NotFoundError: The object can not be found here. ---- occurs when the component EditLink goes out of scope
+        // One possible solution might be to check if the parent is still in the DOM or not
         parent.removeChild(label);
     }, TIME_TO_REMOVE);
 

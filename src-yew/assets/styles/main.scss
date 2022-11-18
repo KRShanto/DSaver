@@ -1,8 +1,11 @@
-@import "popup";
-@import "forms";
+@import "../lib-styles/forms";
+@import "../lib-styles/popup";
 @import "sidebar";
 @import "display_links";
 @import "display_error";
+@import "create_links";
+@import "edit_links";
+
 
 * {
     margin: 0;

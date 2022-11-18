@@ -1,5 +1,6 @@
 use crate::*;
 
+/// Props for the [`Popup`] component.
 #[derive(Properties, PartialEq)]
 pub struct PopupProps {
     #[prop_or_default]
@@ -9,7 +10,11 @@ pub struct PopupProps {
     pub children: Children,
 }
 
+/// Popup component
+///
 /// If you want to change the styles of the popup for a specific area/child, then you can target that popup using the `popup-{id}` id.
+///
+/// `props` - [`PopupProps`]
 #[function_component(Popup)]
 pub fn p(props: &PopupProps) -> Html {
     let popup_hide_state = use_context::<PopupBoxHideState>().unwrap().0;
@@ -22,12 +27,14 @@ pub fn p(props: &PopupProps) -> Html {
             move |popup_hide_state| {
                 if **popup_hide_state {
                     let popup_hide_state = popup_hide_state.clone();
+
+                    // remove the popup after 1sec because some animations might be are happening
                     set_timeout(
                         move || {
                             popup_box_state.set(PopupBox::None);
                             popup_hide_state.set(false);
                         },
-                        300, // removing the form after 1sec because some animations might be are happening
+                        300,
                     )
                     .unwrap();
                 }

@@ -1,5 +1,10 @@
 use crate::*;
 
+/// Sidebar component
+///
+/// From this component you can change settings and add new links
+///
+/// You can also filter links by their `tags` and `browser` attributes
 #[function_component(Sidebar)]
 pub fn sidebar() -> Html {
     let popup_box_state = use_context::<PopupBoxState>().unwrap().0;

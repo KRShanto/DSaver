@@ -1,10 +1,12 @@
 use crate::*;
 
+/// Props for the [`InputDiv`] component.
 #[derive(Properties, PartialEq)]
 pub struct InputDivProps {
     pub children: ChildrenRenderer<InputDivPropsChildren>,
 }
 
+/// InputDiv's children
 #[derive(Clone, derive_more::From, PartialEq)]
 pub enum InputDivPropsChildren {
     Label(VChild<Label>),
@@ -21,6 +23,15 @@ impl Into<Html> for InputDivPropsChildren {
     }
 }
 
+/// Wrapper component for the `<input>` and `<label>` tags.
+///
+/// It is a child component of [`InputWrapper`]. And it is a parent of [`Label`] and [`Input`] components.
+///
+/// If you are using the [`Form`] component, then you should use this component instead of using the `<input>` tag.
+///
+/// See the [`Form`] component for more information.
+///
+/// `props` - [`InputDivProps`]
 #[function_component(InputDiv)]
 pub fn input_div(props: &InputDivProps) -> Html {
     html! {

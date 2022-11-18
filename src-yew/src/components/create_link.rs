@@ -1,9 +1,16 @@
 use crate::*;
 
+/// Create a new from the user
+///
+/// This component is a popup box and it will appear if you set the [`PopupBox`] to [`PopupBox::CreateLink`].
+///
+/// It will show a form to create a new link. After creating the link, it will validate the link and then add it to the list of links in the user's filesystem.
+///
+/// It will show an error if the link is not valid or the website is not reachable.
 #[function_component(CreateLink)]
 pub fn new() -> Html {
     let links = use_context::<LinksState>().unwrap().0;
-    let displayed_tags = use_context::<DisplayedTagsState>().unwrap().0;
+    let links_tags = use_context::<LinksTagsState>().unwrap().0;
     let popup_box_state = use_context::<PopupBoxState>().unwrap().0;
 
     let display_error_data = use_context::<DisplayErrorData>().unwrap().0;
@@ -13,12 +20,14 @@ pub fn new() -> Html {
     let desc_value = use_state(String::new);
     let tags_value = use_state(String::new);
     let priority_value = use_state(|| String::from("A"));
-    let browser_value = use_state(|| String::from("Default"));
+    let browser_value = use_state(|| Browser::default().to_string());
 
+    // is the title field disabled?
     let title_disabled = use_state(|| true);
+    // is the description field disabled?
     let desc_disabled = use_state(|| true);
 
-    // previously created tags || tags that matches tags from `displayed_tags`
+    // previously created tags || tags that matches tags from `links_tags`
     let previously_matched_tags = use_state(Vec::new);
 
     let priority_list = (b'A'..=b'Z')
@@ -41,19 +50,28 @@ pub fn new() -> Html {
             let priority = priority.clone();
             let browser = browser.clone();
 
+            // hide the component
+            popup_box_state.set(PopupBox::None);
+            // TODO: Show a loading screen
+
             let display_error_data = display_error_data.clone();
 
+            // Create new Link object
             let link = Link::new_with_date(url)
                 .tags(tags)
                 .priority(priority.parse().unwrap())
                 .browser(Browser::from(browser));
 
+            // If the title is not empty, set it
+            // If we set empty string, then we won't get the title from the website
             let link = if title.is_empty() {
                 link
             } else {
                 link.title(title)
             };
 
+            // If the description is not empty, set it
+            // If we set empty string, then we won't get the description from the website
             let link = if description.is_empty() {
                 link
             } else {
@@ -64,9 +82,7 @@ pub fn new() -> Html {
             let popup_box_state = popup_box_state.clone();
 
             spawn_local(async move {
-                // hide the component
-                popup_box_state.set(PopupBox::None);
-
+                // save the link to the filesystem
                 let new_link = add_data(
                     struct_to_string(&*links).unwrap(),
                     struct_to_string(&link).unwrap(),
@@ -76,13 +92,23 @@ pub fn new() -> Html {
                 .as_string()
                 .unwrap();
 
+                // It will give new `Link` object with `title`, `description` fields. Show it in the UI
                 if let Ok(new_link) = string_to_struct::<Link>(&new_link) {
+                    // debug message
                     console_log!(format!("We found a new link: {:?}", new_link));
+
+                    // create a new variable with the value of both `links` and `new_link`
                     let mut old_links = (*links).clone();
                     old_links.push(new_link);
 
+                    // update the state
                     links.set(old_links);
                 } else if let Ok(error) = string_to_struct::<ErrorReporter>(&new_link) {
+                    console_error!(format!(
+                        "Error occured while adding a new link: {:?}",
+                        error
+                    ));
+
                     // fill data for `DisplayError` component
                     display_error_data.set(Some(DisplayErrorInnerData {
                         class: DisplayErrorClass::Error,
@@ -96,13 +122,19 @@ pub fn new() -> Html {
                             button_type: DisplayErrorButtonType::Danger,
                             callback: Callback::from({
                                 let popup_box_state = popup_box_state.clone();
-                                let display_error_data = display_error_data.clone();
                                 move |_| {
-                                    // push the old (created by user) link to the cold collections
+                                    // setting the `title` and `description` fields to the `link` object with empty values because now we can't fetch them from the website for the error
+                                    let link = link
+                                        .clone()
+                                        .title(String::new())
+                                        .description(String::new());
+
+                                    // push the old (newly created by user) `link` to the old collections
                                     let mut old_links = (*links).clone();
-                                    old_links.push(link.clone());
+                                    old_links.push(link);
 
                                     {
+                                        // Save the link to the filesystem
                                         let old_links = old_links.clone();
                                         spawn_local(async move {
                                             store_data(struct_to_string(&old_links).unwrap())
@@ -111,11 +143,12 @@ pub fn new() -> Html {
                                         });
                                     }
 
+                                    // update the state
                                     links.set(old_links);
 
                                     // hide the component
+                                    // popup_box_hide_state.set(true);
                                     popup_box_state.set(PopupBox::None);
-                                    display_error_data.set(None);
                                 }
                             }),
                         }]),
@@ -131,14 +164,16 @@ pub fn new() -> Html {
     });
 
     {
+        // Whenever the value of `tags_value` field changes, update the `previously_matched_tags` state with the tags that matches the last tag in `tags_value`
         let previously_matched_tags = previously_matched_tags.clone();
         use_effect_with_deps(
             move |tags| {
                 let tags = (**tags).to_lowercase();
 
+                // try to get the last tag from the `tags_value`
                 match tags.chars().last() {
-                    // if the last character is blank, then do not show any tags suggestion
                     Some(tag) => {
+                        // If the last character is a space, then don't show any previous tags
                         if tag.to_string() == " " {
                             previously_matched_tags.set(Vec::new());
                         } else {
@@ -146,15 +181,21 @@ pub fn new() -> Html {
                             // NOTE: the matched tags are only for current word.
                             let current_word = tags.split_whitespace().last().unwrap_or("");
 
+                            // loop the `links_tags` and check if any tag matches the current word
+                            // if any tag matches, then push it to this variable.
+                            // After finishing the loop, update the `previously_matched_tags` state with this variable.
+
                             let mut prev_tags_vec = Vec::new();
 
                             // loop tags
-                            for dis_tag in &*displayed_tags {
-                                if dis_tag.to_lowercase().contains(current_word) {
-                                    prev_tags_vec.push(dis_tag.to_string());
+                            for tag in links_tags.keys() {
+                                // if the `tag` contains any word from `current_word`, then push it to the `prev_tags_vec`
+                                if tag.to_lowercase().contains(current_word) {
+                                    prev_tags_vec.push(tag.to_string());
                                 }
                             }
 
+                            // update
                             previously_matched_tags.set(prev_tags_vec);
                         }
                     }

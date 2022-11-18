@@ -314,6 +314,10 @@ impl Link {
     ///
     /// The default value is `"GeneralLink"
     ///
+    /// Note that each tag should be unique.
+    ///
+    /// If you use this function to create tags, then it will automatically make the tags unique.
+    ///
     /// # Example
     ///
     /// ```
