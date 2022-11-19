@@ -45,6 +45,12 @@ pub struct InputProps {
     /// Be careful when using this prop. If you use this to multiple inputs, then unexpected behavior can happen.
     #[prop_or_default]
     pub init_focus: bool,
+
+    /// Paste from clipboard option
+    ///
+    /// If true, then the user can paste from clipboard
+    #[prop_or_default]
+    pub paste: bool,
 }
 /// Input component.
 ///
@@ -60,6 +66,7 @@ pub fn input(props: &InputProps) -> Html {
         options,
         init_value,
         init_focus,
+        paste,
     } = (*props).clone();
 
     // Getting the id from the parent component
@@ -156,6 +163,35 @@ pub fn input(props: &InputProps) -> Html {
 
     html! {
         <>
+            {
+                if paste {
+                    html! {
+                        <img
+                            src="icons/paste.svg"
+                            alt="Paste"
+                            title="Paste"
+                            onclick={
+                                let value = value.clone();
+                                let id = id.clone();
+                                move |_| {
+                                    let value = value.clone();
+                                    let id = id.clone();
+                                    spawn_local(async move {
+                                        let js_text = get_from_clipboard().await.unwrap();
+                                        let text = js_text.as_string().unwrap();
+
+                                        value.set(text);
+                                        label_up(&id);
+
+                                    })
+                                }
+                            }
+                        />
+                    }
+                } else {
+                    html! {}
+                }
+            }
             <input
                 {onkeyup}
                 {id}

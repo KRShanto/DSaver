@@ -36,6 +36,21 @@ export function upOpacity(elementId) {
     element.style.opacity = 1.0;
 }
 
+// Copy the text to the clipboard
+export async function copyToClipboard(text) {
+    const { writeText } = window.__TAURI__.clipboard;
+
+    await writeText(text);
+}
+
+// Get the text from the clipboard
+export async function getFromClipboard() {
+    const { readText } = window.__TAURI__.clipboard;
+
+    return await readText();
+}
+
+
 // Intially run any code when the app starts.
 // This funciton is useful if you want to debug something when the app starts (temporarily).
 export async function initial() { }

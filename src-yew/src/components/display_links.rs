@@ -193,9 +193,26 @@ pub fn show_links() -> Html {
                                                     }
                                                 )}>
                                                     <div class="info">
-                                                        <p class="url">{&link.url}</p>
-                                                        // TODO: copy button
+                                                        <div class="url-div">
+                                                            <p class="url">{&link.url}</p>
+                                                            <img
+                                                                src="icons/copy.svg"
+                                                                alt="Copy"
+                                                                title="Copy URL"
+                                                                onclick={
+                                                                    let url = link.url.clone();
+                                                                    move |_| {
+                                                                        let url = url.clone();
+                                                                        spawn_local(async move {
+                                                                            copy_to_clipboard(url).await.unwrap();
+                                                                        });
+                                                                    }
+                                                                }
+                                                            />
+                                                        </div>
+
                                                         <p class="description">{link.description.clone().unwrap()}</p>
+
                                                         <ul class="tags">
                                                             {
                                                             link.tags.iter().map(|tag| {
@@ -205,6 +222,7 @@ pub fn show_links() -> Html {
                                                             }).collect::<Html>()
                                                             }
                                                         </ul>
+
                                                         <p class="date">{&link.date}</p>
                                                     </div>
                                                     <div class="options">

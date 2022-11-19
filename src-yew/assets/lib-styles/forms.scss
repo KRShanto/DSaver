@@ -45,6 +45,16 @@
                 position: absolute;
                 bottom: 10px;
             }
+
+            img {
+                position: absolute;
+                bottom: 5px;
+                right: 0;
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+                z-index: 10;
+            }
         }
 
         .tags-wrapper {
@@ -56,12 +66,6 @@
                 opacity: 0.8;
             }
 
-            // #current-tags {
-            //  margin-top: 20px;
-            // display: flex;
-            // flex-wrap: wrap;
-            // align-items: center;
-
             .tag {
                 margin: 0 5px;
                 background-color: rgb(0, 81, 132);
@@ -72,10 +76,6 @@
                 font-weight: bold;
             }
 
-            // }
-
-            // #previous-tags {
-            // margin-top: 10px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
@@ -117,56 +117,6 @@
             margin-left: 5px;
         }
     }
-
-    // #create-tags-wrapper,
-    // #edit-tags-wrapper {
-    //     margin-top: 10px;
-    //     margin-bottom: 30px;
-
-    //     .title {
-    //         font-weight: bold;
-    //         opacity: 0.8;
-    //     }
-
-    //     #current-tags {
-    //         margin-top: 20px;
-    //         // width: 100%;
-    //         display: flex;
-    //         flex-wrap: wrap;
-    //         align-items: center;
-
-    //         .tag {
-    //             background-color: rgb(0, 81, 132);
-    //         }
-    //     }
-
-    //     #previous-tags {
-    //         margin-top: 10px;
-    //         display: flex;
-    //         flex-wrap: wrap;
-    //         align-items: center;
-
-    //         .tag {
-    //             background-color: rgb(44, 97, 212);
-    //             border: none;
-    //             font-size: 15px;
-
-    //             &:focus,
-    //             &:hover {
-    //                 background-color: rgb(7, 55, 158);
-    //             }
-    //         }
-    //     }
-
-    //     .tag {
-    //         margin: 0 5px;
-    //         padding: 5px 15px;
-    //         border-radius: 5px;
-    //         box-shadow: 0 0 3px white;
-    //         color: white;
-    //         font-weight: bold;
-    //     }
-    // }
 
     .select-form {
         $option-background: rgb(14, 31, 41);

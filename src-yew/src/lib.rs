@@ -130,6 +130,14 @@ extern "C" {
     #[wasm_bindgen(js_name = "upOpacity")]
     pub fn up_opacity(element_id: &str);
 
+    /// Copy the text to the clipboard
+    #[wasm_bindgen(js_name = "copyToClipboard", catch)]
+    pub async fn copy_to_clipboard(text: String) -> Result<JsValue, JsValue>;
+
+    /// Get the text from the clipboard
+    #[wasm_bindgen(js_name = "getFromClipboard", catch)]
+    pub async fn get_from_clipboard() -> Result<JsValue, JsValue>;
+
     /// Intially run any code when the app starts.    
     ///
     /// This function is useful if you want to run some code when the app starts (temporarily)
