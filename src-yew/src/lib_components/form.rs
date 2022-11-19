@@ -36,6 +36,27 @@ impl Into<Html> for FormPropsChildren {
 ///
 /// You can use input, select, and other components inside of this component
 ///
+/// The list of components that you can use to make a form:
+///
+/// - [`InputWrapper`]
+///
+/// - [`InputDiv`]
+///
+/// - [`Input`]
+///
+/// - [`Select`]
+///
+/// - [`Box`]
+///
+/// - [`Checkbox`]
+///
+/// - [`InputTags`]
+///
+/// - [`Label`]
+///
+/// - [`SelectLabel`]
+///
+///
 /// `props` - [`FormProps`]
 ///
 /// # Example
