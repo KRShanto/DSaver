@@ -1,5 +1,5 @@
 [package]
-name = "dsaver-project-types"
+name = "dsaver-core"
 version = "0.1.0"
 edition = "2021"
 description = "Common structs and enums for this project"

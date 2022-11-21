@@ -1,79 +1,87 @@
 {
-  "package": {
-    "productName": "DSaver",
-    "version": "0.1.0"
-  },
-  "build": {
-    "distDir": "../src-yew/dist",
-    "devPath": "http://localhost:8080",
-    "beforeDevCommand": "cd src-yew && trunk serve",
-    "beforeBuildCommand": "cd src-yew && trunk build --release",
-    "withGlobalTauri": true
-  },
-  "tauri": {
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "com.dsaver.com",
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "resources": [],
-      "externalBin": [],
-      "copyright": "",
-      "category": "Productivity",
-      "shortDescription": "A data saving app",
-      "longDescription": "Dsaver is a data saving where you can save any website's links. Share them with others. You can also communicate with others too.",
-      "deb": {
-        "depends": []
-      },
-      "macOS": {
-        "frameworks": [],
-        "exceptionDomain": "",
-        "signingIdentity": null,
-        "providerShortName": null,
-        "entitlements": null
-      },
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
-      }
+    "package": {
+        "productName": "DSaver",
+        "version": "0.1.0"
     },
-    "updater": {
-      "active": false
+    "build": {
+        "distDir": "../frontend/dist",
+        "devPath": "http://localhost:8080",
+        "beforeDevCommand": "cd frontend && trunk serve ",
+        "beforeBuildCommand": "cd frontend && trunk build --release",
+        "withGlobalTauri": true
     },
-    "allowlist": {
-      "fs": {
-        "readFile": true,
-        "writeFile": true,
-        "readDir": true,
-        "createDir": true,
-        "scope": ["$HOME/*"]
-      },
-      "path": {
-        "all": true
-      },
-      "os": {
-        "all": true
-      }
-    },
-    "windows": [
-      {
-        "title": "DSaver",
-        "width": 1200,
-        "height": 900,
-        "resizable": true,
-        "fullscreen": false,
-        "maximized": true
-      }
-    ],
-    "security": {
-      "csp": null
+    "tauri": {
+        "bundle": {
+            "active": true,
+            "targets": "all",
+            "identifier": "com.dsaver.com",
+            "icon": [
+                "icons/32x32.png",
+                "icons/128x128.png",
+                "icons/128x128@2x.png",
+                "icons/icon.icns",
+                "icons/icon.ico"
+            ],
+            "resources": [],
+            "externalBin": [],
+            "copyright": "",
+            "category": "Productivity",
+            "shortDescription": "A data saving app",
+            "longDescription": "Dsaver is a data saving where you can save any website's links. Share them with others. You can also communicate with others too.",
+            "deb": {
+                "depends": []
+            },
+            "macOS": {
+                "frameworks": [],
+                "exceptionDomain": "",
+                "signingIdentity": null,
+                "providerShortName": null,
+                "entitlements": null
+            },
+            "windows": {
+                "certificateThumbprint": null,
+                "digestAlgorithm": "sha256",
+                "timestampUrl": ""
+            }
+        },
+        "systemTray": {
+            "iconPath": "icons/icon.png",
+            "iconAsTemplate": true
+        },
+        "updater": {
+            "active": false
+        },
+        "allowlist": {
+            "fs": {
+                "readFile": true,
+                "writeFile": true,
+                "readDir": true,
+                "createDir": true,
+                "scope": ["$HOME/*"]
+            },
+            "path": {
+                "all": true
+            },
+            "os": {
+                "all": true
+            },
+            "clipboard": {
+                "all": true
+            }
+        },
+        "windows": [
+            {
+                "title": "DSaver",
+                "label": "main",
+                "width": 1200,
+                "height": 900,
+                "resizable": true,
+                "fullscreen": false,
+                "maximized": true
+            }
+        ],
+        "security": {
+            "csp": null
+        }
     }
-  }
 }
