@@ -22,8 +22,7 @@ x 2022-09-04 Make a struct that will represent the error. It will contain what t
 (A) Make a component for tracking states
 (C) Link refresh feature. Also all links (together) refresh feature @Feature
 x 2022-09-08 use labels in forms instead of placeholder pri:A
-(B) Add documentations @Task @BeforePublish
-(B) Check which platform (returned by tauri api) is for MacOS.     @BUG @BeforePublish @Task
+x 2022-11-21 Add documentations pri:B @Task @BeforePublish
 x 2022-09-22 trim() every values when getting from browser   pri:B @BeforePublish
 (B) Change logo and images   @BeforePublish
 (C) Get `url` from the clipboard @Feature
