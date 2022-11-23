@@ -1,6 +1,6 @@
 #![allow(clippy::let_unit_value)]
 
-pub(crate) use dsaver_core::*;
+pub(crate) use dsaver_core::prelude::*;
 pub(crate) use js_sys::Function;
 pub(crate) use serde_json::from_str as string_to_struct;
 pub(crate) use serde_json::to_string as struct_to_string;

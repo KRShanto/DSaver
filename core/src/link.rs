@@ -1,4 +1,4 @@
-use crate::Browser;
+use crate::browser::Browser;
 use itertools::Itertools;
 #[cfg(feature = "wasm")]
 use js_sys::Date;
